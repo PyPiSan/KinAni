@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">KinAni</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="apikey">e7y6acFyHGqwtkBLKHx6eA</string>
+    <string name="app_title">KinAni</string>
+    <string name="app_label">Search KinAni</string>
+    <string name="search_hint">Anime..</string>
+    <string name="app_id">C0868879</string>
+    <string name="media_route_menu_title">Cast</string>
+    <string name="summary">Summary:</string>
+    <string name="intro">Watch Anime</string>
+    <string name="recently_watched">Recently Watched</string>
+    <string name="trending">Trending</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="search_anime">Search Anime</string>
+    <string name="speech_not_supported">Unknown Language</string>
+    <string name="speech_prompt">search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recentlyAired">Recently Aired</string>
+    <string name="home">Home</string>
+    <string name="new_label">New</string>
+    <string name="liked">Liked</string>
+    <string name="search">Search</string>
+    <string name="profile">Profile</string>
+</resources>

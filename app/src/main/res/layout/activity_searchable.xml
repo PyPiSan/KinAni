@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".utils.SearchableActivity">
+
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:paddingEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/scroller">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_arrow_back" />
+
+        <EditText
+            android:id="@+id/search_bar_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:paddingStart="15dp"
+            android:layout_weight="1"
+            android:imeOptions="actionSearch"
+            android:backgroundTint="@color/primaryColor"
+            android:background="@drawable/round_layout"
+            android:hint="@string/search_hint"
+            android:lines="1"
+            android:focusable="true"
+            android:inputType="textCapWords"
+            android:textColorHint="@color/white" />
+
+        <ImageView
+            android:id="@+id/iv_clear_text"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:adjustViewBounds="true"
+            android:visibility="gone"
+            android:src="@drawable/ic_close"/>
+
+        <ImageButton
+            android:id="@+id/search_bar_voice_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_mic" />
+
+    </LinearLayout>
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_layout">
+    <FrameLayout
+        android:id="@+id/searchFragmentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.HomeView"
+    android:tag="home_fragment">
+
+    <TextView
+        android:id="@+id/recents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recently_watched"
+        android:textStyle="bold"
+        android:textSize="55px"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="16dp"/>
+
+    <RelativeLayout
+        android:id="@+id/thirdRelative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recents">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container_recent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:shimmer_direction="left_to_right"
+            >
+            <include layout="@layout/skeleton_layout"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recycler_view_recent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/trending"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trending"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textSize="55px"
+        android:layout_below="@+id/thirdRelative"
+        android:layout_marginStart="16dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/secondRelative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trending">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:shimmer_direction="left_to_right"
+        >
+        <include layout="@layout/skeleton_layout"/>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recycler_view_trending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recommendations"
+        android:textStyle="bold"
+        android:textSize="55px"
+        android:layout_below="@+id/secondRelative"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="16dp"/>
+
+    <RelativeLayout
+        android:id="@+id/firstRelative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recommend">
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container_recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:shimmer_direction="left_to_right"
+        >
+        <include layout="@layout/skeleton_layout"/>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recycler_view_recommends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/recentlyAired"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recentlyAired"
+        android:textStyle="bold"
+        android:textSize="55px"
+        android:layout_below="@+id/firstRelative"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="16dp" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:shimmer_direction="left_to_right"
+        android:layout_below="@+id/recentlyAired"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <include layout="@layout/recently_aired_skeleton"/>
+        <include layout="@layout/recently_aired_skeleton"/>
+        <include layout="@layout/recently_aired_skeleton"/>
+        <include layout="@layout/recently_aired_skeleton"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_recycler_view_recentlyAired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:layout_below="@+id/recentlyAired"/>
+
+</RelativeLayout>

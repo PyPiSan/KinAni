@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:tag="mainFrag"
+    tools:context=".view.MainActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorOnPrimary"
+                android:layout_gravity="top">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topNav"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:menu="@menu/top_menu"
+                    android:theme="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:itemIconTint="@color/bottom_item_background"
+                    android:minHeight="?attr/actionBarSize">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:src="@mipmap/ic_launcher_round"
+                        android:id="@+id/mainlogo"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_title"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="20dp"
+                        />
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <FrameLayout
+            android:id="@+id/fragmentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="50dp"/>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorOnPrimary">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_menu"
+            android:layout_marginEnd="5dp"
+            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/bottom_item_background"
+            app:itemTextColor="@color/white"
+            />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

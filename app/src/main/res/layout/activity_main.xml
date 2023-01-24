@@ -12,7 +12,7 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorOnPrimary"
+                android:background="@color/primaryColor"
                 android:layout_gravity="top">
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -22,7 +22,6 @@
                     app:menu="@menu/top_menu"
                     android:theme="@style/Widget.MaterialComponents.Toolbar.Primary"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:itemIconTint="@color/bottom_item_background"
                     android:minHeight="?attr/actionBarSize">
 
                     <ImageView
@@ -30,7 +29,7 @@
                         android:layout_height="40dp"
                         android:paddingEnd="5dp"
                         android:paddingStart="5dp"
-                        android:src="@mipmap/ic_launcher_round"
+                        android:src="@drawable/ic_head_logo"
                         android:id="@+id/mainlogo"/>
 
                     <TextView
@@ -67,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?attr/colorOnPrimary">
+        android:background="@color/primaryColor">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"

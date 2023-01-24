@@ -75,7 +75,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
 
 //        Item Declaration
 
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(5), true));
         adapter = new RecentAdapter(getContext(), animeList, this);
         Log.d("C5", "anime list is model " + animeList.size());
         recyclerView.setItemAnimator(new DefaultItemAnimator());

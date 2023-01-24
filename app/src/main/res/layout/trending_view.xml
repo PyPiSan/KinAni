@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     tools:context=".view.TrendingView"
     android:tag="trending_fragment"
+    android:background="@color/primaryColor"
     >
 
     <androidx.recyclerview.widget.RecyclerView

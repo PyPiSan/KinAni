@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+       <KeyFrameSet>
+           <KeyAttribute
+               motion:motionTarget="@+id/closeButton"
+               motion:framePosition="90"
+               android:alpha="1" />
+           <KeyAttribute
+               motion:motionTarget="@+id/playButton"
+               motion:framePosition="90"
+               android:alpha="0.5" />
+       </KeyFrameSet>
+        <OnSwipe
+            motion:touchAnchorId="@+id/video_view"
+            motion:dragDirection="dragDown"
+            motion:touchAnchorSide="bottom" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/animeTitle"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0"
+            motion:layout_constraintTop_toBottomOf="@id/firstConstrain"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="50dp" />
+        <Constraint
+            android:id="@+id/firstConstrain"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            motion:layout_constraintVertical_bias="1.0"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/video_view"
+            motion:layout_constraintEnd_toEndOf="@id/firstConstrain"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="@id/firstConstrain"
+            motion:layout_constraintTop_toTopOf="@id/firstConstrain"
+            motion:layout_constraintStart_toStartOf="@id/firstConstrain"
+            motion:layout_constraintHorizontal_bias="0.0" />
+        <Constraint
+            android:id="@+id/closeButton"
+            motion:layout_constraintEnd_toEndOf="@id/firstConstrain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/firstConstrain"
+            android:alpha="1"
+            motion:layout_constraintTop_toTopOf="@id/firstConstrain" />
+        <Constraint
+            android:id="@+id/playButton"
+            motion:layout_constraintEnd_toStartOf="@id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/closeButton"
+            android:layout_marginEnd="24dp"
+            android:alpha="1"
+            motion:layout_constraintTop_toTopOf="@id/closeButton" />
+        <Constraint
+            android:id="@+id/scroll"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0"
+            motion:layout_constraintTop_toBottomOf="@+id/animeTitle"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintStart_toStartOf="parent" />
+
+    </ConstraintSet>
+</MotionScene>

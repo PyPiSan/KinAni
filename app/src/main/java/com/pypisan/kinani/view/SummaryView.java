@@ -77,8 +77,8 @@ public class SummaryView extends Fragment {
                 R.drawable.bg5, R.drawable.bg6, R.drawable.bg7, R.drawable.bg8,
                 R.drawable.bg9, R.drawable.bg10};
 
-        likedButton = view.findViewById(R.id.likeButton);
-        dislikeButton = view.findViewById(R.id.dislikeButton);
+//        likedButton = view.findViewById(R.id.likeButton);
+//        dislikeButton = view.findViewById(R.id.dislikeButton);
         animeManager = new AnimeManager(getContext());
 
 //        for shimmer effect
@@ -91,23 +91,23 @@ public class SummaryView extends Fragment {
         getAnimeSummary(view);
 
 //        Add to liked button click listener
-        animeManager.open();
-        likedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animeManager.insert(jtitle, animetitle, animeLink);
-                Toast.makeText(getContext(), "Anime added to Liked", Toast.LENGTH_LONG).show();
-                animeManager.close();
-            }
-        });
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animeManager.delete(jtitle);
-                Toast.makeText(getContext(), "Anime Removed", Toast.LENGTH_LONG).show();
-                animeManager.close();
-            }
-        });
+//        animeManager.open();
+//        likedButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                animeManager.insert(jtitle, animetitle, animeLink);
+//                Toast.makeText(getContext(), "Anime added to Liked", Toast.LENGTH_LONG).show();
+//                animeManager.close();
+//            }
+//        });
+//        dislikeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                animeManager.delete(jtitle);
+//                Toast.makeText(getContext(), "Anime Removed", Toast.LENGTH_LONG).show();
+//                animeManager.close();
+//            }
+//        });
     }
 
     @Override
@@ -153,9 +153,12 @@ public class SummaryView extends Fragment {
                     animetitle = animeDetail.getTitle();
                     jtitle = animeDetail.getJtitle();
                     animeLink = animeDetail.getImage_link();
-                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
+//                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
 //                    Setting Random header image
-                    headImage.setImageResource(bg[randNum]);
+//                    headImage.setImageResource(bg[randNum]);
+                    Glide.with(getContext())
+                            .load(animeLink)
+                            .into(headImage);
 
 //                    stopping shimmer effect
                     containerImg.stopShimmer();

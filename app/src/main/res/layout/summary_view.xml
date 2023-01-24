@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:tag="summary_view"
     tools:context=".view.SummaryView"
+    android:background="@color/primaryColor"
     android:paddingBottom="25dp">
 
 
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitXY"/>
 
     <RelativeLayout
         android:id="@+id/firstShimmerRelative"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="120dp"
         >
 
@@ -82,33 +83,33 @@
 <!--        app:layout_constraintStart_toEndOf="@id/animePic2"-->
 <!--        app:layout_constraintTop_toBottomOf="@id/titleName" />-->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="45dp"
-        android:background="@drawable/round_layout"
-        app:layout_constraintTop_toBottomOf="@id/titleName"
-        app:layout_constraintStart_toEndOf="@id/firstShimmerRelative"
-        app:layout_constraintEnd_toEndOf="parent">
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/likeButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_thumb_up_24"/>
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="2dp"
-            android:layout_height="30dp"
-            />
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/dislikeButton"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_baseline_thumb_down_off_alt_24"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginEnd="45dp"-->
+<!--        android:background="@drawable/round_layout"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/titleName"-->
+<!--        app:layout_constraintStart_toEndOf="@id/firstShimmerRelative"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+<!--        <androidx.appcompat.widget.AppCompatImageButton-->
+<!--            android:id="@+id/likeButton"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/ic_thumb_up_24"/>-->
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:layout_width="2dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            />-->
+<!--        <androidx.appcompat.widget.AppCompatImageButton-->
+<!--            android:id="@+id/dislikeButton"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:src="@drawable/ic_baseline_thumb_down_off_alt_24"/>-->
+<!--    </LinearLayout>-->
 
     <TextView
         android:id="@+id/summary"

@@ -89,24 +89,24 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         getEpisodeLink();
 
 //        for casting video
-        mCastContext = CastContext.getSharedInstance(this);
-        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
+//        mCastContext = CastContext.getSharedInstance(this);
+//        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
+//        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
 
-        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
-            mMediaRouteButton.setVisibility(View.VISIBLE);
-
-        mCastContext.addCastStateListener(new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                if (state == CastState.NO_DEVICES_AVAILABLE)
-                    mMediaRouteButton.setVisibility(View.GONE);
-                else {
-                    if (mMediaRouteButton.getVisibility() == View.GONE)
-                        mMediaRouteButton.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+//        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
+//            mMediaRouteButton.setVisibility(View.VISIBLE);
+//
+//        mCastContext.addCastStateListener(new CastStateListener() {
+//            @Override
+//            public void onCastStateChanged(int state) {
+//                if (state == CastState.NO_DEVICES_AVAILABLE)
+//                    mMediaRouteButton.setVisibility(View.GONE);
+//                else {
+//                    if (mMediaRouteButton.getVisibility() == View.GONE)
+//                        mMediaRouteButton.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
     }
 
     @Override

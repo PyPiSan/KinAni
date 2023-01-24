@@ -77,7 +77,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 
 //        Item Declaration
 
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(5), true));
         Log.d("hello", "anime list is " + animeList.size());
         adapter = new RecentAdapter(getContext(), animeList, this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

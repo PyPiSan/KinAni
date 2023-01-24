@@ -25,7 +25,7 @@
                 android:layout_height="@dimen/image_height"
                 android:layout_weight="1"
                 android:tag="image_tag"
-                android:scaleType="centerCrop"/>
+                android:scaleType="fitXY"/>
 
             <TextView
                 android:id="@+id/animeInfo"

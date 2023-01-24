@@ -23,7 +23,7 @@
                 android:layout_height="160dp"
                 android:layout_weight="1"
                 android:tag="image_tag"
-                android:scaleType="centerCrop"/>
+                android:scaleType="fitXY"/>
 
             <LinearLayout
                 android:layout_width="220dp"

@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic"
-        android:scaleType="fitXY"/>
+        android:scaleType="matrix"/>
 
     <RelativeLayout
         android:id="@+id/firstShimmerRelative"
@@ -51,7 +51,7 @@
         android:layout_height="200dp"
         android:visibility="gone"
         tools:src="@tools:sample/avatars"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitXY"/>
 
     </RelativeLayout>
 

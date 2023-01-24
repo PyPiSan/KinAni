@@ -72,7 +72,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 //      initialization recycler
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setHasFixedSize(true);
 
 //        Item Declaration

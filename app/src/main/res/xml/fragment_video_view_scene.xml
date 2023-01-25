@@ -17,10 +17,10 @@
                motion:framePosition="90"
                android:alpha="0.5" />
        </KeyFrameSet>
-        <OnSwipe
-            motion:touchAnchorId="@+id/video_view"
-            motion:dragDirection="dragDown"
-            motion:touchAnchorSide="bottom" />
+<!--        <OnSwipe-->
+<!--            motion:touchAnchorId="@+id/video_view"-->
+<!--            motion:dragDirection="dragDown"-->
+<!--            motion:touchAnchorSide="bottom" />-->
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

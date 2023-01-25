@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="500">
+       <KeyFrameSet>
+       </KeyFrameSet>
+<!--        <OnClick motion:targetId="@+id/animePic2" />-->
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@+id/minimize"
+        motion:constraintSetStart="@id/end"
+        motion:duration="1000">
+        <KeyFrameSet>
+        </KeyFrameSet>
+<!--        <OnClick motion:targetId="@+id/constraintLayout" />-->
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            motion:layout_constraintBottom_toBottomOf="@id/constraintLayout"
+            motion:layout_constraintTop_toTopOf="@id/constraintLayout"
+            motion:layout_constraintStart_toStartOf="@id/constraintLayout"
+            android:id="@+id/imageView2"
+            motion:layout_constraintVertical_bias="0.0" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/constraintLayout"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/animePic"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/firstShimmerRelative"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone" />
+        <Constraint
+            android:id="@+id/titleName"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toEndOf="@+id/firstShimmerRelative"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0"
+            motion:layout_constraintTop_toBottomOf="@+id/animePic"
+            android:layout_marginStart="30dp"
+            motion:layout_constraintHorizontal_bias="0.0" />
+        <Constraint
+            android:id="@+id/summary"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            motion:layout_constraintTop_toBottomOf="@+id/firstShimmerRelative"
+            android:layout_marginStart="16dp"
+            android:alpha="0"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/thirdShimmerRelative"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            motion:layout_constraintBottom_toTopOf="@id/dropDown"
+            android:layout_marginEnd="16dp"
+            android:visibility="gone"
+            motion:layout_constraintTop_toBottomOf="@id/summary"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/dropDown"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:alpha="0"
+            motion:layout_constraintTop_toBottomOf="@+id/thirdShimmerRelative"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/minimize">
+<!--        <Constraint-->
+<!--            android:id="@+id/videoConstrain"-->
+<!--            motion:layout_constraintEnd_toEndOf="@+id/constraintLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            motion:layout_constraintVertical_bias="1.0"-->
+<!--            motion:layout_constraintTop_toTopOf="@+id/constraintLayout"-->
+<!--            motion:layout_constraintStart_toStartOf="@+id/constraintLayout"-->
+<!--            motion:layout_constraintHorizontal_bias="0.0"-->
+<!--            android:layout_marginTop="700dp" />-->
+        <Constraint
+            android:id="@+id/constraintLayout"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            motion:layout_constraintVertical_bias="1.0"
+            android:layout_marginTop="650dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/imageView2"
+            motion:layout_constraintEnd_toEndOf="@id/constraintLayout"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            motion:layout_constraintBottom_toBottomOf="@id/constraintLayout"
+            motion:layout_constraintTop_toTopOf="@id/constraintLayout"
+            motion:layout_constraintStart_toStartOf="@id/constraintLayout" />
+        <Constraint
+            android:id="@+id/animeTitle"
+            motion:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:alpha="1"
+            android:layout_marginEnd="10dp"
+            motion:layout_constraintTop_toBottomOf="@id/imageView2"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="@+id/constraintLayout"
+            android:layout_marginTop="50dp" />
+
+        <Constraint
+            android:id="@+id/animePic"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:alpha="1"
+            motion:layout_constraintHorizontal_bias="0.0"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/animePic2"
+            android:layout_width="160dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="120dp"
+            android:visibility="visible" />
+        <Constraint
+            android:id="@+id/titleName"
+            motion:layout_constraintStart_toEndOf="@+id/animePic2"
+            android:layout_width="0dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:alpha="1"
+            android:singleLine="false"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            motion:layout_constraintTop_toBottomOf="@+id/animePic"
+            android:layout_marginStart="5dp"
+            motion:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="20dp" />
+        <Constraint
+            android:id="@+id/summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/animePic2"
+            android:layout_marginStart="16dp"
+            android:alpha="1"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="26dp" />
+        <Constraint
+            android:id="@+id/summaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/dropDown"
+            android:layout_marginEnd="16dp"
+            android:visibility="visible"
+            android:textSize="20sp"
+            motion:layout_constraintTop_toBottomOf="@id/summary"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/dropDown"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:alpha="1"
+            motion:layout_constraintTop_toBottomOf="@+id/summaryText"
+            android:layout_marginStart="16dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+            android:layout_marginTop="20dp" />
+    </ConstraintSet>
+
+</MotionScene>

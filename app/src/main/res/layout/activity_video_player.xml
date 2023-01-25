@@ -6,47 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
+    android:keepScreenOn="true"
     app:layoutDescription="@xml/fragment_video_view_scene"
     tools:context=".play.VideoPlayer">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/firstConstrain"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/firstConstrain"
-        app:layout_constraintEnd_toEndOf="@id/firstConstrain"
-        app:layout_constraintStart_toStartOf="@id/firstConstrain"
-        app:layout_constraintTop_toTopOf="@id/firstConstrain" />
-
-    <ImageView
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        android:src="@drawable/ic_close"
-        app:layout_constraintBottom_toBottomOf="@id/firstConstrain"
-        app:layout_constraintEnd_toEndOf="@id/firstConstrain"
-        app:layout_constraintTop_toTopOf="@id/firstConstrain" />
-
-    <ImageView
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:alpha="0"
-        android:src="@drawable/ic_play_circle"
-        app:layout_constraintBottom_toBottomOf="@id/closeButton"
-        app:layout_constraintEnd_toStartOf="@id/closeButton"
-        app:layout_constraintTop_toTopOf="@id/closeButton" />
+        android:layout_height="250dp"
+        app:controller_layout_id="@layout/exo_player_video_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/animeTitle"
@@ -62,7 +34,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstConstrain" />
+        app:layout_constraintTop_toBottomOf="@id/video_view" />
 
     <ScrollView
         android:id="@+id/scroll"

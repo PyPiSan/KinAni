@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.mediarouter.app.MediaRouteButton;
+import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +57,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     Uri hlsUri;
     CastContext mCastContext;
     MediaRouteButton mMediaRouteButton;
+    ImageButton fullscreen, nextButton;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,14 +77,23 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         animeTitleView = findViewById(R.id.animeTitle);
         summaryTextView = findViewById(R.id.summaryText);
         playerView = findViewById(R.id.video_view);
+        fullscreen = findViewById(R.id.fullScreen);
 
-        playerView.setShowNextButton(false);
-        playerView.setShowPreviousButton(false);
+
+//        playerView.setShowNextButton(false);
+//        playerView.setShowPreviousButton(false);
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
-        isFullScreen = checkOrientation();
-        playerView.setFullscreenButtonClickListener(new StyledPlayerView.FullscreenButtonClickListener() {
+//        playerView.setFullscreenButtonClickListener(new StyledPlayerView.FullscreenButtonClickListener() {
+//            @Override
+//            public void onFullscreenButtonClick(boolean isFullScreen) {
+//                Toast.makeText(getApplicationContext(), "fullscreen clicked", Toast.LENGTH_SHORT).show();
+//                changeOrientation(isFullScreen);
+//            }
+//        });
+        fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFullscreenButtonClick(boolean isFullScreen) {
+            public void onClick(View v) {
+                isFullScreen = checkOrientation();
                 Toast.makeText(getApplicationContext(), "fullscreen clicked", Toast.LENGTH_SHORT).show();
                 changeOrientation(isFullScreen);
             }
@@ -89,24 +103,24 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         getEpisodeLink();
 
 //        for casting video
-//        mCastContext = CastContext.getSharedInstance(this);
-//        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
-//        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
+        mCastContext = CastContext.getSharedInstance(this);
+        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.cast);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
 
-//        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
-//            mMediaRouteButton.setVisibility(View.VISIBLE);
-//
-//        mCastContext.addCastStateListener(new CastStateListener() {
-//            @Override
-//            public void onCastStateChanged(int state) {
-//                if (state == CastState.NO_DEVICES_AVAILABLE)
-//                    mMediaRouteButton.setVisibility(View.GONE);
-//                else {
-//                    if (mMediaRouteButton.getVisibility() == View.GONE)
-//                        mMediaRouteButton.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
+        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
+            mMediaRouteButton.setVisibility(View.VISIBLE);
+
+        mCastContext.addCastStateListener(new CastStateListener() {
+            @Override
+            public void onCastStateChanged(int state) {
+                if (state == CastState.NO_DEVICES_AVAILABLE)
+                    mMediaRouteButton.setVisibility(View.GONE);
+                else {
+                    if (mMediaRouteButton.getVisibility() == View.GONE)
+                        mMediaRouteButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override

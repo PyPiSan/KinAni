@@ -33,7 +33,7 @@
                 android:id="@+id/animeName"
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:padding="2dp"
                 android:maxLines="2"
                 android:textColor="@color/white" />

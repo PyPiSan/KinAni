@@ -49,7 +49,7 @@ public class HomeViewAdapter extends RecyclerView.Adapter<HomeViewAdapter.HomeVi
         }
         String animeTitle = dataSet.get(position).getTitle();
         String animeImage = dataSet.get(position).getImage();
-        String animeJtitle = dataSet.get(position).getJtitle();
+//        String animeJtitle = dataSet.get(position).getJtitle();
 
         Glide.with(context)
                 .load(animeImage)
@@ -59,7 +59,7 @@ public class HomeViewAdapter extends RecyclerView.Adapter<HomeViewAdapter.HomeVi
 
         holder.cardView.setOnClickListener(view -> {
 //            Toast.makeText(view.getContext(), "Card is " + animeJtitle, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(animeJtitle);
+            listener.onItemClicked(animeTitle);
         });
     }
 

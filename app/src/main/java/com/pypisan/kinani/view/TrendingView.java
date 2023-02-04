@@ -100,7 +100,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override
         public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-            Log.d("Hey1", "Response code is : " + response.code());
+//            Log.d("Hey1", "Response code is : " + response.code());
             AnimeRecentModel resource = response.body();
             boolean status = resource.getSuccess();
             if (status) {
@@ -109,7 +109,8 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 //                    int i = 0;
                 for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
-                    model = new AnimeModel(animes.getImageLink(), animes.getJtitle(), animes.getTitle());
+                    model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
+                            animes.getTitle(), animes.getReleased());
                     animeList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -118,13 +119,13 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
                 }
             } else {
 //                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
-                Log.d("Hey2", "Response code is : " + response.code());
+//                Log.d("Hey2", "Response code is : " + response.code());
             }
         }
 
         @Override
         public void onFailure(Call<AnimeRecentModel> call, Throwable t) {
-            Log.d("Hey3", "Response code is : 400" + t.getMessage());
+//            Log.d("Hey3", "Response code is : 400" + t.getMessage());
         }
     });
 }
@@ -135,9 +136,9 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     }
 
     @Override
-    public void onItemClicked(String jTitle) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
-        bundle.putString("jTitle", jTitle);
+        bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

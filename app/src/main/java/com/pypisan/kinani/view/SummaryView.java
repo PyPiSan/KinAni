@@ -51,11 +51,10 @@ public class SummaryView extends Fragment {
     ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
-    private String jtitle;
     private String animetitle;
     private String animeLink;
     private int[] bg;
-    private ShimmerFrameLayout containerImg, containerSummaryText;
+    private ShimmerFrameLayout containerImg, containerSummaryText, conatinerImgHead;
 
     public SummaryView() {
         // Required empty public constructor
@@ -82,8 +81,11 @@ public class SummaryView extends Fragment {
         animeManager = new AnimeManager(getContext());
 
 //        for shimmer effect
-        containerImg = view.findViewById(R.id.shimmer_view_animePic);
+        conatinerImgHead = view.findViewById(R.id.shimmer_view_animePic);
+        containerImg = view.findViewById(R.id.shimmer_view_animePic2);
         containerSummaryText = view.findViewById(R.id.shimmer_view_summary_text);
+
+        conatinerImgHead.startShimmer();
         containerImg.startShimmer();
         containerSummaryText.startShimmer();
 
@@ -131,10 +133,11 @@ public class SummaryView extends Fragment {
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        String jTitle = getArguments().getString("jTitle");
-        Log.d("E0", "jTitle is : " + jTitle);
+        String animeName = getArguments().getString("title");
+//        Log.d("E0", "jTitle is : " + animeName);
+        Toast.makeText(getContext(), animeName, Toast.LENGTH_LONG).show();
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
-        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(new Jtitle(jTitle));
+        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(new Jtitle(animeName));
         call.enqueue(new Callback<AnimeEpisodeListModel>() {
             @Override
             public void onResponse(Call<AnimeEpisodeListModel> call, Response<AnimeEpisodeListModel> response) {
@@ -151,16 +154,19 @@ public class SummaryView extends Fragment {
 //                    Log.d("E2", "Response is " + animeDetail.getTitle());
 
                     animetitle = animeDetail.getTitle();
-                    jtitle = animeDetail.getJtitle();
-                    animeLink = animeDetail.getImage_link();
+//                    jtitle = animeDetail.getAnimeDetailLink();
+                    animeLink = animeDetail.getImageLink();
 //                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
 //                    Setting Random header image
 //                    headImage.setImageResource(bg[randNum]);
+                    conatinerImgHead.stopShimmer();
                     Glide.with(getContext())
                             .load(animeLink)
                             .into(headImage);
 
-//                    stopping shimmer effect
+//                  stopping shimmer effect
+                    conatinerImgHead.setVisibility(View.GONE);
+                    headImage.setVisibility(View.VISIBLE);
                     containerImg.stopShimmer();
 //                    Adding data to view
                     Glide.with(getContext())
@@ -178,7 +184,8 @@ public class SummaryView extends Fragment {
 
 //                    Creating drop down for episodes
 
-                    int episode_num = animeDetail.getEpisode_num();
+                    String episode_nums = animeDetail.getEpisode_num();
+                    int episode_num = 5;
                     Log.d("E10", "episode_number is " + episode_num);
                     String[] episodes = new String[episode_num];
                     for (int i = 0; i < episode_num; i++) {
@@ -198,7 +205,7 @@ public class SummaryView extends Fragment {
                             i.putExtra("episode_num", String.valueOf(position + 1));
                             i.putExtra("title", animetitle);
                             i.putExtra("summary", animeDetail.getSummary());
-                            i.putExtra("jTitle", jtitle);
+//                            i.putExtra("jTitle", jtitle);
                             i.putExtra("server_name", "server1");
                             startActivity(i);
                         }
@@ -208,7 +215,8 @@ public class SummaryView extends Fragment {
                 } else {
                     headImage.setImageResource(0);
                     titleImage.setImageResource(0);
-                    @SuppressLint("UseCompatLoadingForDrawables") Drawable draw = getContext().getDrawable(R.drawable.images);
+                    @SuppressLint("UseCompatLoadingForDrawables") Drawable draw = getContext().
+                            getDrawable(R.drawable.images);
                     headImage.setImageDrawable(draw);
                     titleImage.setImageDrawable(draw);
                     title.setText("No Anime to Show For Now");

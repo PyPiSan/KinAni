@@ -41,6 +41,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ShimmerFrameLayout container;
+    private String pageNumString = "";
 
 
     public RecentView() {
@@ -74,7 +75,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
 // Data initialization
 
-        insertDataToCard();
+        insertDataToCard(pageNumString);
 
 //      initialization recycler
 
@@ -90,9 +91,12 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
         adapter = new RecentAdapter(getContext(), animeListInc, this);
     }
 
-    private void insertDataToCard() {
+    private void insertDataToCard(String pageNum) {
 //        Add the cards data and display them
 //        fetching data
+        if (pageNum.equals("")){
+            pageNum="1";
+        }
         animeList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
@@ -100,7 +104,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                 .build();
 
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecent.getAnime();
+        Call<AnimeRecentModel> call = animeRecent.newAnime(pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -114,7 +118,8 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 //                    int i = 0;
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
-                        model = new AnimeModel(animes.getImageLink(), animes.getJtitle(), animes.getTitle());
+                        model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
+                                animes.getTitle(), animes.getReleased());
                         animeList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -160,9 +165,9 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     }
 
     @Override
-    public void onItemClicked(String jTitle) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
-        bundle.putString("jTitle", jTitle);
+        bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

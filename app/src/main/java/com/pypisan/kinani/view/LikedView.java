@@ -95,12 +95,12 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
             AnimeModel model;
             Log.d("C1", "anime list is " + cursor.getCount());
             int i = 0;
-            while (cursor.moveToNext()) {
-                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
-                Log.d("C3", "cursor at " + i + cursor.getString(1));
-                animeList.add(model);
-                Log.d("C4", "anime list is " + animeList.size());
-            }
+//            while (cursor.moveToNext()) {
+//                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
+//                Log.d("C3", "cursor at " + i + cursor.getString(1));
+//                animeList.add(model);
+//                Log.d("C4", "anime list is " + animeList.size());
+//            }
         }
     }
 

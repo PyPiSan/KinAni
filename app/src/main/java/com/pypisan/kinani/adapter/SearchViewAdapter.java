@@ -51,7 +51,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
         }
         String animeTitle = dataSet.get(position).getTitle();
         String animeImage = dataSet.get(position).getImage();
-        animeJtitle = dataSet.get(position).getJtitle();
+//        animeJtitle = dataSet.get(position).getJtitle();
 
         Glide.with(context)
                 .load(animeImage)
@@ -61,7 +61,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
 
         holder.animeView.setOnClickListener(view -> {
 //            Toast.makeText(view.getContext(), "Card is " + animeJtitle, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(animeJtitle);
+            listener.onItemClicked(animeTitle);
         });
     }
 

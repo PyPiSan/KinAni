@@ -96,7 +96,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      1st initialization recycler recent
         recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
-        recyclerView_recent.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_recent.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView_recent.setHasFixedSize(true);
 
         //        Setting Data
@@ -110,7 +111,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //        2nd recycler view trending
         recyclerView_trending = view.findViewById(R.id.home_recycler_view_trending);
-        recyclerView_trending.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_trending.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView_trending.setHasFixedSize(true);
 
 //        Setting Data
@@ -118,7 +120,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //        3rd recycler view recommends
         recyclerView_recommend = view.findViewById(R.id.home_recycler_view_recommends);
-        recyclerView_recommend.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_recommend.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView_recommend.setHasFixedSize(true);
 
 //        Setting Data
@@ -141,31 +144,31 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         animeManager = new AnimeManager(getContext());
         animeManager.open();
         Cursor cursor = animeManager.readAllDataRecent();
-        if (cursor.getCount() == 0) {
-//            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
-        } else {
-            AnimeModel model;
-//            Log.d("H1", "anime list is " + cursor.getCount());
-            int i = 1;
-            while (cursor.moveToNext()) {
-                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
-//                Log.d("H3", "cursor at " + i + cursor.getString(1));
-                animeNum.add(model);
-//                Log.d("H4", "anime list is " + animeNum.size());
-                i++;
-                if (i == 10) {
-                    break;
-                }
-            }
-            animeManager.close();
-        }
+//        if (cursor.getCount() == 0) {
+////            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
+//        } else {
+//            AnimeModel model;
+////            Log.d("H1", "anime list is " + cursor.getCount());
+//            int i = 1;
+//            while (cursor.moveToNext()) {
+//                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
+////                Log.d("H3", "cursor at " + i + cursor.getString(1));
+//                animeNum.add(model);
+////                Log.d("H4", "anime list is " + animeNum.size());
+//                i++;
+//                if (i == 10) {
+//                    break;
+//                }
+//            }
+//            animeManager.close();
+//        }
     }
 
 
     @Override
-    public void onItemClicked(String jTitle) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
-        bundle.putString("jTitle", jTitle);
+        bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -210,7 +213,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     AnimeModel model = new AnimeModel();
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
-                        model = new AnimeModel(animes.getImageLink(), animes.getJtitle(), animes.getTitle());
+                        model = new AnimeModel(animes.getImageLink(),
+                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased());
                         animeTrendingList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -270,7 +274,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     AnimeModel modelRecommend = new AnimeModel();
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
-                        modelRecommend = new AnimeModel(animes.getImageLink(), animes.getJtitle(), animes.getTitle());
+                        modelRecommend = new AnimeModel(animes.getImageLink(),
+                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased());
                         animeRecommendList.add(modelRecommend);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;

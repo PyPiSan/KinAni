@@ -4,6 +4,7 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.mediarouter.app.MediaRouteButton;
 import androidx.viewpager.widget.ViewPager;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
@@ -74,7 +76,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         jTitle = videoIntent.getStringExtra("jTitle");
 
 
-        animeTitleView = findViewById(R.id.animeTitle);
+        animeTitleView = findViewById(R.id.animeTitleText);
         summaryTextView = findViewById(R.id.summaryText);
         playerView = findViewById(R.id.video_view);
         fullscreen = findViewById(R.id.fullScreen);
@@ -121,6 +123,20 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 }
             }
         });
+
+        final CastPlayer castPlayer = new CastPlayer(mCastContext);
+        castPlayer.setSessionAvailabilityListener(new SessionAvailabilityListener() {
+            @Override
+            public void onCastSessionAvailable() {
+
+            }
+
+            @Override
+            public void onCastSessionUnavailable() {
+
+            }
+        });
+
     }
 
     @Override
@@ -156,7 +172,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
-        Log.d("V1", "status is " + jTitle + episode_num);
+//        Log.d("V1", "status is " + jTitle + episode_num);
         Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(jTitle, episode_num, server_name));
         call.enqueue(new Callback<EpisodeVideoModel>() {
             @Override
@@ -209,6 +225,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         // Prepare the player.
         player.prepare();
         playerView.setPlayer(player);
+        int i =1;
+        if (i == 0){
+
+        }
 
     }
 
@@ -218,8 +238,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+//                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -228,7 +248,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }else{
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().clearFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            getWindow().clearFlags(View.KEEP_SCREEN_ON);
+//            getWindow().clearFlags(View.KEEP_SCREEN_ON);
 
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -249,9 +269,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
     @Override
     public void onCastSessionAvailable() {
+
     }
 
     @Override
     public void onCastSessionUnavailable() {
+
     }
 }

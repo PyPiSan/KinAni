@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,28 +7,26 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
     android:keepScreenOn="true"
-    app:layoutDescription="@xml/fragment_video_view_scene"
     tools:context=".play.VideoPlayer">
 
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="253dp"
         app:controller_layout_id="@layout/exo_player_video_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/animeTitle"
+        android:id="@+id/animeTitleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         android:singleLine="false"
-        android:text="Hey How Are You"
         android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -40,24 +38,20 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="465dp"
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/animeTitle">
+        app:layout_constraintTop_toBottomOf="@+id/animeTitleText">
 
         <TextView
             android:id="@+id/summaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="25dp"
             android:layout_marginEnd="10dp"
             android:paddingBottom="35dp"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/animeTitle" />
+            android:textSize="20sp" />
     </ScrollView>
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

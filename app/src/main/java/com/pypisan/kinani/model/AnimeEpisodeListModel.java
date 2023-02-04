@@ -2,6 +2,9 @@ package com.pypisan.kinani.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AnimeEpisodeListModel {
     @SerializedName("data")
     private final AnimeEpisodeListModel.datum data = null;
@@ -18,24 +21,32 @@ public class AnimeEpisodeListModel {
 
     public class datum {
 
-        @SerializedName("image_link")
-        private String image_link;
+        @SerializedName("image_url")
+        private String imageUrl;
 
-        @SerializedName("jtitle")
-        private String jtitle;
-        @SerializedName("title")
+        @SerializedName("anime_detail_link")
+        private String animeDetailLink;
+        @SerializedName("anime_title")
         private String title;
         @SerializedName("summary")
         private String summary;
-        @SerializedName("episode_num")
-        private int episode_num;
+        @SerializedName("episodes")
+        private String episode_num;
+        @SerializedName("status")
+        private String status;
+        @SerializedName("released")
+        private String released;
+        @SerializedName("anime_id")
+        private String animeId;
+        @SerializedName("genres")
+        private final List<String> genres = null;
 
-        public String getImage_link() {
-            return image_link;
+        public String getImageLink() {
+            return imageUrl;
         }
 
-        public String getJtitle() {
-            return jtitle;
+        public String getAnimeDetailLink() {
+            return animeDetailLink;
         }
 
         public String getTitle() {
@@ -46,8 +57,14 @@ public class AnimeEpisodeListModel {
             return summary;
         }
 
-        public int getEpisode_num() {
+        public String getEpisode_num() {
             return episode_num;
         }
+
+        public String getStatus() { return status; }
+
+        public String getReleased() { return released; }
+
+        public String getAnimeId() { return animeId; }
     }
 }

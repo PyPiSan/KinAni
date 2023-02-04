@@ -40,7 +40,8 @@ public class ApiRequest {
                     animeManager.open();
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + animes.getTitle());
-                        animeManager.insertRecent(animes.getJtitle(),animes.getTitle(), animes.getImageLink());
+                        animeManager.insertRecent(animes.getAnimeDetailLink(),
+                                animes.getTitle(), animes.getImageLink());
                     }
                     animeManager.close();
                 } else {

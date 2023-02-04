@@ -57,5 +57,11 @@ public interface RequestModule {
     @GET("schedule")
     Call<RecentlyAiredModel> getAnimeSchedule();
 
+    @Headers({
+            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
+    })
+    @GET("new/")
+    Call<AnimeRecentModel> newAnime(@Query("page") String num);
+
 }
 

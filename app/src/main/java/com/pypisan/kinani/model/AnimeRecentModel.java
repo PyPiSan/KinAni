@@ -21,24 +21,28 @@ public class AnimeRecentModel {
 
     public class datum {
 
-        @SerializedName("image_link")
+        @SerializedName("image_url")
         private String imageLink;
-        @SerializedName("jtitle")
-        private String jtitle;
-        @SerializedName("title")
+        @SerializedName("anime_detail_link")
+        private String animeDetailLink;
+        @SerializedName("anime_title")
         private String title;
+        @SerializedName("released")
+        private String released;
 
         public String getImageLink() {
             return imageLink;
         }
 
-        public String getJtitle() {
-            return jtitle;
+        public String getAnimeDetailLink() {
+            return animeDetailLink;
         }
 
         public String getTitle() {
             return title;
         }
+
+        public String getReleased(){ return released;}
 
     }
 

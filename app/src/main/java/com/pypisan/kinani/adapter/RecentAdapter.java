@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -54,20 +55,18 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 
         String animeTitle = dataSet.get(position).getTitle();
         String animeImage = dataSet.get(position).getImage();
-        String animeJtitle = dataSet.get(position).getJtitle();
+        String animeDetailLink = dataSet.get(position).getanimeDetailLink();
+        String released = dataSet.get(position).getReleased();
 
         Glide.with(context)
                 .load(animeImage)
                 .into(animeView);
 
-//        animeView.setImageResource(0);
-//        @SuppressLint("UseCompatLoadingForDrawables") Drawable draw = context.getDrawable(R.drawable.images);
-//        animeView.setImageDrawable(draw);
         animeName.setText(animeTitle);
 
         holder.cardView.setOnClickListener(view -> {
-//            Toast.makeText(view.getContext(), "Card is " + animeJtitle, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(animeJtitle);
+//            Toast.makeText(view.getContext(), "Card is " + animeTitle, Toast.LENGTH_SHORT).show();
+            listener.onItemClicked(animeTitle);
         });
     }
 
@@ -77,7 +76,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
     }
 
     public interface SelectListener {
-        void onItemClicked(String jTitle);
+        void onItemClicked(String title);
     }
 
     public class RecentViewHolder extends RecyclerView.ViewHolder {

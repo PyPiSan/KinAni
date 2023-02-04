@@ -102,9 +102,11 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 //                    int i = 0;
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
-                        model = new AnimeModel(animes.getImageLink(), animes.getJtitle(), animes.getTitle());
+                        model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
+                                animes.getTitle(), animes.getReleased());
                         animeSearchList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
+//                        i +=1;
 //                        i +=1;
                         adapter.notifyDataSetChanged();
 

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.RecentView"
-    android:tag="recent_fragment"
+    tools:context=".view.MoviesView"
+    android:tag="movies_fragment"
     android:background="@color/primaryColor"
     android:layout_marginStart="5dp">
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_layout"
+        android:id="@+id/shimmer_movies_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:shimmer_direction="left_to_right">
@@ -23,7 +23,7 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/movie_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"

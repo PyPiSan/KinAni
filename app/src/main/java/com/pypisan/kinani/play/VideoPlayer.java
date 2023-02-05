@@ -1,6 +1,7 @@
 package com.pypisan.kinani.play;
 
 import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_ALWAYS;
+import static com.google.android.exoplayer2.util.Util.getUserAgent;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,10 +28,24 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
+import com.google.android.exoplayer2.source.hls.DefaultHlsDataSourceFactory;
+import com.google.android.exoplayer2.source.hls.DefaultHlsExtractorFactory;
+import com.google.android.exoplayer2.source.hls.HlsDataSourceFactory;
+import com.google.android.exoplayer2.source.hls.HlsExtractorFactory;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
@@ -40,6 +55,14 @@ import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.WatchRequest;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,13 +76,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     String videoLink;
     boolean isFullScreen = false;
     ExoPlayer player;
-    String jTitle;
     String episode_num;
     String server_name = "server2";
     Uri hlsUri;
     CastContext mCastContext;
     MediaRouteButton mMediaRouteButton;
     ImageButton fullscreen, nextButton;
+    private String title;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -70,10 +93,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        for getting video summary params
         Intent videoIntent = getIntent();
 
-        String title = videoIntent.getStringExtra("title");
+        title = videoIntent.getStringExtra("title");
         String summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
-        jTitle = videoIntent.getStringExtra("jTitle");
 
 
         animeTitleView = findViewById(R.id.animeTitleText);
@@ -173,7 +195,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
 //        Log.d("V1", "status is " + jTitle + episode_num);
-        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(jTitle, episode_num, server_name));
+        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(title, episode_num, server_name));
         call.enqueue(new Callback<EpisodeVideoModel>() {
             @Override
             public void onResponse(Call<EpisodeVideoModel> call, Response<EpisodeVideoModel> response) {
@@ -185,7 +207,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     flag = status;
                 }
                 if (flag) {
-                    videoLink = resource.getValue();
+                    videoLink = resource.getValue().getQuality3();
                 }
                 playerInit();
             }
@@ -203,32 +225,39 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void playerInit() {
 
         if (videoLink == null || videoLink.equals("")) {
-            hlsUri = Uri.parse("https://s15.openstream.io/hls/qvsbdoqwnhblgwsztqk2ap4elgudihn2ropil7rbtdzkp3mqx4sk54po4anq/master.m3u8");
+            hlsUri = Uri.parse("https://wwwx19.gofcdn.com/videos/hls/kNosgwnkyEq2EseMX1Gv6A/1675591307/25378/027e9529af2b06fe7b4f47e507a787eb/ep.108.1662460261.1080.m3u8");
             Toast.makeText(getApplicationContext(), "Video Not found", Toast.LENGTH_LONG).show();
         } else {
             hlsUri = Uri.parse(videoLink);
             Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
         }
 
-        DataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
-        // Create a HLS media source pointing to a playlist uri.
-        HlsMediaSource hlsMediaSource =
-                new HlsMediaSource.Factory(dataSourceFactory)
-                        .createMediaSource(MediaItem.fromUri(hlsUri));
+        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
+                | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
+        DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
 
-//        MediaItem hlsMediaSource = MediaItem.fromUri(hlsUri);
+
+//        New Implementation
+        DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
+        dataSourceFactory.setAllowCrossProtocolRedirects(true);
+        dataSourceFactory.setUserAgent("curl/7.85.0");
+        dataSourceFactory.setConnectTimeoutMs(10000);
+
+        HlsMediaSource.Factory hlsMediaSource =
+                new HlsMediaSource.Factory(dataSourceFactory);
+//                        .setExtractorFactory(extractorFactory);
+
 
         // Create a player instance.
-        player = new ExoPlayer.Builder(getApplicationContext()).build();
+        player = new ExoPlayer.Builder(this)
+                .setMediaSourceFactory(hlsMediaSource)
+                .build();
         // Set the media source to be played.
-        player.setMediaSource(hlsMediaSource);
+//        player.setMediaSource(hlsMediaSource);
         // Prepare the player.
-        player.prepare();
         playerView.setPlayer(player);
-        int i =1;
-        if (i == 0){
-
-        }
+        player.setMediaItem(MediaItem.fromUri(hlsUri));
+        player.prepare();
 
     }
 

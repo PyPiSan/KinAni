@@ -21,25 +21,19 @@ public class RecentlyAiredModel {
 
     public class datum {
 
-        @SerializedName("image_link")
+        @SerializedName("image_url")
         private String image;
-        @SerializedName("jtitle")
-        private String jname;
-        @SerializedName("title")
+        @SerializedName("anime_title")
         private String title;
         @SerializedName("episode")
         private String episode;
         @SerializedName("schedule")
         private String schedule;
-        @SerializedName("detail_link")
+        @SerializedName("anime_detail_link")
         private String detailLink;
 
         public String getImage() {
             return image;
-        }
-
-        public String getJname() {
-            return jname;
         }
 
         public String getTitle() {

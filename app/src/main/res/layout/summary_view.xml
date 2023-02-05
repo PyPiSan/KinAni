@@ -1,67 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
     android:tag="summary_view"
-    app:layoutDescription="@xml/summary_view_scene"
     tools:context=".view.SummaryView">
-
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layoutDescription="@xml/summary_view_scene"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--            android:id="@+id/videoConstrain"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="250dp"-->
-        <!--            android:background="@color/teal_700"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/constraintLayout"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />-->
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/teal_700"
-            app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@id/constraintLayout" />
-
-        <TextView
-            android:id="@+id/animeTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="10dp"
-            android:alpha="1"
-            android:singleLine="false"
-            android:text="Hey How Are You"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-            app:layout_constraintTop_toBottomOf="@id/imageView2" />
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
 
     <RelativeLayout
         android:id="@+id/zeroShimmerRelative"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,120 +21,77 @@
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_animePic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:shimmer_direction="left_to_right">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/skeleton" />
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <ImageView
             android:id="@+id/animePic"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
             android:visibility="gone"
-            android:scaleType="matrix" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/firstShimmerRelative"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_view_animePic2"
-            android:layout_width="wrap_content"
+            android:scaleType="fitXY" />
+        <TextView
+            android:id="@+id/titleName"
+            android:layout_width="270dp"
             android:layout_height="wrap_content"
-            app:shimmer_direction="left_to_right">
-
-            <ImageView
-                android:layout_width="160dp"
-                android:layout_height="200dp"
-                android:background="@drawable/skeleton" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-        <ImageView
-            android:id="@+id/animePic2"
-            android:layout_width="160dp"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:visibility="gone" />
-
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="300dp"
+            android:singleLine="false"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:layout_alignBottom="@+id/animePic"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/titleName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:singleLine="false"
-        android:text=""
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/firstShimmerRelative"
-        app:layout_constraintTop_toBottomOf="@+id/zeroShimmerRelative" />
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/firstShimmerRelative"-->
+<!--        android:layout_width="160dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="320dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-    <!--    <Button-->
-    <!--        android:id="@+id/likeButton"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="67dp"-->
-    <!--        android:text="Add to Likes"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="1.0"-->
-    <!--        app:layout_constraintStart_toEndOf="@id/animePic2"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/titleName" />-->
+<!--        <com.facebook.shimmer.ShimmerFrameLayout-->
+<!--            android:id="@+id/shimmer_view_animePic2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:shimmer_direction="left_to_right">-->
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        android:layout_marginTop="10dp"-->
-    <!--        android:layout_marginEnd="45dp"-->
-    <!--        android:background="@drawable/round_layout"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/titleName"-->
-    <!--        app:layout_constraintStart_toEndOf="@id/firstShimmerRelative"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent">-->
-    <!--        <androidx.appcompat.widget.AppCompatImageButton-->
-    <!--            android:id="@+id/likeButton"-->
-    <!--            android:layout_width="50dp"-->
-    <!--            android:layout_height="30dp"-->
-    <!--            android:background="@android:color/transparent"-->
-    <!--            android:src="@drawable/ic_thumb_up_24"/>-->
-    <!--        <com.google.android.material.divider.MaterialDivider-->
-    <!--            android:layout_width="2dp"-->
-    <!--            android:layout_height="30dp"-->
-    <!--            />-->
-    <!--        <androidx.appcompat.widget.AppCompatImageButton-->
-    <!--            android:id="@+id/dislikeButton"-->
-    <!--            android:layout_width="50dp"-->
-    <!--            android:layout_height="30dp"-->
-    <!--            android:background="@android:color/transparent"-->
-    <!--            android:src="@drawable/ic_baseline_thumb_down_off_alt_24"/>-->
-    <!--    </LinearLayout>-->
+<!--            <ImageView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/skeleton" />-->
+<!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/animePic2"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:visibility="gone" />-->
+
+<!--    </RelativeLayout>-->
 
     <TextView
-        android:id="@+id/summary"
+        android:id="@+id/released"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
-        android:text="@string/summary"
-        android:textSize="20sp"
+        android:layout_marginTop="4dp"
+        android:textSize="17sp"
+        android:textColor="@color/white"
         android:textStyle="bold"
+        android:text="Released: 2022"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstShimmerRelative" />
+        app:layout_constraintTop_toBottomOf="@+id/zeroShimmerRelative" />
 
     <RelativeLayout
         android:id="@+id/thirdShimmerRelative"
@@ -191,9 +99,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toTopOf="@id/dropDown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/summary">
+        app:layout_constraintTop_toBottomOf="@id/released">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_summary_text"
@@ -211,9 +120,13 @@
             android:id="@+id/summaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:paddingBottom="20dp"
-            android:textSize="20sp"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:singleLine="false"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="5"
             android:visibility="gone" />
     </RelativeLayout>
 
@@ -240,4 +153,4 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

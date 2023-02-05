@@ -45,8 +45,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     }
 
     public static TrendingView newInstance() {
-        TrendingView fragment = new TrendingView();
-        return fragment;
+        return new TrendingView();
     }
 
     @Override
@@ -94,8 +93,8 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    RequestModule animeRecent = retrofit.create(RequestModule.class);
-    Call<AnimeRecentModel> call = animeRecent.getAnimeTrending();
+    RequestModule animeTrending = retrofit.create(RequestModule.class);
+    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending();
 
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override

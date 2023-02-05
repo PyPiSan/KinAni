@@ -55,41 +55,41 @@ public class ApiRequest {
         });
     }
 
-    public void scheduleFetcher(Context context){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RequestModule animeSchedule = retrofit.create(RequestModule.class);
-        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule();
-
-        call.enqueue(new Callback<RecentlyAiredModel>() {
-            @Override
-            public void onResponse(Call<RecentlyAiredModel> call, Response<RecentlyAiredModel> response) {
-                AnimeManager animeManager = new AnimeManager(context);
-
-                RecentlyAiredModel resource = response.body();
-                boolean status = resource.getSuccess();
-                if (status){
-                    List<RecentlyAiredModel.datum> data = resource.getData();
-                    animeManager.open();
-                    for (RecentlyAiredModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + animes.getSchedule());
-
-                        animeManager.insertScheduleList(animes.getJname(), animes.getTitle(),
-                                animes.getImage(), animes.getEpisode(), animes.getSchedule());
-                    }
-                    animeManager.close();
-                }else{
-                }
-            }
-            @Override
-            public void onFailure(Call<RecentlyAiredModel> call, Throwable t) {
-
-            }
-        });
-
-    }
+//    public void scheduleFetcher(Context context){
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://anime.pypisan.com/v1/anime/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        RequestModule animeSchedule = retrofit.create(RequestModule.class);
+//        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule();
+//
+//        call.enqueue(new Callback<RecentlyAiredModel>() {
+//            @Override
+//            public void onResponse(Call<RecentlyAiredModel> call, Response<RecentlyAiredModel> response) {
+//                AnimeManager animeManager = new AnimeManager(context);
+//
+//                RecentlyAiredModel resource = response.body();
+//                boolean status = resource.getSuccess();
+//                if (status){
+//                    List<RecentlyAiredModel.datum> data = resource.getData();
+//                    animeManager.open();
+//                    for (RecentlyAiredModel.datum animes : data) {
+////                        Log.d("Hey3", "Response code is : " + animes.getSchedule());
+//
+//                        animeManager.insertScheduleList(animes.getJname(), animes.getTitle(),
+//                                animes.getImage(), animes.getEpisode(), animes.getSchedule());
+//                    }
+//                    animeManager.close();
+//                }else{
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<RecentlyAiredModel> call, Throwable t) {
+//
+//            }
+//        });
+//
+//    }
 
 }

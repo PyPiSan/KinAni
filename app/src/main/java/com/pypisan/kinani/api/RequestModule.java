@@ -63,5 +63,11 @@ public interface RequestModule {
     @GET("new/")
     Call<AnimeRecentModel> newAnime(@Query("page") String num);
 
+    @Headers({
+            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
+    })
+    @GET("movies/")
+    Call<AnimeRecentModel> getMovies(@Query("page") String num);
+
 }
 

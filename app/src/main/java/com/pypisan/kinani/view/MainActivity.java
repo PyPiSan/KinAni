@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.newRelease:
                     selectedFragment = new RecentView();
                     break;
-                case R.id.trending:
-                    selectedFragment = new TrendingView();
+                case R.id.movies:
+                    selectedFragment = new MoviesView();
                     break;
                 case R.id.liked:
                     selectedFragment = new LikedView();
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 //            Begin Transition
-            Log.d("fragHello", "1 " + selectedFragment + "2 " + current);
+//            Log.d("fragHello", "1 " + selectedFragment + "2 " + current);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentView, selectedFragment)
                     .hide(current)
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //      for populating recent, animeSchedule db
-        apiRequest = new ApiRequest();
-        apiRequest.recentFetcher(this);
+//        apiRequest = new ApiRequest();
+//        apiRequest.recentFetcher(this);
 //        apiRequest.scheduleFetcher(this);
 
         mCastContext = CastContext.getSharedInstance(this);

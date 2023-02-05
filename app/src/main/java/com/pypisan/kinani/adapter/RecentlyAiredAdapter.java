@@ -55,18 +55,17 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
         String name = scheduleData.get(position).getTitle();
         String episodeNum = scheduleData.get(position).getEpisode();
         String schedule = scheduleData.get(position).getSchedule();
-        String jName = scheduleData.get(position).getJname();
 
         Glide.with(context)
                 .load(image)
                 .into(animeView);
         animeName.setText(name);
-        episode.setText(episodeNum);
+        episode.setText(String.format("Episode: %s", episodeNum));
         aireAt.setText(schedule);
 
         holder.cardView.setOnClickListener(view -> {
-            Toast.makeText(view.getContext(), "Card is " + jName + position, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(jName);
+//            Toast.makeText(view.getContext(), "Card is " + name + position, Toast.LENGTH_SHORT).show();
+            listener.onItemClicked(name);
         });
     }
 
@@ -76,7 +75,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
     }
 
     public interface SelectListener {
-        void onItemClicked(String jName);
+        void onItemClicked(String name);
     }
 
     public class RecentlyAiredViewHolder extends RecyclerView.ViewHolder {

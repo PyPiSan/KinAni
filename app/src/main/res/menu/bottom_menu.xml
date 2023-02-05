@@ -12,10 +12,10 @@
         android:icon="@drawable/recently_icon"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/trending"
-        android:title="@string/trending"
+        android:id="@+id/movies"
+        android:title="@string/movies"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/hot_icon"/>
+        android:icon="@drawable/movies_icon"/>
     <item
         android:id="@+id/liked"
         android:title="@string/liked"

@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 
@@ -43,19 +47,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SummaryView extends Fragment {
 
-    ImageView headImage, titleImage;
-    TextView title, summary;
-    AppCompatImageButton likedButton, dislikeButton;
-    ListView episodes;
-    AutoCompleteTextView autoCompleteText;
-    ArrayAdapter<String> episodeAdapter;
+    private ImageView headImage, titleImage;
+    private TextView title, summary;
+    private ListView episodes;
+    private AutoCompleteTextView autoCompleteText;
+    private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
     private String animetitle;
     private String animeLink;
-    private int[] bg;
     private ShimmerFrameLayout containerImg, containerSummaryText, conatinerImgHead;
-
+    private Animation animationImage;
+    private boolean isTextViewClicked = false;
     public SummaryView() {
         // Required empty public constructor
     }
@@ -82,15 +85,19 @@ public class SummaryView extends Fragment {
 
 //        for shimmer effect
         conatinerImgHead = view.findViewById(R.id.shimmer_view_animePic);
-        containerImg = view.findViewById(R.id.shimmer_view_animePic2);
+//        containerImg = view.findViewById(R.id.shimmer_view_animePic2);
         containerSummaryText = view.findViewById(R.id.shimmer_view_summary_text);
 
         conatinerImgHead.startShimmer();
-        containerImg.startShimmer();
+//        containerImg.startShimmer();
         containerSummaryText.startShimmer();
 
 //        Fetching Anime Detail Summary
         getAnimeSummary(view);
+
+//        For animation
+        animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);
+
 
 //        Add to liked button click listener
 //        animeManager.open();
@@ -121,7 +128,7 @@ public class SummaryView extends Fragment {
 
     private void getAnimeSummary(View view) {
         headImage = view.findViewById(R.id.animePic);
-        titleImage = view.findViewById(R.id.animePic2);
+//        titleImage = view.findViewById(R.id.animePic2);
         title = view.findViewById(R.id.titleName);
         summary = view.findViewById(R.id.summaryText);
         episodes = view.findViewById(R.id.episodeList);
@@ -157,8 +164,6 @@ public class SummaryView extends Fragment {
 //                    jtitle = animeDetail.getAnimeDetailLink();
                     animeLink = animeDetail.getImageLink();
 //                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
-//                    Setting Random header image
-//                    headImage.setImageResource(bg[randNum]);
                     conatinerImgHead.stopShimmer();
                     Glide.with(getContext())
                             .load(animeLink)
@@ -167,13 +172,15 @@ public class SummaryView extends Fragment {
 //                  stopping shimmer effect
                     conatinerImgHead.setVisibility(View.GONE);
                     headImage.setVisibility(View.VISIBLE);
-                    containerImg.stopShimmer();
+                    headImage.startAnimation(animationImage);
+//                    containerImg.stopShimmer();
+
 //                    Adding data to view
-                    Glide.with(getContext())
-                            .load(animeLink)
-                            .into(titleImage);
-                    containerImg.setVisibility(View.GONE);
-                    titleImage.setVisibility(View.VISIBLE);
+//                    Glide.with(getContext())
+//                            .load(animeLink)
+//                            .into(titleImage);
+//                    containerImg.setVisibility(View.GONE);
+//                    titleImage.setVisibility(View.VISIBLE);
 
                     title.setText(animetitle);
 
@@ -181,14 +188,30 @@ public class SummaryView extends Fragment {
                     summary.setText(animeDetail.getSummary());
                     containerSummaryText.setVisibility(View.GONE);
                     summary.setVisibility(View.VISIBLE);
-
+                    summary.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(isTextViewClicked){
+                                //This will shrink textview to 2 lines if it is expanded.
+                                summary.setMaxLines(5);
+                                isTextViewClicked = false;
+                            } else {
+                                //This will expand the textview if it is of 2 lines
+                                summary.setMaxLines(Integer.MAX_VALUE);
+                                isTextViewClicked = true;
+                            }
+                        }
+                    });
 //                    Creating drop down for episodes
 
-                    String episode_nums = animeDetail.getEpisode_num();
-                    int episode_num = 5;
-                    Log.d("E10", "episode_number is " + episode_num);
-                    String[] episodes = new String[episode_num];
-                    for (int i = 0; i < episode_num; i++) {
+                    String episodeNums = animeDetail.getEpisode_num();
+                    if (episodeNums.equals("0")){
+                        episodeNums="1";
+                    }
+                    int episodeNumVal = Integer.parseInt(episodeNums);
+//                    Log.d("E10", "episode_number is " + episodeNumVal);
+                    String[] episodes = new String[episodeNumVal];
+                    for (int i = 0; i < episodeNumVal; i++) {
                         episodes[i] = "Episode: " + (i + 1);
                     }
                     Log.d("E11", "episode_number is " + Arrays.toString(episodes));
@@ -213,14 +236,6 @@ public class SummaryView extends Fragment {
 
 
                 } else {
-                    headImage.setImageResource(0);
-                    titleImage.setImageResource(0);
-                    @SuppressLint("UseCompatLoadingForDrawables") Drawable draw = getContext().
-                            getDrawable(R.drawable.images);
-                    headImage.setImageDrawable(draw);
-                    titleImage.setImageDrawable(draw);
-                    title.setText("No Anime to Show For Now");
-                    summary.setText("Hello World, This is KinAni \n Nice to know you");
                     Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
                 }
             }
@@ -231,6 +246,16 @@ public class SummaryView extends Fragment {
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
 }

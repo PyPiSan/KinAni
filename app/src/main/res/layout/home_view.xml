@@ -59,7 +59,8 @@
         android:id="@+id/secondRelative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/trending">
+        android:layout_below="@+id/trending"
+        android:layout_marginStart="16dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
@@ -75,7 +76,6 @@
         android:id="@+id/home_recycler_view_trending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:visibility="gone"
         />
     </RelativeLayout>
@@ -94,7 +94,9 @@
         android:id="@+id/firstRelative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recommend">
+        android:layout_below="@+id/recommend"
+        android:layout_marginStart="16dp">
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container_recommend"
         android:layout_width="wrap_content"
@@ -109,7 +111,6 @@
         android:id="@+id/home_recycler_view_recommends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:visibility="gone"
         />
     </RelativeLayout>
@@ -123,6 +124,7 @@
         android:textSize="55px"
         android:layout_below="@+id/firstRelative"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginStart="16dp" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -130,13 +132,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:shimmer_direction="left_to_right"
-        android:layout_marginTop="5dp"
         android:layout_below="@+id/recentlyAired"
         >
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
         <include layout="@layout/recently_aired_skeleton"/>
         <include layout="@layout/recently_aired_skeleton"/>
         <include layout="@layout/recently_aired_skeleton"/>
@@ -150,7 +152,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"
         android:visibility="gone"
         android:layout_below="@+id/recentlyAired"/>
 

@@ -3,4 +3,6 @@
 
     <dimen name="image_height">140dp</dimen>
     <dimen name="image_width">120dp</dimen>
+    <dimen name="image_recent_height">210dp</dimen>
+    <dimen name="image_recent_width">180dp</dimen>
 </resources>

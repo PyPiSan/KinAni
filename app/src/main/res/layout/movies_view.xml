@@ -6,8 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.MoviesView"
     android:tag="movies_fragment"
+    android:id="@+id/nestedMovies"
     android:background="@color/primaryColor"
-    android:layout_marginStart="5dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,5 +30,11 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         />
+        <ProgressBar
+            android:id="@+id/movieProgress"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/movie_recycler_view"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

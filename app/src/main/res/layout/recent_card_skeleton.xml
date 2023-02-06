@@ -20,13 +20,13 @@
         app:cardCornerRadius="5dp"
         >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/image_recent_width"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/image_width"
-                android:layout_height="@dimen/image_height"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_recent_height"
                 android:layout_weight="1"
                 android:background="@drawable/skeleton"/>
 
@@ -47,13 +47,13 @@
         android:layout_marginStart="10dp"
         >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/image_recent_width"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/image_width"
-                android:layout_height="@dimen/image_height"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_recent_height"
                 android:layout_weight="1"
                 android:background="@drawable/skeleton"/>
 
@@ -66,32 +66,7 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        android:layout_marginStart="10dp"
-        >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/image_width"
-                android:layout_height="@dimen/image_height"
-                android:layout_weight="1"
-                android:background="@drawable/skeleton"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/skeleton"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -106,13 +81,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -133,13 +108,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -152,32 +127,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_marginStart="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/skeleton"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/skeleton"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -192,13 +142,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -219,13 +169,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -238,32 +188,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_marginStart="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/skeleton"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/skeleton"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -278,13 +203,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -305,13 +230,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -324,32 +249,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_marginStart="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/skeleton"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/skeleton"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -364,13 +264,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -391,13 +291,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -410,32 +310,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_marginStart="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/skeleton"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/skeleton"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -450,13 +325,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -477,13 +352,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -496,32 +371,7 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_marginStart="10dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
-                    android:layout_weight="1"
-                    android:background="@drawable/skeleton"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/skeleton"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -536,13 +386,13 @@
             app:cardCornerRadius="5dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -563,13 +413,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -582,6 +432,41 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            >
+            <LinearLayout
+                android:layout_width="@dimen/image_recent_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
+                    android:layout_weight="1"
+                    android:background="@drawable/skeleton"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/skeleton"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -589,13 +474,13 @@
             android:layout_marginStart="10dp"
             >
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/image_recent_width"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/image_width"
-                    android:layout_height="@dimen/image_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
                     android:layout_weight="1"
                     android:background="@drawable/skeleton"/>
 
@@ -608,5 +493,67 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            >
+            <LinearLayout
+                android:layout_width="@dimen/image_recent_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
+                    android:layout_weight="1"
+                    android:background="@drawable/skeleton"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/skeleton"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            android:layout_marginStart="10dp"
+            >
+            <LinearLayout
+                android:layout_width="@dimen/image_recent_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_recent_height"
+                    android:layout_weight="1"
+                    android:background="@drawable/skeleton"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/skeleton"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 </LinearLayout>

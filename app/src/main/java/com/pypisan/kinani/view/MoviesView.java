@@ -7,9 +7,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -38,6 +40,8 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
+    private NestedScrollView nestedScrollViewMovie;
+    private ProgressBar progressBarMovie;
 
     public MoviesView() {
         // Required empty public constructor
@@ -64,26 +68,32 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         animeListInc = new ArrayList<>();
         containerMovies = view.findViewById(R.id.shimmer_movies_layout);
         containerMovies.startShimmer();
+        nestedScrollViewMovie = view.findViewById(R.id.nestedMovies);
+        progressBarMovie = view.findViewById(R.id.movieProgress);
 
-        insertDataToCard("1");
+        insertDataToCard("3");
 
         //      initialization recycler
 
         recyclerView = view.findViewById(R.id.movie_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
 
         //        Item Declaration
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(5), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
 //        Log.d("hello", "anime list is " + animeList.size());
         adapterMovies = new RecentAdapter(getContext(), animeListInc, this);
+
+
+//        infinite Scroller
+
     }
 
     private void insertDataToCard(String pageNum) {
         // Add the cards data and display them
 //        fetching data
         if (pageNum.equals("")) {
-            pageNum = "1";
+            pageNum = "3";
         }
         animeList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()

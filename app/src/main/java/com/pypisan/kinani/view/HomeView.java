@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeView extends Fragment implements HomeViewAdapter.SelectListener {
 
     // Add RecyclerView member
-    private ArrayList<AnimeModel> animeNum, animeTrendingList, animeTrendingListInc,
+    private ArrayList<AnimeModel> animeRecentNum, animeTrendingList, animeTrendingListInc,
             animeRecommendList, animeRecommendListInc;
 
     private RecyclerView recyclerView_recent, recyclerView_trending, recyclerView_recommend,
@@ -49,6 +50,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
     private ShimmerFrameLayout containerTrending, containerSchedule, containerRecommend,
             containerRecent;
+    private TextView recentTextHeader;
 
     public HomeView() {
         // Required empty public constructor
@@ -82,6 +84,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         containerSchedule = view.findViewById(R.id.shimmer_view_container_schedule);
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
 
+        recentTextHeader = view.findViewById(R.id.recents);
+
 //        Starting Shimmer Effect
         containerRecent.startShimmer();
         containerTrending.startShimmer();
@@ -90,8 +94,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //        Fetching Data
         scheduleFetcher();
-        likedList();
-        insertDataToCard();
+        recentlyWatchedList();
+        getTrendingList();
         recommendFetcher();
 
 //      1st initialization recycler recent
@@ -101,7 +105,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_recent.setHasFixedSize(true);
 
         //        Setting Data
-        adapter = new HomeViewAdapter(animeNum, getContext(), this);
+        adapter = new HomeViewAdapter(animeRecentNum, getContext(), this);
         containerRecent.stopShimmer();
         containerRecent.setVisibility(View.GONE);
         recyclerView_recent.setVisibility(View.VISIBLE);
@@ -139,29 +143,30 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     }
 //       Fetching Liked list from DB
 
-    private void likedList() {
-        animeNum = new ArrayList<>();
+    private void recentlyWatchedList() {
+        animeRecentNum = new ArrayList<>();
         animeManager = new AnimeManager(getContext());
         animeManager.open();
         Cursor cursor = animeManager.readAllDataRecent();
-//        if (cursor.getCount() == 0) {
-////            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
-//        } else {
-//            AnimeModel model;
-////            Log.d("H1", "anime list is " + cursor.getCount());
-//            int i = 1;
-//            while (cursor.moveToNext()) {
+        if (cursor.getCount() == 0) {
+//            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
+        } else {
+            recentTextHeader.setVisibility(View.VISIBLE);
+            AnimeModel model;
+//            Log.d("H1", "anime list is " + cursor.getCount());
+            int i = 1;
+            while (cursor.moveToNext()) {
 //                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
-////                Log.d("H3", "cursor at " + i + cursor.getString(1));
-//                animeNum.add(model);
-////                Log.d("H4", "anime list is " + animeNum.size());
-//                i++;
-//                if (i == 10) {
-//                    break;
-//                }
-//            }
-//            animeManager.close();
-//        }
+//                Log.d("H3", "cursor at " + i + cursor.getString(1));
+//                animeRecentNum.add(model);
+//                Log.d("H4", "anime list is " + animeNum.size());
+                i++;
+                if (i == 10) {
+                    break;
+                }
+            }
+            animeManager.close();
+        }
     }
 
 
@@ -192,15 +197,15 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 
     //  fetching data
-    private void insertDataToCard() {
+    private void getTrendingList() {
         animeTrendingList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecent.getAnimeTrending();
+        RequestModule animeTrend = retrofit.create(RequestModule.class);
+        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending();
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -219,7 +224,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
                     }
-                    onDataLoad(0);
+                    onTrendingDataLoad(0);
                     containerTrending.stopShimmer();
                     containerTrending.setVisibility(View.GONE);
                     recyclerView_trending.setVisibility(View.VISIBLE);
@@ -235,7 +240,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         });
     }
 
-    private void onDataLoad(int offset) {
+    private void onTrendingDataLoad(int offset) {
         if (animeTrendingListInc != null) {
             animeTrendingListInc.clear();
         }

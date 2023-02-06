@@ -65,7 +65,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
 
         holder.cardView.setOnClickListener(view -> {
 //            Toast.makeText(view.getContext(), "Card is " + name + position, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(name);
+            listener.onItemClicked(name, "", image);
         });
     }
 
@@ -75,7 +75,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
     }
 
     public interface SelectListener {
-        void onItemClicked(String name);
+        void onItemClicked(String title, String detail, String image);
     }
 
     public class RecentlyAiredViewHolder extends RecyclerView.ViewHolder {

@@ -48,7 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SummaryView extends Fragment {
 
     private ImageView headImage, titleImage;
-    private TextView title, summary;
+    private TextView title, summary, releasedValue, statusValue;
     private ListView episodes;
     private AutoCompleteTextView autoCompleteText;
     private ArrayAdapter<String> episodeAdapter;
@@ -85,11 +85,11 @@ public class SummaryView extends Fragment {
 
 //        for shimmer effect
         conatinerImgHead = view.findViewById(R.id.shimmer_view_animePic);
-//        containerImg = view.findViewById(R.id.shimmer_view_animePic2);
+        containerImg = view.findViewById(R.id.shimmer_view_titleImage);
         containerSummaryText = view.findViewById(R.id.shimmer_view_summary_text);
 
         conatinerImgHead.startShimmer();
-//        containerImg.startShimmer();
+        containerImg.startShimmer();
         containerSummaryText.startShimmer();
 
 //        Fetching Anime Detail Summary
@@ -128,10 +128,12 @@ public class SummaryView extends Fragment {
 
     private void getAnimeSummary(View view) {
         headImage = view.findViewById(R.id.animePic);
-//        titleImage = view.findViewById(R.id.animePic2);
+        titleImage = view.findViewById(R.id.animePicTitle);
         title = view.findViewById(R.id.titleName);
         summary = view.findViewById(R.id.summaryText);
         episodes = view.findViewById(R.id.episodeList);
+        releasedValue = view.findViewById(R.id.releasedVal);
+        statusValue = view.findViewById(R.id.statusVal);
         autoCompleteText = view.findViewById(R.id.autoCompleteTextView);
 
 
@@ -161,7 +163,6 @@ public class SummaryView extends Fragment {
 //                    Log.d("E2", "Response is " + animeDetail.getTitle());
 
                     animetitle = animeDetail.getTitle();
-//                    jtitle = animeDetail.getAnimeDetailLink();
                     animeLink = animeDetail.getImageLink();
 //                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
                     conatinerImgHead.stopShimmer();
@@ -172,18 +173,19 @@ public class SummaryView extends Fragment {
 //                  stopping shimmer effect
                     conatinerImgHead.setVisibility(View.GONE);
                     headImage.setVisibility(View.VISIBLE);
-                    headImage.startAnimation(animationImage);
+//                    headImage.startAnimation(animationImage);
 //                    containerImg.stopShimmer();
 
 //                    Adding data to view
-//                    Glide.with(getContext())
-//                            .load(animeLink)
-//                            .into(titleImage);
-//                    containerImg.setVisibility(View.GONE);
-//                    titleImage.setVisibility(View.VISIBLE);
+                    Glide.with(getContext())
+                            .load(animeLink)
+                            .into(titleImage);
+                    containerImg.setVisibility(View.GONE);
+                    titleImage.setVisibility(View.VISIBLE);
 
                     title.setText(animetitle);
-
+                    releasedValue.setText(animeDetail.getReleased());
+                    statusValue.setText(animeDetail.getStatus());
                     containerSummaryText.stopShimmer();
                     summary.setText(animeDetail.getSummary());
                     containerSummaryText.setVisibility(View.GONE);
@@ -251,11 +253,17 @@ public class SummaryView extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        getActivity().getWindow()
+                .setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
     }
     @Override
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
 }

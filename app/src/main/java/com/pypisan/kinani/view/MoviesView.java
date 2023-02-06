@@ -24,6 +24,7 @@ import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
+import com.pypisan.kinani.storage.AnimeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private ShimmerFrameLayout containerMovies;
     private NestedScrollView nestedScrollViewMovie;
     private ProgressBar progressBarMovie;
+    private AnimeManager animeManager;
 
     public MoviesView() {
         // Required empty public constructor
@@ -160,7 +162,11 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, String detail, String image) {
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image);
+        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();

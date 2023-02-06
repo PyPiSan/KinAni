@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -156,9 +157,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //            Log.d("H1", "anime list is " + cursor.getCount());
             int i = 1;
             while (cursor.moveToNext()) {
-//                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2));
+                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), null);
 //                Log.d("H3", "cursor at " + i + cursor.getString(1));
-//                animeRecentNum.add(model);
+                animeRecentNum.add(model);
 //                Log.d("H4", "anime list is " + animeNum.size());
                 i++;
                 if (i == 10) {
@@ -171,7 +172,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, String detail, String image) {
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image);
+        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();

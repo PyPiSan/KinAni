@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class AnimeManager {
 
@@ -28,14 +29,14 @@ public class AnimeManager {
 
     public void insert(String jtitle, String title, String animeLink){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(AnimeBase.JTITLE, jtitle);
+        contentValues.put(AnimeBase.DETAIL, jtitle);
         contentValues.put(AnimeBase.TITLE, title);
         contentValues.put(AnimeBase.IMAGE, animeLink);
         database.insert(AnimeBase.TABLE_NAME, null, contentValues);
     }
 
     public Cursor fetch(){
-        String[] columns = new String[] {AnimeBase._ID, AnimeBase.JTITLE, AnimeBase.TITLE,
+        String[] columns = new String[] {AnimeBase._ID, AnimeBase.DETAIL, AnimeBase.TITLE,
         AnimeBase.IMAGE};
 
         Cursor cursor = database.query(AnimeBase.TABLE_NAME,
@@ -51,9 +52,9 @@ public class AnimeManager {
         }
         return cursor;
     }
-    public void delete(String jtitle){
+    public void delete(String title){
         database = animeBase.getWritableDatabase();
-        database.delete(AnimeBase.TABLE_NAME, "jtitle=?", new String[]{jtitle});;
+        database.delete(AnimeBase.TABLE_NAME, "title=?", new String[]{title});;
         database.close();
     }
 
@@ -68,12 +69,15 @@ public class AnimeManager {
     }
 
 //    Recent View Table
-    public void insertRecent(String jtitle, String title, String animeLink){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(AnimeBase.JTITLE, jtitle);
+    public void insertRecent(String detail, String title, String imageLink){
+        Cursor cursor = null;
+        cursor = database.rawQuery("SELECT title FROM AnimeRecent WHERE title=?", new String[]{title});
+        Log.d("Hey1", "Cursor is : " + cursor.getCount());
+        if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
+        contentValues.put(AnimeBase.DETAIL, detail);
         contentValues.put(AnimeBase.TITLE, title);
-        contentValues.put(AnimeBase.IMAGE, animeLink);
-        database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);
+        contentValues.put(AnimeBase.IMAGE, imageLink);
+        database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);}
     }
 
     public Cursor readAllDataRecent(){
@@ -86,26 +90,4 @@ public class AnimeManager {
         return cursor;
     }
 
-//    Schedule List
-    public void insertScheduleList(String jName, String title, String imageLink, String episode,
-                                   String schedule){
-        ContentValues contentValues2 = new ContentValues();
-        contentValues2.put(AnimeBase.JTITLE, jName);
-        contentValues2.put(AnimeBase.TITLE, title);
-        contentValues2.put(AnimeBase.IMAGE, imageLink);
-        contentValues2.put(AnimeBase.EPISODE, episode);
-        contentValues2.put(AnimeBase.SCHEDULE, schedule);
-        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues2);
-    }
-
-    public  Cursor readAllScheduleData(){
-        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME_3;
-        database = animeBase.getWritableDatabase();
-        Cursor cursor = null;
-        if (database != null){
-            cursor = database.rawQuery(query, null);
-        }
-        return cursor;
-
-    }
 }

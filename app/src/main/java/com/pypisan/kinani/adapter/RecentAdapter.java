@@ -55,7 +55,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 
         String animeTitle = dataSet.get(position).getTitle();
         String animeImage = dataSet.get(position).getImage();
-        String animeDetailLink = dataSet.get(position).getanimeDetailLink();
+        String animeDetailLink = dataSet.get(position).getAnimeDetailLink();
         String released = dataSet.get(position).getReleased();
 
         Glide.with(context)
@@ -66,7 +66,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 
         holder.cardView.setOnClickListener(view -> {
 //            Toast.makeText(view.getContext(), "Card is " + animeTitle, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(animeTitle);
+            listener.onItemClicked(animeTitle, animeDetailLink, animeImage);
         });
     }
 
@@ -76,7 +76,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
     }
 
     public interface SelectListener {
-        void onItemClicked(String title);
+        void onItemClicked(String title, String detail, String image);
     }
 
     public class RecentViewHolder extends RecyclerView.ViewHolder {

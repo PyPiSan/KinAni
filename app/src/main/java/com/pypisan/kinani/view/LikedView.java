@@ -35,7 +35,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
     private RecyclerView.Adapter adapter;
     private AnimeManager animeManager;
 
-    final String[] from = new String[] {AnimeBase._ID, AnimeBase.JTITLE, AnimeBase.TITLE, AnimeBase.IMAGE};
+    final String[] from = new String[] {AnimeBase._ID, AnimeBase.DETAIL, AnimeBase.TITLE, AnimeBase.IMAGE};
 
 
     public LikedView() {
@@ -111,9 +111,13 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
     }
 
     @Override
-    public void onItemClicked(String jTitle) {
+    public void onItemClicked(String title, String detail, String image) {
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image);
+        animeManager.close();
         Bundle bundle = new Bundle();
-        bundle.putString("jTitle", jTitle);
+        bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

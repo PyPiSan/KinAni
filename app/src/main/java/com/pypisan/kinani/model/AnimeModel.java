@@ -19,7 +19,7 @@ public class AnimeModel {
         return image;
     }
 
-    public String getanimeDetailLink() {
+    public String getAnimeDetailLink() {
         return animeDetailLink;
     }
 

@@ -24,6 +24,7 @@ import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
+import com.pypisan.kinani.storage.AnimeManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ShimmerFrameLayout container;
+    private AnimeManager animeManager;
 
 
     public RecentView() {
@@ -164,7 +166,11 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, String detail, String image) {
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image);
+        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();

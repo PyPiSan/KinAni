@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/zeroShimmerRelative"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="@dimen/summary_header_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,13 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            android:scaleType="fitXY" />
+            android:alpha="0.7"
+            android:scaleType="centerCrop" />
         <TextView
             android:id="@+id/titleName"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="120dp"
             android:singleLine="false"
             android:textSize="25sp"
             android:textStyle="bold"
@@ -50,48 +51,122 @@
             android:textColor="@color/white" />
     </RelativeLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/firstShimmerRelative"-->
-<!--        android:layout_width="160dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="320dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
+    <RelativeLayout
+        android:id="@+id/firstShimmerRelative"
+        android:layout_width="180dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="265dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--        <com.facebook.shimmer.ShimmerFrameLayout-->
-<!--            android:id="@+id/shimmer_view_animePic2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:shimmer_direction="left_to_right">-->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_titleImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_direction="left_to_right">
 
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:background="@drawable/skeleton" />-->
-<!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/skeleton" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
-<!--        <ImageView-->
-<!--            android:id="@+id/animePic2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:scaleType="fitXY"-->
-<!--            android:visibility="gone" />-->
+        <ImageView
+            android:id="@+id/animePicTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
-<!--    </RelativeLayout>-->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="265dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anime Rating"
+            android:layout_marginBottom="3dp"/>
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:src="@drawable/star_rate_24"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_below="@+id/rating"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="80%"
+            android:id="@+id/ratingVal"
+            android:layout_marginStart="42dp"
+            android:layout_below="@+id/rating"
+            android:layout_alignStart="@+id/star"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0k likes"
+            android:id="@+id/likingVal"
+            android:layout_marginStart="42dp"
+            android:layout_below="@id/ratingVal"
+            android:layout_alignStart="@+id/star"/>
+        <TextView
+            android:id="@+id/releasedHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Release"
+            android:layout_margin="3dp"
+            android:layout_below="@+id/star"/>
+        <TextView
+            android:id="@+id/releasedVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_below="@+id/releasedHead"/>
+        <TextView
+            android:id="@+id/statusHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_alignStart="@+id/releasedHead"
+            android:layout_below="@+id/star"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:id="@+id/statusVal"
+            android:layout_below="@+id/statusHead"
+            android:layout_alignStart="@+id/releasedVal"/>
+
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/released"
+        android:id="@+id/about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:textSize="17sp"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:text="Released: 2022"
+        android:text="@string/about_anime"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zeroShimmerRelative" />
+        app:layout_constraintTop_toBottomOf="@+id/firstShimmerRelative" />
 
     <RelativeLayout
         android:id="@+id/thirdShimmerRelative"
@@ -99,10 +174,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@id/dropDown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/released">
+        app:layout_constraintTop_toBottomOf="@id/about">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_summary_text"

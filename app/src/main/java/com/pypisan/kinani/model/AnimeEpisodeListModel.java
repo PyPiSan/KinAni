@@ -39,7 +39,7 @@ public class AnimeEpisodeListModel {
         @SerializedName("anime_id")
         private String animeId;
         @SerializedName("genres")
-        private final List<String> genres = null;
+        private String[] genres;
 
         public String getImageLink() {
             return imageUrl;
@@ -66,5 +66,7 @@ public class AnimeEpisodeListModel {
         public String getReleased() { return released; }
 
         public String getAnimeId() { return animeId; }
+
+        public String[] getGenres(){ return genres;}
     }
 }

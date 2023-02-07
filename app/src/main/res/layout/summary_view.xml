@@ -49,6 +49,16 @@
             android:gravity="bottom"
             android:layout_alignBottom="@+id/animePic"
             android:textColor="@color/white" />
+
+        <ImageButton
+            android:id="@+id/ActionButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="330dp"
+            android:background="@android:color/transparent"
+            android:clickable="true"
+            android:src="@drawable/liked_button_border" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -83,7 +93,7 @@
 
     <RelativeLayout
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         android:layout_marginStart="177dp"
         android:layout_marginTop="265dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +162,20 @@
             android:id="@+id/statusVal"
             android:layout_below="@+id/statusHead"
             android:layout_alignStart="@+id/releasedVal"/>
+
+        <TextView
+            android:id="@+id/genreHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@string/genre"
+            android:layout_below="@+id/releasedVal"/>
+        <TextView
+            android:id="@+id/genreVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_below="@+id/genreHead"/>
 
 
     </RelativeLayout>
@@ -226,6 +250,7 @@
             android:text="Episode: 0" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

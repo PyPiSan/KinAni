@@ -1,8 +1,7 @@
 package com.pypisan.kinani.view;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,11 +22,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
@@ -36,8 +35,6 @@ import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 
 import java.util.Arrays;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,17 +45,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SummaryView extends Fragment {
 
     private ImageView headImage, titleImage;
-    private TextView title, summary, releasedValue, statusValue;
+    private TextView title, summary, releasedValue, statusValue, genreVal;
     private ListView episodes;
     private AutoCompleteTextView autoCompleteText;
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
-    private String animetitle;
-    private String animeLink;
-    private ShimmerFrameLayout containerImg, containerSummaryText, conatinerImgHead;
+    private String animetitle, animeDetailLink, animeLink;
+    private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
     private Animation animationImage;
     private boolean isTextViewClicked = false;
+    private ImageButton likedFab;
+
+    private Cursor cursor = null;
     public SummaryView() {
         // Required empty public constructor
     }
@@ -81,34 +80,52 @@ public class SummaryView extends Fragment {
 
 //        likedButton = view.findViewById(R.id.likeButton);
 //        dislikeButton = view.findViewById(R.id.dislikeButton);
+        String animeName = getArguments().getString("title");
         animeManager = new AnimeManager(getContext());
 
 //        for shimmer effect
-        conatinerImgHead = view.findViewById(R.id.shimmer_view_animePic);
+        containerImgHead = view.findViewById(R.id.shimmer_view_animePic);
         containerImg = view.findViewById(R.id.shimmer_view_titleImage);
         containerSummaryText = view.findViewById(R.id.shimmer_view_summary_text);
 
-        conatinerImgHead.startShimmer();
+        containerImgHead.startShimmer();
         containerImg.startShimmer();
         containerSummaryText.startShimmer();
 
 //        Fetching Anime Detail Summary
-        getAnimeSummary(view);
+        getAnimeSummary(view, animeName);
 
 //        For animation
         animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);
 
+//        For FAB Like
+        likedFab = view.findViewById(R.id.ActionButton);
+
 
 //        Add to liked button click listener
-//        animeManager.open();
-//        likedButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                animeManager.insert(jtitle, animetitle, animeLink);
-//                Toast.makeText(getContext(), "Anime added to Liked", Toast.LENGTH_LONG).show();
-//                animeManager.close();
-//            }
-//        });
+        animeManager.open();
+        cursor = animeManager.findOne(animeName);
+        if (cursor != null && cursor.getCount() != 0){
+            likedFab.setImageResource(R.drawable.liked_button);
+        }
+        animeManager.close();
+        likedFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animeManager.open();
+                cursor = animeManager.findOne(animeName);
+                if (cursor == null || cursor.getCount() == 0) {
+                    animeManager.insertLiked(animeDetailLink, animetitle, animeLink);
+                    likedFab.setImageResource(R.drawable.liked_button);
+                    Toast.makeText(getContext(), "Added to Liked", Toast.LENGTH_SHORT).show();
+                }else{
+                    animeManager.deleteLiked(animetitle);
+                    likedFab.setImageResource(R.drawable.liked_button_border);
+                    Toast.makeText(getContext(), "Removed from Liked", Toast.LENGTH_SHORT).show();
+                }
+                animeManager.close();
+            }
+        });
 //        dislikeButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -126,7 +143,7 @@ public class SummaryView extends Fragment {
         return inflater.inflate(R.layout.summary_view, container, false);
     }
 
-    private void getAnimeSummary(View view) {
+    private void getAnimeSummary(View view, String animeName) {
         headImage = view.findViewById(R.id.animePic);
         titleImage = view.findViewById(R.id.animePicTitle);
         title = view.findViewById(R.id.titleName);
@@ -134,6 +151,7 @@ public class SummaryView extends Fragment {
         episodes = view.findViewById(R.id.episodeList);
         releasedValue = view.findViewById(R.id.releasedVal);
         statusValue = view.findViewById(R.id.statusVal);
+        genreVal = view.findViewById(R.id.genreVal);
         autoCompleteText = view.findViewById(R.id.autoCompleteTextView);
 
 
@@ -142,9 +160,8 @@ public class SummaryView extends Fragment {
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        String animeName = getArguments().getString("title");
 //        Log.d("E0", "jTitle is : " + animeName);
-        Toast.makeText(getContext(), animeName, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), animeName, Toast.LENGTH_LONG).show();
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
         Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(new Jtitle(animeName));
         call.enqueue(new Callback<AnimeEpisodeListModel>() {
@@ -164,17 +181,18 @@ public class SummaryView extends Fragment {
 
                     animetitle = animeDetail.getTitle();
                     animeLink = animeDetail.getImageLink();
+                    animeDetailLink = animeDetail.getAnimeDetailLink();
 //                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
-                    conatinerImgHead.stopShimmer();
+                    containerImgHead.stopShimmer();
                     Glide.with(getContext())
                             .load(animeLink)
                             .into(headImage);
 
 //                  stopping shimmer effect
-                    conatinerImgHead.setVisibility(View.GONE);
+                    containerImgHead.setVisibility(View.GONE);
                     headImage.setVisibility(View.VISIBLE);
 //                    headImage.startAnimation(animationImage);
-//                    containerImg.stopShimmer();
+                    containerImg.stopShimmer();
 
 //                    Adding data to view
                     Glide.with(getContext())
@@ -190,6 +208,12 @@ public class SummaryView extends Fragment {
                     summary.setText(animeDetail.getSummary());
                     containerSummaryText.setVisibility(View.GONE);
                     summary.setVisibility(View.VISIBLE);
+                    String[] genres = animeDetail.getGenres();
+                    String formattedString = Arrays.toString(genres)
+                                        .replace("[", "")  //remove the right bracket
+                                        .replace("]", "")  //remove the left bracket
+                                        .trim();
+                    genreVal.setText(formattedString);
                     summary.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -244,7 +268,6 @@ public class SummaryView extends Fragment {
 
             @Override
             public void onFailure(Call<AnimeEpisodeListModel> call, Throwable t) {
-                Log.d("E3", "Response code is : 400" + t.getMessage());
             }
         });
 
@@ -253,17 +276,17 @@ public class SummaryView extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-        getActivity().getWindow()
-                .setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        );
+//        getActivity().getWindow()
+//                .setFlags(
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//        );
     }
     @Override
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
 }

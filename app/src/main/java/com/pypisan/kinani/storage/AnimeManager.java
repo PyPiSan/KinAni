@@ -1,5 +1,7 @@
 package com.pypisan.kinani.storage;
 
+import static com.pypisan.kinani.storage.AnimeBase._ID;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -36,7 +38,7 @@ public class AnimeManager {
     }
 
     public Cursor fetch(){
-        String[] columns = new String[] {AnimeBase._ID, AnimeBase.DETAIL, AnimeBase.TITLE,
+        String[] columns = new String[] {_ID, AnimeBase.DETAIL, AnimeBase.TITLE,
         AnimeBase.IMAGE};
 
         Cursor cursor = database.query(AnimeBase.TABLE_NAME,
@@ -52,14 +54,15 @@ public class AnimeManager {
         }
         return cursor;
     }
-    public void delete(String title){
+    public void deleteLiked(String title){
         database = animeBase.getWritableDatabase();
         database.delete(AnimeBase.TABLE_NAME, "title=?", new String[]{title});;
         database.close();
     }
 
-    public Cursor readAllData(){
-        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME;
+//    For Liked View
+    public Cursor readAllDataLiked(){
+        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME + " ORDER BY "+ _ID + " DESC";
         database = animeBase.getWritableDatabase();
         Cursor cursor = null;
         if (database != null){
@@ -68,11 +71,25 @@ public class AnimeManager {
         return cursor;
     }
 
+    public void insertLiked(String detail, String title, String imageLink){
+        Cursor cursor = null;
+        cursor = database.rawQuery("SELECT title FROM AnimeLiked WHERE title=?", new String[]{title});
+        if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
+            contentValues.put(AnimeBase.DETAIL, detail);
+            contentValues.put(AnimeBase.TITLE, title);
+            contentValues.put(AnimeBase.IMAGE, imageLink);
+            database.insert(AnimeBase.TABLE_NAME, null, contentValues);}
+    }
+
+    public Cursor findOne(String title){
+        Cursor cursor = null;
+        cursor = database.rawQuery("SELECT title FROM AnimeLiked WHERE title=?", new String[]{title});
+        return cursor;
+    }
 //    Recent View Table
     public void insertRecent(String detail, String title, String imageLink){
         Cursor cursor = null;
         cursor = database.rawQuery("SELECT title FROM AnimeRecent WHERE title=?", new String[]{title});
-        Log.d("Hey1", "Cursor is : " + cursor.getCount());
         if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.DETAIL, detail);
         contentValues.put(AnimeBase.TITLE, title);
@@ -81,7 +98,7 @@ public class AnimeManager {
     }
 
     public Cursor readAllDataRecent(){
-        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME_2;
+        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME_2 + " ORDER BY "+ _ID + " DESC";
         database = animeBase.getWritableDatabase();
         Cursor cursor = null;
         if (database != null){

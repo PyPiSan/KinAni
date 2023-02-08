@@ -23,11 +23,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pypisan.kinani.R;
+import com.pypisan.kinani.adapter.EpisodeAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.Jtitle;
@@ -42,13 +45,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SummaryView extends Fragment {
+public class SummaryView extends Fragment implements EpisodeAdapter.SelectListener {
 
     private ImageView headImage, titleImage;
     private TextView title, summary, releasedValue, statusValue, genreVal;
     private ListView episodes;
+    private RecyclerView.Adapter adapterEpisode;
     private AutoCompleteTextView autoCompleteText;
     private ArrayAdapter<String> episodeAdapter;
+    private RecyclerView recyclerEpisode;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
     private String animetitle, animeDetailLink, animeLink;
@@ -83,6 +88,12 @@ public class SummaryView extends Fragment {
         String animeName = getArguments().getString("title");
         animeManager = new AnimeManager(getContext());
 
+//        recyclerEpisode = view.findViewById(R.id.episodeRecycler);
+//        recyclerEpisode.setLayoutManager(new GridLayoutManager(getContext(), 3));
+//        recyclerEpisode.setHasFixedSize(true);
+
+//        adapterEpisode = new EpisodeAdapter(getContext(), 300, this);
+//        recyclerEpisode.setAdapter(adapterEpisode);
 //        for shimmer effect
         containerImgHead = view.findViewById(R.id.shimmer_view_animePic);
         containerImg = view.findViewById(R.id.shimmer_view_titleImage);
@@ -126,14 +137,7 @@ public class SummaryView extends Fragment {
                 animeManager.close();
             }
         });
-//        dislikeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                animeManager.delete(jtitle);
-//                Toast.makeText(getContext(), "Anime Removed", Toast.LENGTH_LONG).show();
-//                animeManager.close();
-//            }
-//        });
+
     }
 
     @Override
@@ -240,10 +244,10 @@ public class SummaryView extends Fragment {
                     for (int i = 0; i < episodeNumVal; i++) {
                         episodes[i] = "Episode: " + (i + 1);
                     }
-                    Log.d("E11", "episode_number is " + Arrays.toString(episodes));
+//                    Log.d("E11", "episode_number is " + Arrays.toString(episodes));
                     episodeAdapter = new ArrayAdapter<String>(getContext(), R.layout.drop_down_list, episodes);
                     autoCompleteText.setAdapter(episodeAdapter);
-                    Log.d("E12", "Till Success Here");
+//                    Log.d("E12", "Till Success Here");
 
 //                    Setting on click listener
                     autoCompleteText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -254,7 +258,6 @@ public class SummaryView extends Fragment {
                             i.putExtra("episode_num", String.valueOf(position + 1));
                             i.putExtra("title", animetitle);
                             i.putExtra("summary", animeDetail.getSummary());
-//                            i.putExtra("jTitle", jtitle);
                             i.putExtra("server_name", "server1");
                             startActivity(i);
                         }
@@ -271,6 +274,15 @@ public class SummaryView extends Fragment {
             }
         });
 
+    }
+    @Override
+    public void onEpisodeClicked(int num){
+        Intent i = new Intent(getContext(), VideoPlayer.class);
+        i.putExtra("episode_num", String.valueOf(num));
+        i.putExtra("title", animetitle);
+        i.putExtra("summary", animeDetail.getSummary());
+        i.putExtra("server_name", "server1");
+        startActivity(i);
     }
     @Override
     public void onResume() {

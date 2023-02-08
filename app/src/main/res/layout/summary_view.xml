@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor"
     android:tag="summary_view"
+    android:layout_marginBottom="20dp"
     tools:context=".view.SummaryView">
 
     <RelativeLayout
@@ -237,6 +238,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeColor="@android:color/transparent"
+        app:boxBackgroundColor="@android:color/transparent"
+        android:background="@drawable/test_res"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/thirdShimmerRelative">
@@ -247,9 +253,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="none"
-            android:text="Episode: 0" />
-
+            android:text="@string/episode_select" />
     </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/dropDown"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent">-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/episodeRecycler"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="20dp"/>-->
+<!--        </RelativeLayout>-->
+
 
 
 

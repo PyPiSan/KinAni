@@ -72,7 +72,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
 
 //        Item Declaration
 
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
         adapter = new RecentAdapter(getContext(), animeList, this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

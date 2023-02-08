@@ -87,7 +87,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
 //        Item Declaration
 
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
 //        Log.d("hello", "anime list is " + animeListInc.size());
         adapter = new RecentAdapter(getContext(), animeListInc, this);
     }

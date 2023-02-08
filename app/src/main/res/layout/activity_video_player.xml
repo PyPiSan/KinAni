@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
+    android:background="@color/primaryLightColor"
     android:keepScreenOn="true"
     tools:context=".play.VideoPlayer">
 
@@ -14,6 +14,7 @@
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="253dp"
+        android:background="@color/primaryDarkColor"
         app:controller_layout_id="@layout/exo_player_video_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,12 +25,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:singleLine="false"
-        android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:textColor="@color/primaryTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/video_view" />
@@ -38,7 +39,10 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="465dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +52,10 @@
             android:id="@+id/summaryText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="10dp"
-            android:paddingBottom="35dp"
-            android:textSize="20sp" />
+            android:paddingBottom="20dp"
+            android:textSize="17sp"
+            android:textColor="@color/primaryTextColor"
+            android:singleLine="false" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

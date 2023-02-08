@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeView"
     android:background="@color/primaryColor"
+    android:layout_marginBottom="10dp"
     android:tag="home_fragment">
 
     <TextView
@@ -17,13 +18,16 @@
         android:textSize="55px"
         android:layout_marginTop="5dp"
         android:visibility="gone"
+        android:textColor="@color/primaryTextColor"
         android:layout_marginStart="16dp"/>
 
     <RelativeLayout
         android:id="@+id/thirdRelative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recents">
+        android:layout_below="@+id/recents"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container_recent"
@@ -39,21 +43,32 @@
             android:id="@+id/home_recycler_view_recent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:visibility="gone"
             />
-
     </RelativeLayout>
-    <TextView
+
+    <RelativeLayout
         android:id="@+id/trending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/thirdRelative">
+    <TextView
+        android:id="@+id/textTrend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/trending"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         android:layout_marginTop="5dp"
         android:textSize="55px"
-        android:layout_below="@+id/thirdRelative"
         android:layout_marginStart="16dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_forward"
+            android:layout_marginStart="330dp"
+            android:layout_alignStart="@+id/textTrend"/>
+    </RelativeLayout>
 
 
     <RelativeLayout
@@ -61,7 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trending"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
@@ -80,23 +96,38 @@
         android:visibility="gone"
         />
     </RelativeLayout>
-    <TextView
+
+    <RelativeLayout
         android:id="@+id/recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secondRelative"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp">
+    <TextView
+        android:id="@+id/textRecommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/recommendations"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         android:textSize="55px"
-        android:layout_below="@+id/secondRelative"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="16dp"/>
+        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_forward"
+            android:layout_marginStart="330dp"
+            android:layout_alignStart="@+id/textRecommend"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/firstRelative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recommend"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container_recommend"
@@ -123,6 +154,7 @@
         android:text="@string/recentlyAired"
         android:textStyle="bold"
         android:textSize="55px"
+        android:textColor="@color/primaryTextColor"
         android:layout_below="@+id/firstRelative"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"

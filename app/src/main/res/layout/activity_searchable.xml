@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryColor"
     tools:context=".utils.SearchableActivity">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         android:paddingTop="2dp"
         android:paddingEnd="16dp"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,25 +22,26 @@
 
         <ImageButton
             android:id="@+id/back_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_arrow_back" />
+            android:background="@drawable/ic_arrow_back"
+            android:layout_gravity="center"/>
 
         <EditText
             android:id="@+id/search_bar_edit_text"
             android:layout_width="0dp"
-            android:layout_height="32dp"
+            android:layout_height="35dp"
             android:paddingStart="15dp"
             android:layout_weight="1"
             android:imeOptions="actionSearch"
-            android:backgroundTint="@color/primaryColor"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_border"
             android:hint="@string/search_hint"
             android:lines="1"
+            android:cursorVisible="true"
             android:focusable="true"
             android:inputType="textCapWords"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/primaryTextColor" />
 
         <ImageView
             android:id="@+id/iv_clear_text"

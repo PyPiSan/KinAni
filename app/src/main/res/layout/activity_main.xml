@@ -13,8 +13,9 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primaryColor"
-                android:layout_gravity="top">
+                android:layout_gravity="top"
+                app:elevation="1dp"
+                >
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/topNav"
@@ -23,15 +24,17 @@
                     app:menu="@menu/top_menu"
                     android:theme="@style/Widget.MaterialComponents.Toolbar.Primary"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
-                    android:minHeight="?attr/actionBarSize">
+                    android:minHeight="?attr/actionBarSize"
+                    >
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:paddingEnd="5dp"
                         android:paddingStart="5dp"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/ic_head_logo"
-                        android:id="@+id/mainlogo"/>
+                        android:id="@+id/mainLogo"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -39,8 +42,9 @@
                         android:text="@string/app_title"
                         android:textSize="28sp"
                         android:textStyle="bold"
+                        android:textColor="@color/primaryTextColor"
+                        android:background="@android:color/transparent"
                         android:gravity="center_vertical"
-                        android:textColor="@color/white"
                         android:layout_marginStart="20dp"
                         />
 
@@ -66,8 +70,7 @@
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/primaryColor">
+        android:layout_gravity="bottom">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNav"
@@ -77,7 +80,7 @@
             android:layout_marginEnd="5dp"
             app:labelVisibilityMode="labeled"
             app:itemIconTint="@color/bottom_item_background"
-            app:itemTextColor="@color/white"
+            app:itemTextColor="@color/primaryTextColor"
             />
 
     </com.google.android.material.bottomappbar.BottomAppBar>

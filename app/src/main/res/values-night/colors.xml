@@ -11,14 +11,13 @@
     <color name="live_red">#FF3144</color>
     <color name="white_20">#33FFFFFF</color>
 
-<!--    <Light theme>-->
-    <color name="primaryColor">#ffffff</color>
-    <color name="primaryLightColor">#80000000</color>
+<!--    <Dark theme>-->
+    <color name="primaryColor">#000000</color>
+    <color name="primaryLightColor">#85000000</color>
     <color name="primaryDarkColor">#000000</color>
     <color name="primaryTransColor">#80ffffff</color>
-    <color name="primaryTextColor">#484848</color>
-    <color name="primaryIconColor">#000000</color>
-    <color name="black_overlay">#66000000</color>
-    <color name="skeleton">#50000000</color>
-
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="primaryIconColor">#ffffff</color>
+    <color name="black_overlay">#66ffffff</color>
+    <color name="skeleton">#DDDDDD</color>
 </resources>

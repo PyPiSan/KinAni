@@ -82,7 +82,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         recyclerView.setHasFixedSize(true);
 
         //        Item Declaration
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
 //        Log.d("hello", "anime list is " + animeList.size());
         adapterMovies = new RecentAdapter(getContext(), animeListInc, this);
 

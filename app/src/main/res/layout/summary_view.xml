@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryColor"
     android:tag="summary_view"
     android:layout_marginBottom="20dp"
+    android:background="@color/primaryColor"
     tools:context=".view.SummaryView">
 
     <RelativeLayout
@@ -49,7 +49,7 @@
             android:textStyle="bold"
             android:gravity="bottom"
             android:layout_alignBottom="@+id/animePic"
-            android:textColor="@color/white" />
+            android:textColor="@color/primaryTextColor" />
 
         <ImageButton
             android:id="@+id/ActionButton"
@@ -105,8 +105,9 @@
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Anime Rating"
-            android:layout_marginBottom="3dp"/>
+            android:text="@string/anime_rating"
+            android:layout_marginBottom="3dp"
+            android:textColor="@color/primaryTextColor"/>
         <ImageView
             android:id="@+id/star"
             android:layout_width="45dp"
@@ -122,7 +123,8 @@
             android:id="@+id/ratingVal"
             android:layout_marginStart="42dp"
             android:layout_below="@+id/rating"
-            android:layout_alignStart="@+id/star"/>
+            android:layout_alignStart="@+id/star"
+            android:textColor="@color/primaryTextColor"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,7 +132,8 @@
             android:id="@+id/likingVal"
             android:layout_marginStart="42dp"
             android:layout_below="@id/ratingVal"
-            android:layout_alignStart="@+id/star"/>
+            android:layout_alignStart="@+id/star"
+            android:textColor="@color/primaryTextColor"/>
         <TextView
             android:id="@+id/releasedHead"
             android:layout_width="wrap_content"
@@ -143,17 +146,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_below="@+id/releasedHead"/>
+            android:layout_below="@+id/releasedHead"
+            android:textColor="@color/primaryTextColor"/>
         <TextView
             android:id="@+id/statusHead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
+            android:text="@string/status"
             android:layout_marginStart="80dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:layout_alignStart="@+id/releasedHead"
-            android:layout_below="@+id/star"/>
+            android:layout_below="@+id/star"
+            android:textColor="@color/primaryTextColor"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -162,7 +167,8 @@
             android:layout_marginBottom="3dp"
             android:id="@+id/statusVal"
             android:layout_below="@+id/statusHead"
-            android:layout_alignStart="@+id/releasedVal"/>
+            android:layout_alignStart="@+id/releasedVal"
+            android:textColor="@color/primaryTextColor"/>
 
         <TextView
             android:id="@+id/genreHead"
@@ -170,13 +176,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:text="@string/genre"
-            android:layout_below="@+id/releasedVal"/>
+            android:layout_below="@+id/releasedVal"
+            android:textColor="@color/primaryTextColor"/>
         <TextView
             android:id="@+id/genreVal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_below="@+id/genreHead"/>
+            android:layout_below="@+id/genreHead"
+            android:textColor="@color/primaryTextColor"/>
 
 
     </RelativeLayout>
@@ -188,8 +196,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:textSize="17sp"
-        android:textColor="@color/white"
         android:text="@string/about_anime"
+        android:textColor="@color/primaryTextColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstShimmerRelative" />
 
@@ -222,11 +230,11 @@
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:textSize="17sp"
-            android:textColor="@color/white"
             android:singleLine="false"
             android:scrollHorizontally="true"
             android:ellipsize="end"
             android:maxLines="5"
+            android:textColor="@color/primaryTextColor"
             android:visibility="gone" />
     </RelativeLayout>
 

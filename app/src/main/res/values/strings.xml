@@ -27,4 +27,9 @@
     <string name="about_anime">About Anime</string>
     <string name="genre">Genre</string>
     <string name="episode_select">SELECT AN EPISODE</string>
+    <string name="title_activity_spash">SpashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="anime_rating">Anime Rating</string>
+    <string name="status">Status</string>
 </resources>

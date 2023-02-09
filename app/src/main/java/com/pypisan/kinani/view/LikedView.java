@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.model.AnimeModel;
@@ -34,6 +35,8 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private AnimeManager animeManager;
+
+    private LottieAnimationView errorPage;
 
     public LikedView() {
         // Required empty public constructor
@@ -60,8 +63,8 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        Data Initialization
-        likedList();
+        errorPage = view.findViewById(R.id.animationView);
+
 
 //      initialization recycler
 
@@ -69,6 +72,8 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerView.setHasFixedSize(true);
 
+//        Data Initialization
+        likedList();
 
 //        Item Declaration
 
@@ -94,6 +99,8 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
                 model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), "");
                 animeList.add(model);
 //                Log.d("C4", "anime list is " + animeList.size());
+                errorPage.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         }
     }

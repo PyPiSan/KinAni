@@ -51,15 +51,26 @@
             android:layout_alignBottom="@+id/animePic"
             android:textColor="@color/primaryTextColor" />
 
-        <ImageButton
+<!--        <ImageButton-->
+<!--            android:id="@+id/ActionButton"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:layout_marginStart="330dp"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            android:clickable="true"-->
+<!--            android:src="@drawable/liked_button_border" />-->
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/ActionButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
             android:layout_marginStart="330dp"
-            android:background="@android:color/transparent"
             android:clickable="true"
-            android:src="@drawable/liked_button_border" />
+            app:lottie_rawRes="@raw/heart"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -140,6 +151,7 @@
             android:layout_height="wrap_content"
             android:text="Release"
             android:layout_margin="3dp"
+            android:textColor="@color/primaryTextColor"
             android:layout_below="@+id/star"/>
         <TextView
             android:id="@+id/releasedVal"

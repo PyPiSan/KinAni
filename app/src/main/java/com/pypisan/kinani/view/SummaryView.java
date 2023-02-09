@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,8 +61,8 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
     private Animation animationImage;
     private boolean isTextViewClicked = false;
-    private ImageButton likedFab;
-
+//    private ImageButton likedFab;
+    private LottieAnimationView likedFab;
     private Cursor cursor = null;
     public SummaryView() {
         // Required empty public constructor
@@ -82,7 +83,7 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
 //        bg = new int[]{R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,
 //                R.drawable.bg5, R.drawable.bg6, R.drawable.bg7, R.drawable.bg8,
 //                R.drawable.bg9, R.drawable.bg10};
-
+            int[] anim = new int[]{R.raw.liked};
 //        likedButton = view.findViewById(R.id.likeButton);
 //        dislikeButton = view.findViewById(R.id.dislikeButton);
         String animeName = getArguments().getString("title");
@@ -117,7 +118,9 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
         animeManager.open();
         cursor = animeManager.findOne(animeName);
         if (cursor != null && cursor.getCount() != 0){
-            likedFab.setImageResource(R.drawable.liked_button);
+//            likedFab.setImageResource(R.drawable.liked_button);
+            likedFab.setAnimation(R.raw.liked);
+            likedFab.playAnimation();
         }
         animeManager.close();
         likedFab.setOnClickListener(new View.OnClickListener() {
@@ -127,11 +130,15 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
                 cursor = animeManager.findOne(animeName);
                 if (cursor == null || cursor.getCount() == 0) {
                     animeManager.insertLiked(animeDetailLink, animetitle, animeLink);
-                    likedFab.setImageResource(R.drawable.liked_button);
+//                    likedFab.setImageResource(R.drawable.liked_button);
+                    likedFab.setAnimation(R.raw.liked);
+                    likedFab.playAnimation();
                     Toast.makeText(getContext(), "Added to Liked", Toast.LENGTH_SHORT).show();
                 }else{
                     animeManager.deleteLiked(animetitle);
-                    likedFab.setImageResource(R.drawable.liked_button_border);
+//                    likedFab.setImageResource(R.drawable.liked_button_border);
+                    likedFab.setAnimation(R.raw.heart);
+                    likedFab.playAnimation();
                     Toast.makeText(getContext(), "Removed from Liked", Toast.LENGTH_SHORT).show();
                 }
                 animeManager.close();

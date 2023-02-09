@@ -21,9 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
@@ -83,12 +85,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     MediaRouteButton mMediaRouteButton;
     ImageButton fullscreen, nextButton;
     private String title;
+    private ProgressBar loader;
+    private LottieAnimationView crashPage;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+        loader = findViewById(R.id.loader);
+        crashPage = findViewById(R.id.crash);
 
 //        for getting video summary params
         Intent videoIntent = getIntent();
@@ -118,7 +124,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             @Override
             public void onClick(View v) {
                 isFullScreen = checkOrientation();
-                Toast.makeText(getApplicationContext(), "fullscreen clicked", Toast.LENGTH_SHORT).show();
                 changeOrientation(isFullScreen);
             }
         });
@@ -181,6 +186,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void changeOrientation(boolean shouldLandscape) {
         if (shouldLandscape) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -208,14 +214,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 }
                 if (flag) {
                     videoLink = resource.getValue().getQuality3();
+                    loader.setVisibility(View.GONE);
                 }
                 playerInit();
             }
 
             @Override
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
-//                Toast.makeText(getContext(), "Video Not found", Toast.LENGTH_SHORT).show();
-                Log.d("V2", "status is " + t.getMessage());
                 playerInit();
             }
         });
@@ -225,40 +230,44 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void playerInit() {
 
         if (videoLink == null || videoLink.equals("")) {
-            hlsUri = Uri.parse("https://wwwx19.gofcdn.com/videos/hls/kNosgwnkyEq2EseMX1Gv6A/1675591307/25378/027e9529af2b06fe7b4f47e507a787eb/ep.108.1662460261.1080.m3u8");
-            Toast.makeText(getApplicationContext(), "Video Not found", Toast.LENGTH_LONG).show();
+            loader.setVisibility(View.GONE);
+            crashPage.setVisibility(View.VISIBLE);
+            animeTitleView.setVisibility(View.GONE);
+            summaryTextView.setVisibility(View.GONE);
+            playerView.setVisibility(View.GONE);
+            crashPage.playAnimation();
         } else {
             hlsUri = Uri.parse(videoLink);
             Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
-        }
 
-        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
-                | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
-        DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
+
+            int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
+                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
+            DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
 
 
 //        New Implementation
-        DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
-        dataSourceFactory.setAllowCrossProtocolRedirects(true);
-        dataSourceFactory.setUserAgent("curl/7.85.0");
-        dataSourceFactory.setConnectTimeoutMs(10000);
+            DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
+            dataSourceFactory.setAllowCrossProtocolRedirects(true);
+            dataSourceFactory.setUserAgent("curl/7.85.0");
+            dataSourceFactory.setConnectTimeoutMs(10000);
 
-        HlsMediaSource.Factory hlsMediaSource =
-                new HlsMediaSource.Factory(dataSourceFactory);
+            HlsMediaSource.Factory hlsMediaSource =
+                    new HlsMediaSource.Factory(dataSourceFactory);
 //                        .setExtractorFactory(extractorFactory);
 
 
-        // Create a player instance.
-        player = new ExoPlayer.Builder(this)
-                .setMediaSourceFactory(hlsMediaSource)
-                .build();
-        // Set the media source to be played.
+            // Create a player instance.
+            player = new ExoPlayer.Builder(this)
+                    .setMediaSourceFactory(hlsMediaSource)
+                    .build();
+            // Set the media source to be played.
 //        player.setMediaSource(hlsMediaSource);
-        // Prepare the player.
-        playerView.setPlayer(player);
-        player.setMediaItem(MediaItem.fromUri(hlsUri));
-        player.prepare();
-
+            // Prepare the player.
+            playerView.setPlayer(player);
+            player.setMediaItem(MediaItem.fromUri(hlsUri));
+            player.prepare();
+        }
     }
 
     @Override

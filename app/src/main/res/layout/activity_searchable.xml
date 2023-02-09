@@ -35,7 +35,7 @@
             android:paddingStart="15dp"
             android:layout_weight="1"
             android:imeOptions="actionSearch"
-            android:background="@drawable/round_border"
+            android:background="@drawable/search_round"
             android:hint="@string/search_hint"
             android:lines="1"
             android:cursorVisible="true"

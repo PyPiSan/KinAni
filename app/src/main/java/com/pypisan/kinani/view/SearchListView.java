@@ -71,7 +71,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         recyclerView.setHasFixedSize(true);
 
         //        Setting Data
-        Log.d("hell", "anime list is " + animeSearchList.size());
+//        Log.d("hell", "anime list is " + animeSearchList.size());
         adapter = new SearchViewAdapter(animeSearchList, getContext(), this::onItemClicked);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
@@ -87,13 +87,13 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Log.d("Hi", "search code is : " + searchString);
+//        Log.d("Hi", "search code is : " + searchString);
         Call<AnimeRecentModel> call = animeRecent.searchAnime(searchString);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-                Log.d("Hell", "Response code is : " + response.code());
+//                Log.d("Hell", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
@@ -113,21 +113,21 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     }
                 } else {
 //                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
-                    Log.d("Hey2", "Response code is : " + response.code());
+//                    Log.d("Hey2", "Response code is : " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<AnimeRecentModel> call, Throwable t) {
-                Log.d("Hey3", "Response code is : 400" + t.getMessage());
+//                Log.d("Hey3", "Response code is : 400" + t.getMessage());
             }
         });
     }
 
     @Override
-    public void onItemClicked(String jTitle) {
+    public void onItemClicked(String title) {
         Bundle bundle = new Bundle();
-        bundle.putString("jTitle", jTitle);
+        bundle.putString("title", title);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

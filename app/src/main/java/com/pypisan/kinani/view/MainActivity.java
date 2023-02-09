@@ -1,5 +1,7 @@
 package com.pypisan.kinani.view;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -10,6 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private CastContext mCastContext;
     private BottomNavigationView bottomNav;
     private ApiRequest apiRequest;
+    private EditText etUsername, etPassword;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.account:
-                Toast.makeText(getApplicationContext(), "search Hi", Toast.LENGTH_SHORT).show();
+                callLoginDialog();
                 return true;
             case R.id.media_route_menu_item:
                 Toast.makeText(getApplicationContext(), "search Cast", Toast.LENGTH_SHORT).show();
@@ -136,5 +143,32 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void callLoginDialog()
+    {
+        Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.user_dialog);
+        myDialog.setCancelable(false);
+        Button login = (Button) myDialog.findViewById(R.id.loginButton);
+        Button cancel = (Button) myDialog.findViewById(R.id.cancelButton);
+        EditText username = (EditText) myDialog.findViewById(R.id.et_username);
+        EditText password = (EditText) myDialog.findViewById(R.id.et_password);
+        myDialog.show();
+
+        login.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //your login calculation goes here
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+            }
+        });
     }
 }

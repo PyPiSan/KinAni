@@ -13,7 +13,7 @@
 
 <!--    <Light theme>-->
     <color name="primaryColor">#ffffff</color>
-    <color name="primaryLightColor">#80000000</color>
+    <color name="primaryLightColor">#80484848</color>
     <color name="primaryDarkColor">#000000</color>
     <color name="primaryTransColor">#80ffffff</color>
     <color name="primaryTextColor">#484848</color>

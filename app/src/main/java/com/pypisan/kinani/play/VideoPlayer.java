@@ -85,8 +85,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     MediaRouteButton mMediaRouteButton;
     ImageButton fullscreen, nextButton;
     private String title;
-    private ProgressBar loader;
-    private LottieAnimationView crashPage;
+    private LottieAnimationView crashPage, loader;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -186,8 +185,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void changeOrientation(boolean shouldLandscape) {
         if (shouldLandscape) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fullscreen.setImageResource(R.drawable.fullscreen_exit);
             Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
         } else {
+            fullscreen.setImageResource(R.drawable.ic_fullscreen);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
@@ -221,7 +222,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
             @Override
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
-                playerInit();
+                loader.setVisibility(View.GONE);
+                crashPage.setVisibility(View.VISIBLE);
+                animeTitleView.setVisibility(View.GONE);
+                summaryTextView.setVisibility(View.GONE);
+                crashPage.playAnimation();
+
             }
         });
 
@@ -231,16 +237,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         if (videoLink == null || videoLink.equals("")) {
             loader.setVisibility(View.GONE);
-            crashPage.setVisibility(View.VISIBLE);
-            animeTitleView.setVisibility(View.GONE);
-            summaryTextView.setVisibility(View.GONE);
-            playerView.setVisibility(View.GONE);
-            crashPage.playAnimation();
+            hlsUri=Uri.parse("");
         } else {
             hlsUri = Uri.parse(videoLink);
+            playerView.setAlpha(1);
             Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
-
-
+        }
             int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
             DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
@@ -267,7 +269,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             playerView.setPlayer(player);
             player.setMediaItem(MediaItem.fromUri(hlsUri));
             player.prepare();
-        }
     }
 
     @Override
@@ -302,7 +303,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         changeOrientation(false);
         player.stop();
         player.release();
-
     }
 
     @Override

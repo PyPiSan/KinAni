@@ -45,6 +45,7 @@ public class SearchableActivity extends AppCompatActivity {
     private static final int REQ_CODE_SPEECH_INPUT = 0;
     private EditText editText;
     private ImageView ivClearText;
+    ImageButton backButton;
 
 
     @Override
@@ -57,6 +58,7 @@ public class SearchableActivity extends AppCompatActivity {
         ImageButton voice_search_button = (ImageButton) findViewById(R.id.search_bar_voice_icon);
         editText = (EditText) findViewById(R.id.search_bar_edit_text);
         ivClearText = findViewById(R.id.iv_clear_text);
+        backButton = findViewById(R.id.back_button);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +105,20 @@ public class SearchableActivity extends AppCompatActivity {
                 promptSpeechInput();
             }
 
+        });
+
+        ivClearText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText("");
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
         });
     }
 

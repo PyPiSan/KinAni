@@ -32,4 +32,11 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="anime_rating">Anime Rating</string>
     <string name="status">Status</string>
+    <string name="username">User</string>
+    <string name="enter_username">choose an alias</string>
+    <string name="password">Password</string>
+    <string name="enter_password">enter random password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancle</string>
 </resources>

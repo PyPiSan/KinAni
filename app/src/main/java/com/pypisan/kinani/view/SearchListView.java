@@ -1,29 +1,44 @@
 package com.pypisan.kinani.view;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SearchViewAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
-import com.pypisan.kinani.utils.SearchableActivity;
+import com.pypisan.kinani.storage.AnimeManager;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +50,17 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeSearchList;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapterSearch;
+
+    private BottomNavigationView bottomAppBar;
+    private EditText editText;
+    private ImageView ivClearText;
+    private ImageButton backButton, voice_search_button;
+    private AnimeManager animeManager;
+
+    private ProgressBar progressBar;
+    private static final int REQ_CODE_SPEECH_INPUT = 0;
 
     public SearchListView() {
         // Required empty public constructor
@@ -61,78 +86,179 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String searchString = getArguments().getString("searchString");
-        insertDataToCard(searchString);
+        bottomAppBar = getActivity().findViewById(R.id.bottomAppBar);
+        bottomAppBar.setVisibility(View.GONE);
+        voice_search_button = view.findViewById(R.id.search_bar_voice_icon);
+        editText = view.findViewById(R.id.search_bar_edit_text);
+        ivClearText = view.findViewById(R.id.iv_clear_text);
+        backButton = view.findViewById(R.id.back_button);
+        progressBar = view.findViewById(R.id.loadSearch);
 
-        //      initialization recycler
+//      initialization recycler
 
-        RecyclerView recyclerView = view.findViewById(R.id.search_recycler_view);
+        recyclerView = view.findViewById(R.id.search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        //        Setting Data
-//        Log.d("hell", "anime list is " + animeSearchList.size());
-        adapter = new SearchViewAdapter(animeSearchList, getContext(), this::onItemClicked);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+//        adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Search view generate..
+                String searchString = String.valueOf(editText.getText());
+                progressBar.setAlpha(1);
+                insertDataToCard(searchString);
+            }
+
+        });
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+            }
+        });
+
+        /*hide/show clear button in search view*/
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() == 0) {
+                    ivClearText.setVisibility(View.GONE);
+                    voice_search_button.setVisibility(View.VISIBLE);
+                } else {
+                    ivClearText.setVisibility(View.VISIBLE);
+                    voice_search_button.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+//        Voice Search Listener
+        voice_search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+
+        });
+
+        ivClearText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText("");
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDetach();
+            }
+        });
+
     }
 
-    //        Insert data to card
+//  Insert data to card
     private void insertDataToCard(String searchString) {
-        // Add the cards data and display them
-//        fetching data
+//      Add the cards data and display them
+
         animeSearchList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-//        Log.d("Hi", "search code is : " + searchString);
         Call<AnimeRecentModel> call = animeRecent.searchAnime(searchString);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//                Log.d("Hell", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
                     AnimeModel model;
-//                    int i = 0;
                     for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
                                 animes.getTitle(), animes.getReleased());
                         animeSearchList.add(model);
-//                        Log.d("hello1", "anime list is " + i);
-//                        i +=1;
-//                        i +=1;
-                        adapter.notifyDataSetChanged();
 
                     }
+                    progressBar.setVisibility(View.GONE);
+                    adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), SearchListView.this::onItemClicked);
+                    recyclerView.setAdapter(adapterSearch);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    bottomAppBar.setVisibility(View.VISIBLE);
                 } else {
-//                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
-//                    Log.d("Hey2", "Response code is : " + response.code());
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<AnimeRecentModel> call, Throwable t) {
-//                Log.d("Hey3", "Response code is : 400" + t.getMessage());
+                Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public void onItemClicked(String title) {
+    public void onItemClicked(String title, String detail, String image) {
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image);
+        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
-        Fragment fragment = SummaryView.newInstance();
+        Fragment fragment = new SummaryView();
         fragment.setArguments(bundle);
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.searchFragmentView, fragment, "summary_view");
-        transaction.addToBackStack(null);
-        transaction.commit();
+        getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentView, fragment, "summary_view")
+                        .addToBackStack(null)
+                        .commit();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        bottomAppBar.setVisibility(View.VISIBLE);
+//        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getContext(),
+                    getString(R.string.speech_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Receiving speech input
+     */
+//    protected void
 }

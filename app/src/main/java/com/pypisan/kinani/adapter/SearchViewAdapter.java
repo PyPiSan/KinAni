@@ -22,13 +22,12 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
 
     //    Step 2 in adapter...
 
-    private final ArrayList<AnimeModel> dataSet;
+    private final ArrayList<AnimeModel> dataSearch;
     private final Context context;
     private final SelectListener listener;
-    private String animeJtitle;
 
-    public SearchViewAdapter(ArrayList<AnimeModel> dataSet, Context context, SelectListener listener) {
-        this.dataSet = dataSet;
+    public SearchViewAdapter(ArrayList<AnimeModel> dataSearch, Context context, SelectListener listener) {
+        this.dataSearch = dataSearch;
         this.context = context;
         this.listener = listener;
     }
@@ -46,43 +45,42 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
     public void onBindViewHolder(@NonNull SearchViewAdapter.SearchViewHolder holder, int position) {
         ImageView animeView = holder.animeView;
         TextView animeName = holder.animeName;
-        if (dataSet.size() == 0) {
-            Log.d("Nothing", "Nothing to do");
-        }
-        String animeTitle = dataSet.get(position).getTitle();
-        String animeImage = dataSet.get(position).getImage();
-//        animeJtitle = dataSet.get(position).getJtitle();
+        TextView releaseDate = holder.releasedYear;
+        String animeTitle = dataSearch.get(position).getTitle();
+        String animeImage = dataSearch.get(position).getImage();
 
         Glide.with(context)
                 .load(animeImage)
                 .into(animeView);
 
         animeName.setText(animeTitle);
+        releaseDate.setText(dataSearch.get(position).getReleased());
 
-        holder.animeView.setOnClickListener(view -> {
-//            Toast.makeText(view.getContext(), "Card is " + animeJtitle, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(animeTitle);
+        holder.cardView.setOnClickListener(view -> {
+            listener.onItemClicked(animeTitle, "", animeImage);
         });
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return dataSearch.size();
     }
 
     public interface SelectListener {
-        void onItemClicked(String jTitle);
+        void onItemClicked(String title,String detail, String image);
     }
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {
         ImageView animeView;
-        TextView animeName;
+        TextView animeName, releasedYear;
         CardView cardView;
 
         public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             this.animeView = itemView.findViewById(R.id.animeImage);
-            this.animeName = itemView.findViewById(R.id.animeNameSearh);
+            this.animeName = itemView.findViewById(R.id.animeNameSearch);
+            this.cardView = itemView.findViewById(R.id.searchCard);
+            this.releasedYear = itemView.findViewById(R.id.releaseYear);
         }
     }
 }

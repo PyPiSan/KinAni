@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
@@ -31,6 +32,123 @@ import com.pypisan.kinani.api.ApiRequest;
 import com.pypisan.kinani.utils.SearchableActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CastContext mCastContext;
+    private BottomNavigationView bottomNav;
+    private BottomAppBar appBar;
+    private ApiRequest apiRequest;
+    private EditText etUsername, etPassword;
+    private Button loginButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_KinAni);
+        setContentView(R.layout.activity_main);
+
+        mCastContext = CastContext.getSharedInstance(this);
+
+        bottomNav = findViewById(R.id.bottomAppBar);
+//        appBar = findViewById(R.id.bottomAppBar);
+//        appBar.setOnMenuItemClickListener(menuClick);
+        bottomNav.setOnItemSelectedListener(navListner);
+
+//        Toolbar setting
+        Toolbar myToolbar = findViewById(R.id.topNav);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+//        Home Fragment as default
+        Fragment fragment = HomeView.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentView, fragment, "home_fragment")
+                .commit();
+
+//        For Gradient Color
+//        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
+//            @Override
+//            public Shader resize(int width, int height) {
+//                LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
+//                        new int[]{
+//                                0xFF1e5799,
+//                                0xFF207cca,
+//                                0xFF2989d8,
+//                                0xFF207cca}, //substitute the correct colors for these
+//                        new float[]{
+//                                0, 0.40f, 0.60f, 1},
+//                        Shader.TileMode.REPEAT);
+//                return linearGradient;
+//            }
+//        };
+//        PaintDrawable paint = new PaintDrawable();
+//        paint.setShape(new RectShape());
+//        paint.setShaderFactory(shaderFactory);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_menu, menu);
+        CastButtonFactory.setUpMediaRouteButton(this, menu,
+                R.id.media_route_menu_item);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.search:
+                onSearchClicked();
+                return true;
+            case R.id.account:
+                callLoginDialog();
+                return true;
+            case R.id.media_route_menu_item:
+                Toast.makeText(getApplicationContext(), "Cast", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void callLoginDialog()
+    {
+        Dialog myDialog = new Dialog(this);
+        myDialog.setContentView(R.layout.user_dialog);
+        myDialog.setCancelable(false);
+        Button login = myDialog.findViewById(R.id.loginButton);
+        Button cancel = myDialog.findViewById(R.id.cancelButton);
+        EditText username = myDialog.findViewById(R.id.et_username);
+        EditText password = myDialog.findViewById(R.id.et_password);
+        myDialog.show();
+
+        login.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //your login calculation goes here
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+            }
+        });
+    }
+
+    private void onSearchClicked(){
+        Fragment fragment = new SearchListView();
+        Fragment current = getSupportFragmentManager().findFragmentByTag("home_fragment");
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentView, fragment)
+                .hide(current)
+                .addToBackStack(null)
+                .commit();
+    }
+
     //    Bottom Nav Listener
     private final BottomNavigationView.OnItemSelectedListener navListner = new NavigationBarView.OnItemSelectedListener() {
         @Override
@@ -62,113 +180,35 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
-    private CastContext mCastContext;
-    private BottomNavigationView bottomNav;
-    private ApiRequest apiRequest;
-    private EditText etUsername, etPassword;
-    private Button loginButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setTheme(R.style.Theme_KinAni);
-        setContentView(R.layout.activity_main);
-
-//      for populating recent, animeSchedule db
-//        apiRequest = new ApiRequest();
-//        apiRequest.recentFetcher(this);
-//        apiRequest.scheduleFetcher(this);
-
-        mCastContext = CastContext.getSharedInstance(this);
-
-        bottomNav = findViewById(R.id.bottomNav);
-        bottomNav.setBackground(null);
-        bottomNav.setOnItemSelectedListener(navListner);
-
-//        Toolbar setting
-        Toolbar myToolbar = findViewById(R.id.topNav);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-//        Home Fragment as default
-        Fragment fragment = HomeView.newInstance();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentView, fragment, "home_fragment")
-                .commit();
-
-//        For Gradient Color
-        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
-            @Override
-            public Shader resize(int width, int height) {
-                LinearGradient linearGradient = new LinearGradient(0, 0, width, height,
-                        new int[]{
-                                0xFF1e5799,
-                                0xFF207cca,
-                                0xFF2989d8,
-                                0xFF207cca}, //substitute the correct colors for these
-                        new float[]{
-                                0, 0.40f, 0.60f, 1},
-                        Shader.TileMode.REPEAT);
-                return linearGradient;
-            }
-        };
-        PaintDrawable paint = new PaintDrawable();
-        paint.setShape(new RectShape());
-        paint.setShaderFactory(shaderFactory);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_menu, menu);
-        CastButtonFactory.setUpMediaRouteButton(this, menu,
-                R.id.media_route_menu_item);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.search:
-                Intent intent = new Intent(getApplicationContext(), SearchableActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.account:
-                callLoginDialog();
-                return true;
-            case R.id.media_route_menu_item:
-                Toast.makeText(getApplicationContext(), "search Cast", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void callLoginDialog()
-    {
-        Dialog myDialog = new Dialog(this);
-        myDialog.setContentView(R.layout.user_dialog);
-        myDialog.setCancelable(false);
-        Button login = (Button) myDialog.findViewById(R.id.loginButton);
-        Button cancel = (Button) myDialog.findViewById(R.id.cancelButton);
-        EditText username = (EditText) myDialog.findViewById(R.id.et_username);
-        EditText password = (EditText) myDialog.findViewById(R.id.et_password);
-        myDialog.show();
-
-        login.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //your login calculation goes here
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog.cancel();
-            }
-        });
-    }
+//    private final Toolbar.OnMenuItemClickListener menuClick = new Toolbar.OnMenuItemClickListener() {
+//        @Override
+//        public boolean onMenuItemClick(MenuItem item) {
+//            Fragment selectedFragment = null;
+//            Fragment current = getSupportFragmentManager().findFragmentByTag("home_fragment");
+//
+//            switch (item.getItemId()) {
+//                case R.id.newRelease:
+//                    selectedFragment = new RecentView();
+//                    break;
+//                case R.id.movies:
+//                    selectedFragment = new MoviesView();
+//                    break;
+//                case R.id.liked:
+//                    selectedFragment = new LikedView();
+//                    break;
+//                case R.id.home:
+//                    selectedFragment = new HomeView();
+//                    break;
+//            }
+////            Begin Transition
+////            Log.d("fragHello", "1 " + selectedFragment + "2 " + current);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.fragmentView, selectedFragment)
+//                    .hide(current)
+//                    .addToBackStack(null)
+//                    .commit();
+//            return true;
+//        }
+//    };
 }

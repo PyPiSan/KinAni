@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +61,7 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
     private String animetitle, animeDetailLink, animeLink;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
     private Animation animationImage;
+    private CardView cardImageTitle, cardHeadImage;
     private boolean isTextViewClicked = false;
 //    private ImageButton likedFab;
     private LottieAnimationView likedFab;
@@ -164,6 +166,8 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
         statusValue = view.findViewById(R.id.statusVal);
         genreVal = view.findViewById(R.id.genreVal);
         autoCompleteText = view.findViewById(R.id.autoCompleteTextView);
+        cardImageTitle = view.findViewById(R.id.cardImageTitle);
+        cardHeadImage = view.findViewById(R.id.cardHeadImage);
 
 
 //      fetching data
@@ -201,7 +205,7 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
 
 //                  stopping shimmer effect
                     containerImgHead.setVisibility(View.GONE);
-                    headImage.setVisibility(View.VISIBLE);
+                    cardHeadImage.setVisibility(View.VISIBLE);
 //                    headImage.startAnimation(animationImage);
                     containerImg.stopShimmer();
 
@@ -210,7 +214,7 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
                             .load(animeLink)
                             .into(titleImage);
                     containerImg.setVisibility(View.GONE);
-                    titleImage.setVisibility(View.VISIBLE);
+                    cardImageTitle.setVisibility(View.VISIBLE);
 
                     title.setText(animetitle);
                     releasedValue.setText(animeDetail.getReleased());

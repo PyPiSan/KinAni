@@ -5,19 +5,20 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#020000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_50">#80FFFFFF</color>
     <color name="live_red">#FF3144</color>
     <color name="white_20">#33FFFFFF</color>
 
 <!--    <Dark theme>-->
-    <color name="primaryColor">#000000</color>
+    <color name="primaryColor">#37474F</color>
     <color name="primaryLightColor">#85ffffff</color>
+    <color name="cardBackground">#263238</color>
     <color name="primaryDarkColor">#000000</color>
     <color name="primaryTransColor">#80ffffff</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="primaryIconColor">#ffffff</color>
     <color name="black_overlay">#66ffffff</color>
+    <color name="colorSecondary">#CFD8DC</color>
     <color name="skeleton">#DDDDDD</color>
 </resources>

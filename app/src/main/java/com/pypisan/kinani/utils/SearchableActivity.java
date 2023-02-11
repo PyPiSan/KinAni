@@ -45,7 +45,7 @@ public class SearchableActivity extends AppCompatActivity {
     private static final int REQ_CODE_SPEECH_INPUT = 0;
     private EditText editText;
     private ImageView ivClearText;
-    ImageButton backButton;
+    private ImageButton backButton;
 
 
     @Override
@@ -172,5 +172,6 @@ public class SearchableActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 
 }

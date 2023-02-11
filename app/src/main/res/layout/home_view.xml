@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/recently_watched"
         android:textStyle="bold"
-        android:textSize="55px"
+        android:textSize="22sp"
         android:layout_marginTop="5dp"
         android:visibility="gone"
         android:textColor="@color/primaryTextColor"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recents"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="11dp">
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container_recent"
@@ -59,7 +59,7 @@
         android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         android:layout_marginTop="5dp"
-        android:textSize="55px"
+        android:textSize="22sp"
         android:layout_marginStart="16dp"/>
         <ImageView
             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/trending"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="12dp">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
@@ -109,7 +109,7 @@
         android:text="@string/recommendations"
         android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
-        android:textSize="55px"
+        android:textSize="22sp"
         />
         <ImageView
             android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/recommend"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         >
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -151,7 +151,7 @@
         android:layout_height="wrap_content"
         android:text="@string/recentlyAired"
         android:textStyle="bold"
-        android:textSize="55px"
+        android:textSize="22sp"
         android:textColor="@color/primaryTextColor"
         android:layout_below="@+id/firstRelative"
         android:layout_marginTop="5dp"

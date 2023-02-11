@@ -14,7 +14,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                app:elevation="1dp"
+                app:elevation="2dp"
                 >
 
                 <com.google.android.material.appbar.MaterialToolbar
@@ -57,33 +57,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:ignore="SpeakableTextPresentCheck">
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_marginBottom="?attr/actionBarSize">
 
         <FrameLayout
             android:id="@+id/fragmentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="50dp"/>
+            android:layout_height="match_parent" />
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
+<!--        android:id="@+id/bottomAppBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        app:hideOnScroll="true"-->
+<!--        app:menu="@menu/bottom_menu"-->
+<!--        app:itemIconTint="@color/bottom_item_background"-->
+<!--        app:itemTextColor="@color/primaryTextColor"-->
+<!--        app:labelVisibilityMode="labeled"-->
+<!--        android:backgroundTint="@color/cardBackground">-->
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNav"
+            android:id="@+id/bottomAppBar"
+            android:layout_gravity="bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:menu="@menu/bottom_menu"
+            app:elevation="7dp"
             android:layout_marginEnd="5dp"
             app:labelVisibilityMode="labeled"
+            android:background="@color/primaryColor"
             app:itemIconTint="@color/bottom_item_background"
             app:itemTextColor="@color/primaryTextColor"
             />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+<!--    </com.google.android.material.bottomappbar.BottomAppBar>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

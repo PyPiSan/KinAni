@@ -160,7 +160,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void changeOrientation(boolean shouldLandscape) {
         if (shouldLandscape) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            fullscreen.setImageResource(R.drawable.ic_fullscreen_exit);
+            fullscreen.setImageResource(R.drawable.fullscreen_close);
             Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);

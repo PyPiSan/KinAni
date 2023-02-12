@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryLightColor"
+    android:background="@color/primaryColor"
     android:keepScreenOn="true"
     tools:context=".play.VideoPlayer">
 
@@ -29,6 +29,7 @@
         app:lottie_rawRes="@raw/loadanimation"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
+        android:background="@color/primaryDarkColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

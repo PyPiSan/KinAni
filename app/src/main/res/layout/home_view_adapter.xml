@@ -32,7 +32,7 @@
                 android:layout_height="38dp"
                 android:maxLines="2"
                 android:padding="2dp"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textColor="@color/primaryTextColor"
                 android:background="@color/cardBackground"/>
 

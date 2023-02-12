@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">KinAni</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="apikey">e7y6acFyHGqwtkBLKHx6eA</string>
     <string name="app_title">KinAni</string>
     <string name="app_label">Search KinAni</string>
@@ -15,7 +14,6 @@
     <string name="search_anime">Search Anime</string>
     <string name="speech_not_supported">Unknown Language</string>
     <string name="speech_prompt">search</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recentlyAired">Recently Aired</string>
     <string name="home">Home</string>
@@ -28,15 +26,14 @@
     <string name="genre">Genre</string>
     <string name="episode_select">SELECT AN EPISODE</string>
     <string name="title_activity_spash">SpashActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="anime_rating">Anime Rating</string>
     <string name="status">Status</string>
     <string name="username">User</string>
-    <string name="enter_username">choose an alias</string>
+    <string name="enter_username">Choose alias</string>
     <string name="password">Password</string>
-    <string name="enter_password">enter random password</string>
-    <string name="forgot_password">Forgot password?</string>
+    <string name="enter_password">Enter password</string>
+    <string name="forgot_password">Forgot password ?</string>
     <string name="login">Login</string>
-    <string name="cancel">Cancle</string>
+    <string name="cancel">Cancel</string>
+    <string name="release">Release</string>
 </resources>

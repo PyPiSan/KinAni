@@ -50,7 +50,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
     TextView animeTitleView, summaryTextView;
     StyledPlayerView playerView;
-    String videoLink;
     boolean isFullScreen = false;
     ExoPlayer player;
     String episode_num;
@@ -138,6 +137,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
+
+        loader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loader.setAnimation(R.raw.loadanimation);
+                loader.playAnimation();
+                getEpisodeLink();
+            }
+        });
+
     }
 
     @Override
@@ -147,15 +156,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         player.release();
         changeOrientation(false);
     }
-    //    Check Orientation
+
+//    Check Orientation
 //    returns true if in portrait mode
 
-    public boolean checkOrientation() {
+    private boolean checkOrientation() {
         int orientation = getResources().getConfiguration().orientation;
         return orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 
-//      Change Orientation
+//   Change Orientation
 
     public void changeOrientation(boolean shouldLandscape) {
         if (shouldLandscape) {
@@ -169,14 +179,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     private void getEpisodeLink() {
-
+        final String[] videoLink = new String[1];
         //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
-//        Log.d("V1", "status is " + jTitle + episode_num);
         Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(title, episode_num, server_name));
         call.enqueue(new Callback<EpisodeVideoModel>() {
             @Override
@@ -185,40 +194,37 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 EpisodeVideoModel resource = response.body();
                 if (response.code() == 200) {
                     boolean status = resource.getSuccess();
-                    Log.d("V2", "status is " + status + resource.getValue());
+//                    Log.d("V2", "status is " + status + resource.getValue());
                     flag = status;
                 }
                 if (flag) {
-                    videoLink = resource.getValue().getQuality3();
-                    loader.setVisibility(View.GONE);
+                    videoLink[0] = resource.getValue().getQuality3();
                 }
-                playerInit();
+                if (videoLink[0] == null || videoLink[0].equals("")) {
+                    loader.setAnimation(R.raw.retry);
+                    loader.playAnimation();
+                    Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
+                }
+                playerInit(videoLink[0]);
             }
 
             @Override
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
-                loader.setVisibility(View.GONE);
-                crashPage.setVisibility(View.VISIBLE);
-                animeTitleView.setVisibility(View.GONE);
-                summaryTextView.setVisibility(View.GONE);
-                crashPage.playAnimation();
-
+                loader.setAnimation(R.raw.retry);
+                loader.playAnimation();
+                Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
-    public void playerInit() {
+    public void playerInit(String link) {
 
-        if (videoLink == null || videoLink.equals("")) {
-            loader.setVisibility(View.GONE);
-            hlsUri=Uri.parse("");
-        } else {
-            hlsUri = Uri.parse(videoLink);
-            playerView.setAlpha(1);
-            Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
-        }
-            int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
+        loader.setVisibility(View.GONE);
+        playerView.setAlpha(1);
+        Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
+        hlsUri = Uri.parse(link);
+        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
             DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
 

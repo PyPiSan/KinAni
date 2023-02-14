@@ -9,31 +9,28 @@
     android:keepScreenOn="true"
     tools:context=".play.VideoPlayer">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/crash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:lottie_rawRes="@raw/error"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-    <com.airbnb.lottie.LottieAnimationView
+    <FrameLayout
         android:id="@+id/loader"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        app:lottie_rawRes="@raw/loadanimation"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         android:background="@color/primaryDarkColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        >
+        <ProgressBar
+            android:id="@+id/videoLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        <ImageButton
+            android:id="@+id/reloadVideo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/reload_24"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/video_view"

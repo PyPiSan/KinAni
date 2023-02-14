@@ -17,7 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,14 +54,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     StyledPlayerView playerView;
     boolean isFullScreen = false;
     ExoPlayer player;
-    String episode_num;
-    String server_name = "server2";
     Uri hlsUri;
     CastContext mCastContext;
     MediaRouteButton mMediaRouteButton;
-    ImageButton fullscreen, nextButton;
-    private String title;
-    private LottieAnimationView crashPage, loader;
+    ImageButton fullscreen, nextButton, reloadButton;
+    private FrameLayout loader;
+    private ProgressBar videoLoading;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -67,14 +67,15 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         loader = findViewById(R.id.loader);
-        crashPage = findViewById(R.id.crash);
+        reloadButton = findViewById(R.id.reloadVideo);
+        videoLoading = findViewById(R.id.videoLoader);
 
 //        for getting video summary params
         Intent videoIntent = getIntent();
 
-        title = videoIntent.getStringExtra("title");
+        String title = videoIntent.getStringExtra("title");
         String summary = videoIntent.getStringExtra("summary");
-        episode_num = videoIntent.getStringExtra("episode_num");
+        String episode_num = videoIntent.getStringExtra("episode_num");
 
 
         animeTitleView = findViewById(R.id.animeTitleText);
@@ -82,17 +83,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         playerView = findViewById(R.id.video_view);
         fullscreen = findViewById(R.id.fullScreen);
 
-
-//        playerView.setShowNextButton(false);
-//        playerView.setShowPreviousButton(false);
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
-//        playerView.setFullscreenButtonClickListener(new StyledPlayerView.FullscreenButtonClickListener() {
-//            @Override
-//            public void onFullscreenButtonClick(boolean isFullScreen) {
-//                Toast.makeText(getApplicationContext(), "fullscreen clicked", Toast.LENGTH_SHORT).show();
-//                changeOrientation(isFullScreen);
-//            }
-//        });
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,7 +93,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
         animeTitleView.setText(title);
         summaryTextView.setText(summary);
-        getEpisodeLink();
+        getEpisodeLink(title, episode_num);
 
 //        for casting video
         mCastContext = CastContext.getSharedInstance(this);
@@ -137,23 +128,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-
-        loader.setOnClickListener(new View.OnClickListener() {
+        reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loader.setAnimation(R.raw.loadanimation);
-                loader.playAnimation();
-                getEpisodeLink();
+                reloadButton.setVisibility(View.GONE);
+                videoLoading.setVisibility(View.VISIBLE);
+                getEpisodeLink(title, episode_num);
             }
         });
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        player.stop();
-        player.release();
+//        player.stop();
+//        player.release();
         changeOrientation(false);
     }
 
@@ -178,7 +167,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
     }
 
-    private void getEpisodeLink() {
+    private void getEpisodeLink(String title, String episode_num) {
         final String[] videoLink = new String[1];
         //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
@@ -186,7 +175,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
-        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(title, episode_num, server_name));
+        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(title, episode_num, ""));
         call.enqueue(new Callback<EpisodeVideoModel>() {
             @Override
             public void onResponse(Call<EpisodeVideoModel> call, Response<EpisodeVideoModel> response) {
@@ -194,24 +183,24 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 EpisodeVideoModel resource = response.body();
                 if (response.code() == 200) {
                     boolean status = resource.getSuccess();
-//                    Log.d("V2", "status is " + status + resource.getValue());
                     flag = status;
                 }
                 if (flag) {
                     videoLink[0] = resource.getValue().getQuality3();
                 }
                 if (videoLink[0] == null || videoLink[0].equals("")) {
-                    loader.setAnimation(R.raw.retry);
-                    loader.playAnimation();
+                    videoLoading.setVisibility(View.GONE);
+                    reloadButton.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
+                }else{
+                    playerInit(videoLink[0]);
                 }
-                playerInit(videoLink[0]);
             }
 
             @Override
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
-                loader.setAnimation(R.raw.retry);
-                loader.playAnimation();
+                videoLoading.setVisibility(View.GONE);
+                reloadButton.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
             }
         });
@@ -219,7 +208,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     public void playerInit(String link) {
-
         loader.setVisibility(View.GONE);
         playerView.setAlpha(1);
         Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
@@ -227,7 +215,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
             DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
-
 
 //        New Implementation
             DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
@@ -245,7 +232,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     .setMediaSourceFactory(hlsMediaSource)
                     .build();
             // Set the media source to be played.
-//        player.setMediaSource(hlsMediaSource);
             // Prepare the player.
             playerView.setPlayer(player);
             player.setMediaItem(MediaItem.fromUri(hlsUri));
@@ -282,8 +268,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void onBackPressed() {
         super.onBackPressed();
         changeOrientation(false);
-        player.stop();
-        player.release();
+//        player.stop();
+//        player.release();
     }
 
     @Override

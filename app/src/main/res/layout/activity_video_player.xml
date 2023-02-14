@@ -9,57 +9,60 @@
     android:keepScreenOn="true"
     tools:context=".play.VideoPlayer">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/crash"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:lottie_rawRes="@raw/error"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-    <com.airbnb.lottie.LottieAnimationView
+    <FrameLayout
         android:id="@+id/loader"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        app:lottie_rawRes="@raw/loadanimation"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         android:background="@color/primaryDarkColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        >
+        <ProgressBar
+            android:id="@+id/videoLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        <ImageButton
+            android:id="@+id/reloadVideo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/reload_24"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="253dp"
-        android:alpha="0"
+        android:visibility="gone"
         android:background="@color/primaryDarkColor"
         app:controller_layout_id="@layout/exo_player_video_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/textFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="275dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     <TextView
         android:id="@+id/animeTitleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:singleLine="false"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/primaryTextColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/video_view" />
+        />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -69,10 +72,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
         android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/animeTitleText">
+        >
 
         <TextView
             android:id="@+id/summaryText"
@@ -83,5 +83,5 @@
             android:textColor="@color/primaryTextColor"
             android:singleLine="false" />
     </ScrollView>
-
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

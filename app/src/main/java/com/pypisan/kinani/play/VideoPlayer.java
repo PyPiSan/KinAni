@@ -58,8 +58,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     CastContext mCastContext;
     MediaRouteButton mMediaRouteButton;
     ImageButton fullscreen, nextButton, reloadButton;
-    private FrameLayout loader;
+    private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
+    private Boolean playerState = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,7 +70,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         loader = findViewById(R.id.loader);
         reloadButton = findViewById(R.id.reloadVideo);
         videoLoading = findViewById(R.id.videoLoader);
-
+        textFrame = findViewById(R.id.textFrame);
 //        for getting video summary params
         Intent videoIntent = getIntent();
 
@@ -131,6 +132,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 reloadButton.setVisibility(View.GONE);
                 videoLoading.setVisibility(View.VISIBLE);
                 getEpisodeLink(title, episode_num);
@@ -138,13 +140,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        player.stop();
-//        player.release();
-        changeOrientation(false);
-    }
 
 //    Check Orientation
 //    returns true if in portrait mode
@@ -160,9 +155,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         if (shouldLandscape) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fullscreen.setImageResource(R.drawable.fullscreen_close);
+            textFrame.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);
+            textFrame.setVisibility(View.VISIBLE);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
@@ -185,6 +182,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     boolean status = resource.getSuccess();
                     flag = status;
                 }
+                Log.d("video", "link is"+resource.getSuccess());
                 if (flag) {
                     videoLink[0] = resource.getValue().getQuality3();
                 }
@@ -209,7 +207,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
     public void playerInit(String link) {
         loader.setVisibility(View.GONE);
-        playerView.setAlpha(1);
+        playerView.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
         hlsUri = Uri.parse(link);
         int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
@@ -236,6 +234,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             playerView.setPlayer(player);
             player.setMediaItem(MediaItem.fromUri(hlsUri));
             player.prepare();
+            playerState = true;
     }
 
     @Override
@@ -268,10 +267,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void onBackPressed() {
         super.onBackPressed();
         changeOrientation(false);
-//        player.stop();
-//        player.release();
+        if(playerState) {
+            player.stop();
+            player.release();
+        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        changeOrientation(false);
+        if(playerState) {
+            player.stop();
+            player.release();
+        }
+    }
     @Override
     public void onCastSessionAvailable() {
 

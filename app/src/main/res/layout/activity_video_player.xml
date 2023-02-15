@@ -28,7 +28,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/reload_24"
+            android:src="@drawable/replay48"
             android:layout_gravity="center"
             android:visibility="gone"/>
     </FrameLayout>

@@ -1,5 +1,7 @@
 package com.pypisan.kinani.view;
 
+import static android.app.appsearch.AppSearchResult.RESULT_OK;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.MaterialCalendar;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SearchViewAdapter;
 import com.pypisan.kinani.api.RequestModule;
@@ -100,16 +103,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-//        adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
+//      adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Search view generate..
+//      Search view generate..
                 String searchString = String.valueOf(editText.getText());
                 progressBar.setAlpha(1);
                 insertDataToCard(searchString);
             }
-
         });
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -160,10 +162,14 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDetach();
+                Fragment fragment = new HomeView();
+                Fragment current = getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentView, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
-
     }
 
 //  Insert data to card
@@ -260,5 +266,21 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     /**
      * Receiving speech input
      */
-//    protected void
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    editText.setText(result.get(0));
+                }
+                break;
+            }
+
+        }
+    }
 }

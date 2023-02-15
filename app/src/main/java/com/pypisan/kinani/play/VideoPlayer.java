@@ -50,17 +50,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
-    TextView animeTitleView, summaryTextView;
-    StyledPlayerView playerView;
-    boolean isFullScreen = false;
-    ExoPlayer player;
-    Uri hlsUri;
-    CastContext mCastContext;
-    MediaRouteButton mMediaRouteButton;
-    ImageButton fullscreen, nextButton, reloadButton;
+    private TextView animeTitleView, summaryTextView;
+    private StyledPlayerView playerView;
+    private boolean isFullScreen = false;
+    private ExoPlayer player;
+    private Uri hlsUri;
+    private CastContext mCastContext;
+    private MediaRouteButton mMediaRouteButton;
+    private ImageButton fullscreen, nextButton, reloadButton, previousButton;
     private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
+
+    private String episode_num;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -76,13 +78,15 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         String title = videoIntent.getStringExtra("title");
         String summary = videoIntent.getStringExtra("summary");
-        String episode_num = videoIntent.getStringExtra("episode_num");
+        episode_num = videoIntent.getStringExtra("episode_num");
 
 
         animeTitleView = findViewById(R.id.animeTitleText);
         summaryTextView = findViewById(R.id.summaryText);
         playerView = findViewById(R.id.video_view);
         fullscreen = findViewById(R.id.fullScreen);
+        nextButton = findViewById(R.id.nextButton);
+        previousButton = findViewById(R.id.previousButton);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
         fullscreen.setOnClickListener(new View.OnClickListener() {
@@ -129,15 +133,33 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
+//        Reload Click Handler
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 reloadButton.setVisibility(View.GONE);
                 videoLoading.setVisibility(View.VISIBLE);
                 getEpisodeLink(title, episode_num);
             }
         });
+
+//        Next Button click handler
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNextClick(title);
+            }
+        });
+
+//        Previous Button Click handler
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPreviousClick(title);
+            }
+        });
+
     }
 
 
@@ -182,14 +204,14 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     boolean status = resource.getSuccess();
                     flag = status;
                 }
-                Log.d("video", "link is"+resource.getSuccess());
+//                Log.d("video", "link is"+resource.getSuccess());
                 if (flag) {
                     videoLink[0] = resource.getValue().getQuality3();
                 }
                 if (videoLink[0] == null || videoLink[0].equals("")) {
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
                 }else{
                     playerInit(videoLink[0]);
                 }
@@ -199,7 +221,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Please Click Retry Icon", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -208,7 +230,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void playerInit(String link) {
         loader.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "Video found", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Video found, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
         hlsUri = Uri.parse(link);
         int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -257,7 +279,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = (int) 255*3;
+            layoutParams.height = (int) 242*3;
             playerView.setLayoutParams(layoutParams);
         }
 
@@ -273,14 +295,46 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        changeOrientation(false);
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        changeOrientation(false);
+//        if(playerState) {
+//            player.stop();
+//            player.release();
+//        }
+//    }
+
+    private void onNextClick(String title){
         if(playerState) {
             player.stop();
             player.release();
         }
+        int num = Integer.parseInt(episode_num);
+        episode_num = String.valueOf(num+1);
+        playerView.setVisibility(View.GONE);
+        loader.setVisibility(View.VISIBLE);
+        reloadButton.setVisibility(View.GONE);
+        videoLoading.setVisibility(View.VISIBLE);
+        getEpisodeLink(title, episode_num);
+    }
+
+    private void onPreviousClick(String title){
+        if(playerState) {
+            player.stop();
+            player.release();
+        }
+        int num = Integer.parseInt(episode_num);
+        if (num == 1){
+            episode_num = String.valueOf(num);
+        }else{
+            episode_num = String.valueOf(num-1);
+        }
+        playerView.setVisibility(View.GONE);
+        loader.setVisibility(View.VISIBLE);
+        reloadButton.setVisibility(View.GONE);
+        videoLoading.setVisibility(View.VISIBLE);
+        getEpisodeLink(title, episode_num);
     }
     @Override
     public void onCastSessionAvailable() {

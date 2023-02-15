@@ -71,16 +71,28 @@
         android:gravity="center"
         android:padding="@dimen/exo_styled_controls_padding">
 
-        <ImageButton android:id="@id/exo_prev"
-            style="@style/ExoStyledControls.Button.Center.Previous"/>
+        <ImageButton
+            android:id="@+id/previousButton"
+            android:layout_height ="@dimen/exo_icon_size"
+            android:layout_width="@dimen/exo_icon_size"
+            android:padding="2dp"
+            android:src="@drawable/exo_styled_controls_previous"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            />
 
         <ImageButton android:id="@id/exo_play_pause"
             style="@style/ExoStyledControls.Button.Center.PlayPause"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"/>
 
-        <ImageButton android:id="@id/exo_next"
-            style="@style/ExoStyledControls.Button.Center.Next"/>
+        <ImageButton
+            android:id="@+id/nextButton"
+            android:layout_height ="@dimen/exo_icon_size"
+            android:layout_width="@dimen/exo_icon_size"
+            android:padding="2dp"
+            android:src="@drawable/exo_styled_controls_next"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            />
 
     </LinearLayout>
 

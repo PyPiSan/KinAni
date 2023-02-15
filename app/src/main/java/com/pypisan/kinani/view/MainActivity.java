@@ -181,34 +181,4 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-//    private final Toolbar.OnMenuItemClickListener menuClick = new Toolbar.OnMenuItemClickListener() {
-//        @Override
-//        public boolean onMenuItemClick(MenuItem item) {
-//            Fragment selectedFragment = null;
-//            Fragment current = getSupportFragmentManager().findFragmentByTag("home_fragment");
-//
-//            switch (item.getItemId()) {
-//                case R.id.newRelease:
-//                    selectedFragment = new RecentView();
-//                    break;
-//                case R.id.movies:
-//                    selectedFragment = new MoviesView();
-//                    break;
-//                case R.id.liked:
-//                    selectedFragment = new LikedView();
-//                    break;
-//                case R.id.home:
-//                    selectedFragment = new HomeView();
-//                    break;
-//            }
-////            Begin Transition
-////            Log.d("fragHello", "1 " + selectedFragment + "2 " + current);
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragmentView, selectedFragment)
-//                    .hide(current)
-//                    .addToBackStack(null)
-//                    .commit();
-//            return true;
-//        }
-//    };
 }

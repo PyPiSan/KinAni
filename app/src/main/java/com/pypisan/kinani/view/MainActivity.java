@@ -1,13 +1,6 @@
 package com.pypisan.kinani.view;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,17 +21,20 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
-import com.pypisan.kinani.api.ApiRequest;
-import com.pypisan.kinani.utils.SearchableActivity;
+import com.pypisan.kinani.api.RequestModule;
+import com.pypisan.kinani.api.UserRequest;
+import com.pypisan.kinani.model.UserModel;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private CastContext mCastContext;
     private BottomNavigationView bottomNav;
-    private BottomAppBar appBar;
-    private ApiRequest apiRequest;
-    private EditText etUsername, etPassword;
-    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         mCastContext = CastContext.getSharedInstance(this);
 
         bottomNav = findViewById(R.id.bottomAppBar);
-//        appBar = findViewById(R.id.bottomAppBar);
-//        appBar.setOnMenuItemClickListener(menuClick);
         bottomNav.setOnItemSelectedListener(navListner);
 
 //        Toolbar setting
@@ -128,7 +122,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                //your login calculation goes here
+                String user = String.valueOf(username.getText());
+                String pass = String.valueOf(password.getText());
+
+                String[] apiVal = new String[1];
+                Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
+                        .addConverterFactory(GsonConverterFactory.create()).build();
+
+                RequestModule getID = retrofit.create(RequestModule.class);
+                Call<UserModel> call = getID.getUser(new UserRequest(user, pass));
+                call.enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        boolean flag = false;
+                        UserModel resource = response.body();
+                        if (response.code() == 200) {
+                            boolean status = resource.getUserStatus();
+                            flag = status;
+                        }
+                        if (flag) {
+                            apiVal[0] = resource.getApikey();
+                            Toast.makeText(getApplicationContext(), apiVal[0], Toast.LENGTH_SHORT).show();
+                            myDialog.cancel();
+                        } else {
+                            apiVal[0] = "";
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

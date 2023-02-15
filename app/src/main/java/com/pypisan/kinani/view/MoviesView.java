@@ -11,7 +11,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -41,9 +40,12 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
-    private NestedScrollView nestedScrollViewMovie;
     private ProgressBar progressBarMovie;
     private AnimeManager animeManager;
+//    private int previousTotal = 0;
+//    private boolean loading = false;
+//    private int visibleThreshold = 8;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
 
     public MoviesView() {
         // Required empty public constructor
@@ -70,7 +72,6 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         animeListInc = new ArrayList<>();
         containerMovies = view.findViewById(R.id.shimmer_movies_layout);
         containerMovies.startShimmer();
-        nestedScrollViewMovie = view.findViewById(R.id.nestedMovies);
         progressBarMovie = view.findViewById(R.id.movieProgress);
 
         insertDataToCard("3");
@@ -78,7 +79,8 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         //      initialization recycler
 
         recyclerView = view.findViewById(R.id.movie_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
         //        Item Declaration
@@ -86,8 +88,20 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 //        Log.d("hello", "anime list is " + animeList.size());
         adapterMovies = new RecentAdapter(getContext(), animeListInc, this);
 
-
+        recyclerView.setNestedScrollingEnabled(false);
 //        infinite Scroller
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                visibleItemCount = recyclerView.getChildCount();
+//                totalItemCount = gridLayoutManager.getItemCount();
+//                firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
+//                if (!loading && firstVisibleItem == totalItemCount-1) {
+//                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
+//                            visibleItemCount, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
     }
 
@@ -148,16 +162,16 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         if (animeListInc != null) {
             animeListInc.clear();
         }
-        if (animeList.size() <= 42) {
+        if (animeList.size() <= 40) {
             for (int i = offset; i < animeList.size(); i++) {
                 animeListInc.add(animeList.get(i));
             }
             adapterMovies.notifyItemInserted(animeList.size());
         } else {
-            for (int i = offset; i < 42; i++) {
+            for (int i = offset; i < 20; i++) {
                 animeListInc.add(animeList.get(i));
             }
-            adapterMovies.notifyItemInserted(39);
+            adapterMovies.notifyItemInserted(animeListInc.size());
         }
     }
 

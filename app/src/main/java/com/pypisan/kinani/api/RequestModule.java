@@ -5,6 +5,7 @@ import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
+import com.pypisan.kinani.model.UserModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -14,6 +15,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface RequestModule {
+
+    String apiKey = "e7y6acFyHGqwtkBLKHx6eA";
 
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
@@ -68,6 +71,9 @@ public interface RequestModule {
     })
     @GET("movies/")
     Call<AnimeRecentModel> getMovies(@Query("page") String num);
+
+    @POST("users")
+    Call<UserModel> getUser(@Body UserRequest body);
 
 }
 

@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+def versionMajor = 3
+def versionMinor = 1
+def versionPatch = 1
+
 android {
     namespace 'com.pypisan.kinani'
     compileSdk 33
@@ -10,8 +14,10 @@ android {
         applicationId "com.pypisan.kinani"
         minSdk 26
         targetSdk 33
-        versionCode 3
-        versionName "3.0"
+        versionCode versionMajor * 10000
+        + versionMinor * 100
+        + versionPatch
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,6 +26,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            resValue "string", "app_version", "${defaultConfig.versionName}"
         }
     }
     compileOptions {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="200dp"
+    android:layout_height="220dp"
+    android:background="@android:color/transparent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_margin="1dp"
+        android:text="Choose Quality"
+        android:layout_gravity="center"
+        android:textColor="@color/primaryTextColor"/>
+    <Button
+        android:id="@+id/qualityOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qualityOne"
+        android:layout_margin="1dp" />
+    <Button
+        android:id="@+id/qualityTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qualitytwo"
+        android:layout_margin="1dp" />
+    <Button
+        android:id="@+id/qualityThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qualitythree"
+        android:layout_margin="1dp" />
+    <Button
+        android:id="@+id/qualityFour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qualityfour"
+        android:layout_margin="1dp"/>
+
+</LinearLayout>

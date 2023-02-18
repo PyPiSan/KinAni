@@ -59,7 +59,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
-        android:singleLine="false"
+        android:singleLine="true"
+        android:ellipsize="marquee"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/primaryTextColor"
@@ -68,7 +69,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="445dp"
+        android:layout_height="455dp"
         android:layout_marginTop="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"

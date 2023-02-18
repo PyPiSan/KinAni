@@ -14,6 +14,8 @@
         android:id="@+id/zeroShimmerRelative"
         android:layout_width="match_parent"
         android:layout_height="@dimen/summary_header_image"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +49,7 @@
             android:scaleType="centerCrop" />
         <TextView
             android:id="@+id/titleName"
-            android:layout_width="270dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_gravity="bottom"
@@ -62,7 +64,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="330dp"
+            android:layout_marginStart="320dp"
             android:clickable="true"
             app:lottie_rawRes="@raw/heart"
             app:lottie_autoPlay="true"
@@ -110,10 +112,12 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/ratingLayout"
         android:layout_width="155dp"
         android:layout_height="240dp"
         android:layout_marginStart="177dp"
         android:layout_marginTop="265dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -123,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/anime_rating"
+            android:textStyle="bold"
             android:layout_marginBottom="3dp"
             android:textColor="@color/primaryTextColor"/>
         <ImageView
@@ -156,6 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release"
+            android:textStyle="bold"
             android:layout_margin="3dp"
             android:textColor="@color/primaryTextColor"
             android:layout_below="@+id/star"/>
@@ -171,6 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/status"
+            android:textStyle="bold"
             android:layout_marginStart="80dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
@@ -194,6 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:text="@string/genre"
+            android:textStyle="bold"
             android:layout_below="@+id/releasedVal"
             android:textColor="@color/primaryTextColor"/>
         <TextView
@@ -215,6 +223,7 @@
         android:layout_marginTop="20dp"
         android:textSize="17sp"
         android:text="@string/about_anime"
+        android:textStyle="bold"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstShimmerRelative" />
@@ -226,7 +235,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@id/dropDown"
+        app:layout_constraintBottom_toTopOf="@id/episodeSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/about">
 
@@ -256,31 +265,45 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dropDown"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/dropDown"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        app:boxStrokeWidth="0dp"-->
+<!--        app:boxStrokeWidthFocused="0dp"-->
+<!--        app:boxStrokeColor="@android:color/transparent"-->
+<!--        app:boxBackgroundColor="@android:color/transparent"-->
+<!--        android:background="@drawable/test_res"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/thirdShimmerRelative">-->
+
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/autoCompleteTextView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:inputType="none"-->
+<!--            android:text="@string/episode_select" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/episodeSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:visibility="gone"
         android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:boxStrokeColor="@android:color/transparent"
-        app:boxBackgroundColor="@android:color/transparent"
-        android:background="@drawable/test_res"
+        android:background="@drawable/round_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thirdShimmerRelative">
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="none"
-            android:text="@string/episode_select" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/thirdShimmerRelative"/>
 
 <!--        <RelativeLayout-->
 <!--            android:layout_width="match_parent"-->

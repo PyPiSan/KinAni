@@ -4,8 +4,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/primaryTextColor"
         android:padding="14dp"
-        android:text="Hello World"
         android:textSize="16sp"
         />

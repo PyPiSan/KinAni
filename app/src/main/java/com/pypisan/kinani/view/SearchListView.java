@@ -109,8 +109,12 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             public void onClick(View v) {
 //      Search view generate..
                 String searchString = String.valueOf(editText.getText());
-                progressBar.setAlpha(1);
-                insertDataToCard(searchString);
+                if (!searchString.equals("")){
+                    progressBar.setAlpha(1);
+                    insertDataToCard(searchString);
+                }else{
+                    Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {

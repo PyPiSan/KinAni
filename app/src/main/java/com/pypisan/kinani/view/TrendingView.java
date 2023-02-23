@@ -74,12 +74,12 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
 //        Item Declaration
 
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(5), true));
-        Log.d("hello", "anime list is " + animeList.size());
+//        Log.d("hello", "anime list is " + animeList.size());
         adapter = new RecentAdapter(getContext(), animeList, this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

@@ -104,7 +104,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
         recyclerView_recent.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
-        recyclerView_recent.setHasFixedSize(true);
+        recyclerView_recent.setHasFixedSize(false);
 
         //        Setting Data
         adapter = new HomeViewAdapter(animeRecentNum, getContext(), this);
@@ -119,7 +119,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_trending = view.findViewById(R.id.home_recycler_view_trending);
         recyclerView_trending.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
-        recyclerView_trending.setHasFixedSize(true);
+        recyclerView_trending.setHasFixedSize(false);
 
 //        Setting Data
         adapterTrending = new HomeViewAdapter(animeTrendingListInc, getContext(), this);
@@ -128,7 +128,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_recommend = view.findViewById(R.id.home_recycler_view_recommends);
         recyclerView_recommend.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
-        recyclerView_recommend.setHasFixedSize(true);
+        recyclerView_recommend.setHasFixedSize(false);
 
 //        Setting Data
         adapterRecommend = new HomeViewAdapter(animeRecommendListInc, getContext(), this);
@@ -137,7 +137,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //        4th recycler view aired at
         recyclerView_schedule = view.findViewById(R.id.home_recycler_view_recentlyAired);
         recyclerView_schedule.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView_schedule.setHasFixedSize(true);
+        recyclerView_schedule.setHasFixedSize(false);
 
 //        Setting Data
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);

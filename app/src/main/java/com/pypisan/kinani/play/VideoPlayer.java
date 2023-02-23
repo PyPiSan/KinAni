@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,13 +61,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private CastContext mCastContext;
     private MediaRouteButton mMediaRouteButton;
     private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton;
-    private FrameLayout loader, textFrame, settingPopup;
+    private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
-    private Boolean playerState = false, visibility = false;;
+    private Boolean playerState = false;
     private String episode_num;
     private String[] videoLink = new String[4];
 
-    private Button qualityOne, qualityTwo, qualityThree, qualityFour;
+    private Dialog settingDialog;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -93,12 +94,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         previousButton = findViewById(R.id.previousButton);
         settingButton = findViewById(R.id.setting);
 
-        Dialog settingDialog = new Dialog(this);
+        settingDialog = new Dialog(this);
         settingDialog.setContentView(R.layout.video_quality_dailog);
-        qualityOne = settingDialog.findViewById(R.id.qualityOne);
-        qualityTwo = settingDialog.findViewById(R.id.qualityTwo);
-        qualityThree = settingDialog.findViewById(R.id.qualityThree);
-        qualityFour = settingDialog.findViewById(R.id.qualityFour);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
         fullscreen.setOnClickListener(new View.OnClickListener() {
@@ -177,45 +174,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             @Override
             public void onClick(View v) {
                 settingDialog.show();
-//                if (visibility){
-//                    settingDailog.cancel();
-//                    visibility = false;
-//                }else
-//                {
-//                    settingDailog.show();
-//                    visibility = true;
-//                }
-            }
-        });
-        qualityOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onQualitySelected(0);
-                settingDialog.cancel();
-            }
-        });
-        qualityTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onQualitySelected(1);
-                settingDialog.cancel();
             }
         });
 
-        qualityThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onQualitySelected(2);
-                settingDialog.cancel();
-            }
-        });
-        qualityFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onQualitySelected(3);
-                settingDialog.cancel();
-            }
-        });
+
     }
 
 
@@ -415,5 +377,34 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     @Override
     public void onCastSessionUnavailable() {
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.qualityOne:
+                if (checked)
+                    onQualitySelected(0);
+                settingDialog.cancel();
+                    break;
+            case R.id.qualityTwo:
+                if (checked)
+                    onQualitySelected(1);
+                settingDialog.cancel();
+                break;
+            case R.id.qualityThree:
+                if (checked)
+                    onQualitySelected(2);
+                settingDialog.cancel();
+                break;
+            case R.id.qualityFour:
+                if (checked)
+                    onQualitySelected(3);
+                settingDialog.cancel();
+                break;
+        }
     }
 }

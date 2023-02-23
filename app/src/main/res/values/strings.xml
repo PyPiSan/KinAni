@@ -40,4 +40,5 @@
     <string name="qualitythree">720p</string>
     <string name="qualitytwo">480p</string>
     <string name="qualityOne">360p</string>
+    <string name="quality_seletor">Select Quality</string>
 </resources>

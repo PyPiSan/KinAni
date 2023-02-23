@@ -81,7 +81,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         recyclerView = view.findViewById(R.id.movie_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         //        Item Declaration
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));

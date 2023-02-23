@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/loader"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="253dp"
         android:background="@color/primaryDarkColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,18 +31,26 @@
             android:src="@drawable/replay48"
             android:layout_gravity="center"
             android:visibility="gone"/>
+
+        <com.google.android.exoplayer2.ui.StyledPlayerView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/primaryDarkColor"
+            app:controller_layout_id="@layout/exo_player_video_layout" />
     </FrameLayout>
 
-    <com.google.android.exoplayer2.ui.StyledPlayerView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="253dp"
-        android:visibility="gone"
-        android:background="@color/primaryDarkColor"
-        app:controller_layout_id="@layout/exo_player_video_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <com.google.android.exoplayer2.ui.StyledPlayerView-->
+<!--        android:id="@+id/video_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="253dp"-->
+<!--        android:visibility="gone"-->
+<!--        android:background="@color/primaryDarkColor"-->
+<!--        app:controller_layout_id="@layout/exo_player_video_layout"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <FrameLayout
         android:id="@+id/textFrame"

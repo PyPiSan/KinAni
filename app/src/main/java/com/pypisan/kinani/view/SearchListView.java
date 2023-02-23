@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -286,5 +287,18 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             }
 
         }
+    }
+
+    private void setUpOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()) {
+                    Toast.makeText(getContext(), "Back Pressed", Toast.LENGTH_SHORT).show();
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
     }
 }

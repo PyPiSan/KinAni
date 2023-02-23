@@ -286,7 +286,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     public void playerInit(String link) {
-        loader.setVisibility(View.GONE);
+//        loader.setVisibility(View.GONE);
+        videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(), "Video found, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
         hlsUri = Uri.parse(link);
@@ -326,19 +327,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 //                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            playerView.setLayoutParams(layoutParams);
+            loader.setLayoutParams(layoutParams);
         }else{
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().clearFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 //            getWindow().clearFlags(View.KEEP_SCREEN_ON);
 
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = (int) 242*3;
-            playerView.setLayoutParams(layoutParams);
+            loader.setLayoutParams(layoutParams);
         }
 
     }

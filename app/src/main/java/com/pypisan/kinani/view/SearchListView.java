@@ -102,7 +102,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
         recyclerView = view.findViewById(R.id.search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
 //      adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
         editText.setOnClickListener(new View.OnClickListener() {

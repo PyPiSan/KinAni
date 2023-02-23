@@ -82,7 +82,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
 
 //        Item Declaration

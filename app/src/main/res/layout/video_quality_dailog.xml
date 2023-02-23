@@ -2,40 +2,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="200dp"
-    android:layout_height="220dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_margin="1dp"
-        android:text="Choose Quality"
+        android:textSize="17sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/quality_seletor"
         android:layout_gravity="center"
+        android:textStyle="bold"
         android:textColor="@color/primaryTextColor"/>
-    <Button
-        android:id="@+id/qualityOne"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qualityOne"
-        android:layout_margin="1dp" />
-    <Button
-        android:id="@+id/qualityTwo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qualitytwo"
-        android:layout_margin="1dp" />
-    <Button
-        android:id="@+id/qualityThree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qualitythree"
-        android:layout_margin="1dp" />
-    <Button
-        android:id="@+id/qualityFour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/qualityfour"
-        android:layout_margin="1dp"/>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/qualityOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableEnd="@drawable/quality_radio_button"
+            android:paddingStart="20dip"
+            android:paddingEnd="10dp"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/qualityOne" />
+
+        <RadioButton android:id="@+id/qualityTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/qualitytwo"
+            android:button="@null"
+            android:drawableEnd="@drawable/quality_radio_button"
+            android:paddingStart="20dip"
+            android:paddingEnd="10dp"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/qualityThree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/qualitythree"
+            android:button="@null"
+            android:checked="true"
+            android:drawableEnd="@drawable/quality_radio_button"
+            android:paddingStart="20dip"
+            android:paddingEnd="10dp"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/qualityFour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/qualityfour"
+            android:button="@null"
+            android:drawableEnd="@drawable/quality_radio_button"
+            android:paddingStart="20dip"
+            android:paddingEnd="10dp"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
 </LinearLayout>

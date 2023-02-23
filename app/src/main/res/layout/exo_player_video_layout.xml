@@ -51,7 +51,6 @@
 
         </LinearLayout>
 
-
     </FrameLayout>
 
     <View
@@ -115,10 +114,37 @@
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_cast" />
 
+<!--            <ImageButton-->
+<!--                android:id="@id/exo_settings"-->
+<!--                style="@style/ExoStyledControls.Button.Bottom.Settings" />-->
             <ImageButton
-                android:id="@id/exo_settings"
-                style="@style/ExoStyledControls.Button.Bottom.Settings" />
+                android:id="@+id/setting"
+                android:gravity = "center_horizontal"
+                android:layout_height = "@dimen/exo_small_icon_height"
+                android:layout_width ="@dimen/exo_small_icon_width"
+                android:src = "@drawable/exo_styled_controls_settings"
+                android:layout_marginLeft = "@dimen/exo_small_icon_horizontal_margin"
+                android:layout_marginRight = "@dimen/exo_small_icon_horizontal_margin"
+                android:padding = "@dimen/exo_small_icon_padding_vertical"
+                android:background="?android:attr/selectableItemBackground"
+                android:scaleType = "fitXY"/>
         </LinearLayout>
+    </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/settingPopup"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="@dimen/exo_styled_controls_padding">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello World"
+            android:textSize="22sp"/>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

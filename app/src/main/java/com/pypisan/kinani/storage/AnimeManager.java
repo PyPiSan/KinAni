@@ -56,7 +56,7 @@ public class AnimeManager {
     }
     public void deleteLiked(String title){
         database = animeBase.getWritableDatabase();
-        database.delete(AnimeBase.TABLE_NAME, "title=?", new String[]{title});;
+        database.delete(AnimeBase.TABLE_NAME, "title=?", new String[]{title});
         database.close();
     }
 
@@ -72,7 +72,7 @@ public class AnimeManager {
     }
 
     public void insertLiked(String detail, String title, String imageLink){
-        Cursor cursor = null;
+        Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeLiked WHERE title=?", new String[]{title});
         if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
             contentValues.put(AnimeBase.DETAIL, detail);
@@ -82,13 +82,13 @@ public class AnimeManager {
     }
 
     public Cursor findOne(String title){
-        Cursor cursor = null;
+        Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeLiked WHERE title=?", new String[]{title});
         return cursor;
     }
 //    Recent View Table
     public void insertRecent(String detail, String title, String imageLink){
-        Cursor cursor = null;
+        Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeRecent WHERE title=?", new String[]{title});
         if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.DETAIL, detail);
@@ -107,4 +107,19 @@ public class AnimeManager {
         return cursor;
     }
 
+//    Insert User credentials
+    public void insertUser(String user, String apikey){
+    Cursor cursor;
+    cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
+    if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
+        contentValues.put(AnimeBase.USER, user);
+        contentValues.put(AnimeBase.APIKEY, apikey);
+        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);}
+        }
+
+    public Cursor findOneUser(String user){
+        Cursor cursor;
+        cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
+        return cursor;
+    }
 }

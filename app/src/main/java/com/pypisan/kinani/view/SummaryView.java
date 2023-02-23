@@ -16,12 +16,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,7 +49,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SummaryView extends Fragment implements EpisodeAdapter.SelectListener {
+public class SummaryView extends Fragment{
 
     private ImageView headImage, titleImage;
     private TextView title, summary, releasedValue, statusValue, genreVal;
@@ -62,8 +64,10 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
     private Animation animationImage;
     private CardView cardImageTitle, cardHeadImage;
+
+    private AppCompatSpinner episodeSpinner;
+    private RelativeLayout ratingLayout;
     private boolean isTextViewClicked = false;
-//    private ImageButton likedFab;
     private LottieAnimationView likedFab;
     private Cursor cursor = null;
     public SummaryView() {
@@ -85,9 +89,7 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
 //        bg = new int[]{R.drawable.bg1, R.drawable.bg2, R.drawable.bg3, R.drawable.bg4,
 //                R.drawable.bg5, R.drawable.bg6, R.drawable.bg7, R.drawable.bg8,
 //                R.drawable.bg9, R.drawable.bg10};
-            int[] anim = new int[]{R.raw.liked};
-//        likedButton = view.findViewById(R.id.likeButton);
-//        dislikeButton = view.findViewById(R.id.dislikeButton);
+//            int[] anim = new int[]{R.raw.liked};
         String animeName = getArguments().getString("title");
         animeManager = new AnimeManager(getContext());
 
@@ -132,13 +134,11 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
                 cursor = animeManager.findOne(animeName);
                 if (cursor == null || cursor.getCount() == 0) {
                     animeManager.insertLiked(animeDetailLink, animetitle, animeLink);
-//                    likedFab.setImageResource(R.drawable.liked_button);
                     likedFab.setAnimation(R.raw.liked);
                     likedFab.playAnimation();
                     Toast.makeText(getContext(), "Added to Liked", Toast.LENGTH_SHORT).show();
                 }else{
                     animeManager.deleteLiked(animetitle);
-//                    likedFab.setImageResource(R.drawable.liked_button_border);
                     likedFab.setAnimation(R.raw.heart);
                     likedFab.playAnimation();
                     Toast.makeText(getContext(), "Removed from Liked", Toast.LENGTH_SHORT).show();
@@ -165,29 +165,26 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
         releasedValue = view.findViewById(R.id.releasedVal);
         statusValue = view.findViewById(R.id.statusVal);
         genreVal = view.findViewById(R.id.genreVal);
-        autoCompleteText = view.findViewById(R.id.autoCompleteTextView);
         cardImageTitle = view.findViewById(R.id.cardImageTitle);
         cardHeadImage = view.findViewById(R.id.cardHeadImage);
-
+        episodeSpinner = view.findViewById(R.id.episodeSpinner);
+        ratingLayout = view.findViewById(R.id.ratingLayout);
 
 //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-//        Log.d("E0", "jTitle is : " + animeName);
-//        Toast.makeText(getContext(), animeName, Toast.LENGTH_LONG).show();
+
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
         Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(new Jtitle(animeName));
         call.enqueue(new Callback<AnimeEpisodeListModel>() {
             @Override
             public void onResponse(Call<AnimeEpisodeListModel> call, Response<AnimeEpisodeListModel> response) {
                 boolean flag = false;
-//                Log.d("E1", "Response code is : " + response.code());
                 AnimeEpisodeListModel resource = response.body();
                 if (response.code() == 200) {
                     boolean status = resource.getSuccess();
-//                    Log.d("E2", "status is " + status);
                     flag = status;
                 }
                 if (flag) {
@@ -206,10 +203,9 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
 //                  stopping shimmer effect
                     containerImgHead.setVisibility(View.GONE);
                     cardHeadImage.setVisibility(View.VISIBLE);
-//                    headImage.startAnimation(animationImage);
                     containerImg.stopShimmer();
 
-//                    Adding data to view
+//                  Adding data to view
                     Glide.with(getContext())
                             .load(animeLink)
                             .into(titleImage);
@@ -223,16 +219,17 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
                     summary.setText(animeDetail.getSummary());
                     containerSummaryText.setVisibility(View.GONE);
                     summary.setVisibility(View.VISIBLE);
+                    ratingLayout.setVisibility(View.VISIBLE);
                     String[] genres = animeDetail.getGenres();
                     String formattedString = Arrays.toString(genres)
-                                        .replace("[", "")  //remove the right bracket
-                                        .replace("]", "")  //remove the left bracket
-                                        .trim();
+                            .replace("[", "")  //remove the right bracket
+                            .replace("]", "")  //remove the left bracket
+                            .trim();
                     genreVal.setText(formattedString);
                     summary.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(isTextViewClicked){
+                            if (isTextViewClicked) {
                                 //This will shrink textview to 2 lines if it is expanded.
                                 summary.setMaxLines(5);
                                 isTextViewClicked = false;
@@ -243,37 +240,46 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
                             }
                         }
                     });
-//                    Creating drop down for episodes
 
-                    String episodeNums = animeDetail.getEpisode_num();
-                    if (episodeNums.equals("0")){
-                        episodeNums="1";
+                    if(!animeDetail.getStatus().equalsIgnoreCase("upcoming")){
+                        episodeSpinner.setVisibility(View.VISIBLE);
+//                    Creating drop down for episodes
+                    String episodeNum = animeDetail.getEpisode_num();
+                    if (episodeNum.equals("1")) {
+                        episodeNum = "2";
                     }
-                    int episodeNumVal = Integer.parseInt(episodeNums);
+                    int episodeNumVal = Integer.parseInt(episodeNum);
 //                    Log.d("E10", "episode_number is " + episodeNumVal);
                     String[] episodes = new String[episodeNumVal];
-                    for (int i = 0; i < episodeNumVal; i++) {
-                        episodes[i] = "Episode: " + (i + 1);
+                    episodes[0] = "Select An Episode";
+                    for (int i = 1; i < episodeNumVal; i++) {
+                        episodes[i] = "Episode: " + i;
                     }
-//                    Log.d("E11", "episode_number is " + Arrays.toString(episodes));
                     episodeAdapter = new ArrayAdapter<String>(getContext(), R.layout.drop_down_list, episodes);
-                    autoCompleteText.setAdapter(episodeAdapter);
-//                    Log.d("E12", "Till Success Here");
-
+                    episodeAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+                    episodeSpinner.setAdapter(episodeAdapter);
+                    int initialSelectedPosition = episodeSpinner.getSelectedItemPosition();
+                    episodeSpinner.setSelection(initialSelectedPosition, false);
 //                    Setting on click listener
-                    autoCompleteText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    episodeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                            String item = adapterView.getItemAtPosition(position).toString();
-                            Intent i = new Intent(getContext(), VideoPlayer.class);
-                            i.putExtra("episode_num", String.valueOf(position + 1));
-                            i.putExtra("title", animetitle);
-                            i.putExtra("summary", animeDetail.getSummary());
-                            i.putExtra("server_name", "server1");
-                            startActivity(i);
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            String item = adapterView.getSelectedItem().toString();
+                            if (position != 0) {
+                                Intent i = new Intent(getContext(), VideoPlayer.class);
+                                i.putExtra("episode_num", String.valueOf(position));
+                                i.putExtra("title", animetitle);
+                                i.putExtra("summary", animeDetail.getSummary());
+                                i.putExtra("server_name", "server1");
+                                startActivity(i);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
                         }
                     });
-
+                }
 
                 } else {
                     Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
@@ -286,15 +292,15 @@ public class SummaryView extends Fragment implements EpisodeAdapter.SelectListen
         });
 
     }
-    @Override
-    public void onEpisodeClicked(int num){
-        Intent i = new Intent(getContext(), VideoPlayer.class);
-        i.putExtra("episode_num", String.valueOf(num));
-        i.putExtra("title", animetitle);
-        i.putExtra("summary", animeDetail.getSummary());
-        i.putExtra("server_name", "server1");
-        startActivity(i);
-    }
+//    @Override
+//    public void onEpisodeClicked(int num){
+//        Intent i = new Intent(getContext(), VideoPlayer.class);
+//        i.putExtra("episode_num", String.valueOf(num));
+//        i.putExtra("title", animetitle);
+//        i.putExtra("summary", animeDetail.getSummary());
+//        i.putExtra("server_name", "server1");
+//        startActivity(i);
+//    }
     @Override
     public void onResume() {
         super.onResume();

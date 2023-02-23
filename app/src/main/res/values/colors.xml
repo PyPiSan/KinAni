@@ -16,8 +16,8 @@
     <color name="primaryLightColor">#80484848</color>
     <color name="cardBackground">@android:color/transparent</color>
     <color name="primaryDarkColor">#000000</color>
-    <color name="primaryTransColor">#80ffffff</color>
-    <color name="primaryTextColor">#484848</color>
+    <color name="primaryTransColor">#000000</color>
+    <color name="primaryTextColor">#000000</color>
     <color name="primaryIconColor">#000000</color>
     <color name="black_overlay">#66000000</color>
     <color name="colorSecondary">#CFD8DC</color>

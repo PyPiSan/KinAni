@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.mediarouter.app.MediaRouteButton;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -57,12 +59,14 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private Uri hlsUri;
     private CastContext mCastContext;
     private MediaRouteButton mMediaRouteButton;
-    private ImageButton fullscreen, nextButton, reloadButton, previousButton;
-    private FrameLayout loader, textFrame;
+    private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton;
+    private FrameLayout loader, textFrame, settingPopup;
     private ProgressBar videoLoading;
-    private Boolean playerState = false;
-
+    private Boolean playerState = false, visibility = false;;
     private String episode_num;
+    private String[] videoLink = new String[4];
+
+    private Button qualityOne, qualityTwo, qualityThree, qualityFour;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -87,6 +91,14 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         fullscreen = findViewById(R.id.fullScreen);
         nextButton = findViewById(R.id.nextButton);
         previousButton = findViewById(R.id.previousButton);
+        settingButton = findViewById(R.id.setting);
+
+        Dialog settingDialog = new Dialog(this);
+        settingDialog.setContentView(R.layout.video_quality_dailog);
+        qualityOne = settingDialog.findViewById(R.id.qualityOne);
+        qualityTwo = settingDialog.findViewById(R.id.qualityTwo);
+        qualityThree = settingDialog.findViewById(R.id.qualityThree);
+        qualityFour = settingDialog.findViewById(R.id.qualityFour);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
         fullscreen.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +172,50 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
+//        Setting Button Click Listener
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingDialog.show();
+//                if (visibility){
+//                    settingDailog.cancel();
+//                    visibility = false;
+//                }else
+//                {
+//                    settingDailog.show();
+//                    visibility = true;
+//                }
+            }
+        });
+        qualityOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQualitySelected(0);
+                settingDialog.cancel();
+            }
+        });
+        qualityTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQualitySelected(1);
+                settingDialog.cancel();
+            }
+        });
+
+        qualityThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQualitySelected(2);
+                settingDialog.cancel();
+            }
+        });
+        qualityFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onQualitySelected(3);
+                settingDialog.cancel();
+            }
+        });
     }
 
 
@@ -187,7 +243,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     private void getEpisodeLink(String title, String episode_num) {
-        final String[] videoLink = new String[1];
         //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
@@ -206,14 +261,17 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 }
 //                Log.d("video", "link is"+resource.getSuccess());
                 if (flag) {
-                    videoLink[0] = resource.getValue().getQuality3();
+                    videoLink[0] = resource.getValue().getQuality1();
+                    videoLink[1] = resource.getValue().getQuality2();
+                    videoLink[2] = resource.getValue().getQuality3();
+                    videoLink[3] = resource.getValue().getQuality4();
                 }
-                if (videoLink[0] == null || videoLink[0].equals("")) {
+                if (videoLink[2] == null || videoLink[2].equals("")) {
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
                 }else{
-                    playerInit(videoLink[0]);
+                    playerInit(videoLink[2]);
                 }
             }
 
@@ -228,7 +286,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     public void playerInit(String link) {
-        loader.setVisibility(View.GONE);
+//        loader.setVisibility(View.GONE);
+        videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(), "Video found, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
         hlsUri = Uri.parse(link);
@@ -268,19 +327,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 //                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
-            playerView.setLayoutParams(layoutParams);
+            loader.setLayoutParams(layoutParams);
         }else{
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().clearFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 //            getWindow().clearFlags(View.KEEP_SCREEN_ON);
 
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = (int) 242*3;
-            playerView.setLayoutParams(layoutParams);
+            loader.setLayoutParams(layoutParams);
         }
 
     }
@@ -335,6 +394,18 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         reloadButton.setVisibility(View.GONE);
         videoLoading.setVisibility(View.VISIBLE);
         getEpisodeLink(title, episode_num);
+    }
+
+    private void onQualitySelected(int index){
+        long time = 0;
+        if(playerState) {
+            player.pause();
+            time = player.getContentPosition();
+        }
+        String newLink = videoLink[index];
+        player.setMediaItem(MediaItem.fromUri(Uri.parse(newLink)));
+        player.prepare();
+        player.seekTo(time);
     }
     @Override
     public void onCastSessionAvailable() {

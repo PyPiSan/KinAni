@@ -36,4 +36,8 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="release">Release</string>
+    <string name="qualityfour">1080p</string>
+    <string name="qualitythree">720p</string>
+    <string name="qualitytwo">480p</string>
+    <string name="qualityOne">360p</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,8 +110,12 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             public void onClick(View v) {
 //      Search view generate..
                 String searchString = String.valueOf(editText.getText());
-                progressBar.setAlpha(1);
-                insertDataToCard(searchString);
+                if (!searchString.equals("")){
+                    progressBar.setAlpha(1);
+                    insertDataToCard(searchString);
+                }else{
+                    Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -282,5 +287,18 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             }
 
         }
+    }
+
+    private void setUpOnBackPressed(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(isEnabled()) {
+                    Toast.makeText(getContext(), "Back Pressed", Toast.LENGTH_SHORT).show();
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
     }
 }

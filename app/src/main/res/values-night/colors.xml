@@ -15,7 +15,7 @@
     <color name="primaryLightColor">#85ffffff</color>
     <color name="cardBackground">#263238</color>
     <color name="primaryDarkColor">#000000</color>
-    <color name="primaryTransColor">#80ffffff</color>
+    <color name="primaryTransColor">#263238</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="primaryIconColor">#ffffff</color>
     <color name="black_overlay">#66ffffff</color>

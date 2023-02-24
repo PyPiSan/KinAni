@@ -110,7 +110,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-                Log.d("Hey1", "Response code is : " + response.code());
+//                Log.d("Hey1", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {

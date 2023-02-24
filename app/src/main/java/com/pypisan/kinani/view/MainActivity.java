@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
@@ -33,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
-
+    private int HomeIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,10 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void onSearchClicked(){
         Fragment fragment = new SearchListView();
-        Fragment current = getSupportFragmentManager().findFragmentByTag("home_fragment");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentView, fragment)
-                .hide(current)
                 .addToBackStack(null)
                 .commit();
     }
@@ -173,31 +172,47 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
-            Fragment current = getSupportFragmentManager().findFragmentByTag("home_fragment");
+            String tag = null;
+            Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
 
             switch (item.getItemId()) {
                 case R.id.newRelease:
                     selectedFragment = new RecentView();
+                    tag = "recent_fragment";
                     break;
                 case R.id.movies:
                     selectedFragment = new MoviesView();
+                    tag = "movies_fragment";
                     break;
                 case R.id.liked:
                     selectedFragment = new LikedView();
+                    tag = "liked_fragment";
                     break;
                 case R.id.home:
                     selectedFragment = new HomeView();
+                    tag = "home_fragment";
                     break;
             }
+            int currentStack = getSupportFragmentManager().getBackStackEntryCount();
+            if (tag.equals("home_fragment")){
+                HomeIndex = getSupportFragmentManager().getBackStackEntryCount() +1 ;
+            }
 //            Begin Transition
-//            Log.d("fragHello", "1 " + selectedFragment + "2 " + current);
+//            Log.d("fragHello", "1 " + tag + " backstack " + currentStack + " homeindex " + HomeIndex);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentView, selectedFragment)
-                    .hide(current)
+                    .replace(R.id.fragmentView, selectedFragment, tag)
                     .addToBackStack(null)
                     .commit();
             return true;
         }
     };
-
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount()==HomeIndex ) {
+            moveTaskToBack(true);
+        } else {
+            // if there is only one entry in the backstack, show the home screen
+            getSupportFragmentManager().popBackStack();
+        }
+    }
 }

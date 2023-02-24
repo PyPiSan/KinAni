@@ -49,7 +49,7 @@
             android:scaleType="centerCrop" />
         <TextView
             android:id="@+id/titleName"
-            android:layout_width="300dp"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_gravity="bottom"

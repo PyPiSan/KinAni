@@ -66,18 +66,6 @@
             android:layout_height="match_parent" />
     </androidx.core.widget.NestedScrollView>
 
-<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
-<!--        android:id="@+id/bottomAppBar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        app:hideOnScroll="true"-->
-<!--        app:menu="@menu/bottom_menu"-->
-<!--        app:itemIconTint="@color/bottom_item_background"-->
-<!--        app:itemTextColor="@color/primaryTextColor"-->
-<!--        app:labelVisibilityMode="labeled"-->
-<!--        android:backgroundTint="@color/cardBackground">-->
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomAppBar"
             android:layout_gravity="bottom"
@@ -90,8 +78,6 @@
             app:itemIconTint="@color/bottom_item_background"
             app:itemTextColor="@color/primaryTextColor"
             />
-
-<!--    </com.google.android.material.bottomappbar.BottomAppBar>-->
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

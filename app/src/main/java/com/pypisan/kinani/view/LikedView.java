@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
     private AnimeManager animeManager;
 
     private LottieAnimationView errorPage;
+    private TextView alertText;
 
     public LikedView() {
         // Required empty public constructor
@@ -64,6 +66,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
         super.onViewCreated(view, savedInstanceState);
 
         errorPage = view.findViewById(R.id.animationView);
+        alertText = view.findViewById(R.id.alertText);
 
 
 //      initialization recycler
@@ -92,6 +95,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
         Cursor cursor = animeManager.readAllDataLiked();
         if (cursor.getCount() == 0){
             Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
+            animeManager.close();
         }else {
             AnimeModel model;
 //            Log.d("C1", "anime list is " + cursor.getCount());
@@ -100,8 +104,10 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
                 animeList.add(model);
 //                Log.d("C4", "anime list is " + animeList.size());
                 errorPage.setVisibility(View.GONE);
+                alertText.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
+            animeManager.close();
         }
     }
 

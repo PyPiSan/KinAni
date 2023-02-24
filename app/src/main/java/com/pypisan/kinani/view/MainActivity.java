@@ -32,8 +32,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
-    private CastContext mCastContext;
     private BottomNavigationView bottomNav;
 
     @Override
@@ -41,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_KinAni);
         setContentView(R.layout.activity_main);
-
-        mCastContext = CastContext.getSharedInstance(this);
 
         bottomNav = findViewById(R.id.bottomAppBar);
         bottomNav.setOnItemSelectedListener(navListner);
@@ -97,9 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.account:
                 callLoginDialog();
-                return true;
-            case R.id.media_route_menu_item:
-                Toast.makeText(getApplicationContext(), "Cast", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

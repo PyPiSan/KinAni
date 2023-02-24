@@ -53,14 +53,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
-    private TextView animeTitleView, summaryTextView;
+    private TextView animeTitleView, summaryTextView, videoHead;
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
     private Uri hlsUri;
     private CastContext mCastContext;
     private MediaRouteButton mMediaRouteButton;
-    private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton;
+    private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
+                        skipBack, skipForward;
     private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
@@ -88,10 +89,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         animeTitleView = findViewById(R.id.animeTitleText);
         summaryTextView = findViewById(R.id.summaryText);
+        videoHead = findViewById(R.id.videoHead);
         playerView = findViewById(R.id.video_view);
         fullscreen = findViewById(R.id.fullScreen);
         nextButton = findViewById(R.id.nextButton);
         previousButton = findViewById(R.id.previousButton);
+        skipForward = findViewById(R.id.skipForward);
+        skipBack = findViewById(R.id.skipBack);
         settingButton = findViewById(R.id.setting);
 
         settingDialog = new Dialog(this);
@@ -106,7 +110,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
         animeTitleView.setText(title);
+        animeTitleView.setSelected(true);
         summaryTextView.setText(summary);
+        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setSelected(true);
         getEpisodeLink(title, episode_num);
 
 //        for casting video
@@ -177,7 +184,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-
+//        Skip Forward and Back listener
+        skipBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long currBack = player.getContentPosition();
+                player.seekTo(currBack-10000);
+            }
+        });
+        skipForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long currFor = player.getContentPosition();
+                player.seekTo(currFor+10000);
+            }
+        });
     }
 
 
@@ -251,7 +272,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "Video found, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Playing, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
         hlsUri = Uri.parse(link);
         int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -335,6 +356,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         int num = Integer.parseInt(episode_num);
         episode_num = String.valueOf(num+1);
         playerView.setVisibility(View.GONE);
+        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setSelected(true);
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);
         videoLoading.setVisibility(View.VISIBLE);
@@ -353,6 +376,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             episode_num = String.valueOf(num-1);
         }
         playerView.setVisibility(View.GONE);
+        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setSelected(true);
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);
         videoLoading.setVisibility(View.VISIBLE);

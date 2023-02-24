@@ -41,17 +41,6 @@
             app:controller_layout_id="@layout/exo_player_video_layout" />
     </FrameLayout>
 
-<!--    <com.google.android.exoplayer2.ui.StyledPlayerView-->
-<!--        android:id="@+id/video_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="253dp"-->
-<!--        android:visibility="gone"-->
-<!--        android:background="@color/primaryDarkColor"-->
-<!--        app:controller_layout_id="@layout/exo_player_video_layout"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <FrameLayout
         android:id="@+id/textFrame"
         android:layout_width="match_parent"
@@ -69,6 +58,7 @@
         android:layout_marginTop="5dp"
         android:singleLine="true"
         android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/primaryTextColor"

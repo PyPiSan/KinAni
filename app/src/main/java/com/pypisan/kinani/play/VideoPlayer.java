@@ -277,6 +277,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             playerView.setPlayer(player);
             player.setMediaItem(MediaItem.fromUri(hlsUri));
             player.prepare();
+            player.play();
             playerState = true;
     }
 
@@ -368,6 +369,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         player.setMediaItem(MediaItem.fromUri(Uri.parse(newLink)));
         player.prepare();
         player.seekTo(time);
+        player.play();
     }
     @Override
     public void onCastSessionAvailable() {

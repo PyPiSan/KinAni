@@ -25,7 +25,7 @@ public class RecentlyAiredModel {
         private String image;
         @SerializedName("anime_title")
         private String title;
-        @SerializedName("episode")
+        @SerializedName("episodes")
         private String episode;
         @SerializedName("schedule")
         private String schedule;

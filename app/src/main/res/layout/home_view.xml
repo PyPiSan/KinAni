@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.inmobi.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -120,10 +121,27 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recommend"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp">
+    <com.inmobi.ads.InMobiBanner
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/banner"
+        ads:placementId="plid-1688560554226"
+        ads:refreshInterval="60"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/firstRelative"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recommend"
+        android:layout_below="@+id/ads"
         android:layout_marginStart="12dp"
         >
 
@@ -185,5 +203,16 @@
         android:layout_marginEnd="10dp"
         android:visibility="gone"
         android:layout_below="@+id/recentlyAired"/>
+
+    <com.inmobi.ads.InMobiBanner
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/banner2"
+        android:layout_below="@+id/home_recycler_view_recentlyAired"
+        ads:placementId="plid-1688005710256"
+        ads:refreshInterval="60"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        />
 
 </RelativeLayout>

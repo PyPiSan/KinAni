@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.HomeViewAdapter;
 import com.pypisan.kinani.adapter.RecentlyAiredAdapter;
@@ -48,6 +49,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     private RecyclerView.Adapter adapter, adapterTrending, scheduleAdapter, adapterRecommend;
     private AnimeManager animeManager;
+    private InMobiBanner bannerAdTop, bannerAdBottom;
 
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
     private ShimmerFrameLayout containerTrending, containerSchedule, containerRecommend,
@@ -87,6 +89,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
 
         recentTextHeader = view.findViewById(R.id.recents);
+
+//        Ads
+        bannerAdTop = (InMobiBanner)view.findViewById(R.id.banner);
+        bannerAdBottom = (InMobiBanner)view.findViewById(R.id.banner2);
 
 //        Starting Shimmer Effect
         containerRecent.startShimmer();
@@ -141,7 +147,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //        Setting Data
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);
-
+        bannerAdTop.load();
+        bannerAdBottom.load();
     }
 //       Fetching Liked list from DB
 

@@ -33,6 +33,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.EpisodeAdapter;
 import com.pypisan.kinani.api.RequestModule;
@@ -54,15 +55,13 @@ public class SummaryView extends Fragment{
     private ImageView headImage, titleImage;
     private TextView title, summary, releasedValue, statusValue, genreVal;
     private ListView episodes;
-    private RecyclerView.Adapter adapterEpisode;
-    private AutoCompleteTextView autoCompleteText;
     private ArrayAdapter<String> episodeAdapter;
-    private RecyclerView recyclerEpisode;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
     private String animetitle, animeDetailLink, animeLink;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
     private Animation animationImage;
+    private InMobiBanner bannerAd;
     private CardView cardImageTitle, cardHeadImage;
 
     private AppCompatSpinner episodeSpinner;
@@ -108,8 +107,11 @@ public class SummaryView extends Fragment{
         containerImg.startShimmer();
         containerSummaryText.startShimmer();
 
+//        Ads
+        bannerAd = (InMobiBanner)view.findViewById(R.id.banner);
 //        Fetching Anime Detail Summary
         getAnimeSummary(view, animeName);
+        bannerAd.load();
 
 //        For animation
         animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);
@@ -315,6 +317,7 @@ public class SummaryView extends Fragment{
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        bannerAd.destroy();
 //        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 

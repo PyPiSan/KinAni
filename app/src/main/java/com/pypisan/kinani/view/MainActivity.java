@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -105,10 +108,12 @@ public class MainActivity extends AppCompatActivity {
         Dialog myDialog = new Dialog(this);
         myDialog.setContentView(R.layout.user_dialog);
         myDialog.setCancelable(false);
+        LinearLayout loginBox = myDialog.findViewById(R.id.loginBox);
         Button login = myDialog.findViewById(R.id.loginButton);
         Button cancel = myDialog.findViewById(R.id.cancelButton);
         EditText username = myDialog.findViewById(R.id.et_username);
         EditText password = myDialog.findViewById(R.id.et_password);
+        ProgressBar loginLoader = myDialog.findViewById(R.id.loginLoader);
         myDialog.show();
 
         login.setOnClickListener(new View.OnClickListener()
@@ -118,7 +123,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 String user = String.valueOf(username.getText());
                 String pass = String.valueOf(password.getText());
-
+                if (user.equals("") || pass.equals("")){
+                    Toast.makeText(getApplicationContext(), "User and Password required", Toast.LENGTH_SHORT).show();
+                }else{
+                loginBox.setVisibility(View.GONE);
+                loginLoader.setVisibility(View.VISIBLE);
                 String[] apiVal = new String[1];
                 Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
                         .addConverterFactory(GsonConverterFactory.create()).build();
@@ -136,19 +145,24 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (flag) {
                             apiVal[0] = resource.getApikey();
-                            Toast.makeText(getApplicationContext(), apiVal[0], Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             myDialog.cancel();
                         } else {
                             apiVal[0] = "";
-                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Failed,Try Again", Toast.LENGTH_SHORT).show();
+                            loginLoader.setVisibility(View.GONE);
+                            loginBox.setVisibility(View.VISIBLE);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<UserModel> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_SHORT).show();
+                        loginLoader.setVisibility(View.GONE);
+                        loginBox.setVisibility(View.VISIBLE);
                     }
                 });
+                }
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {

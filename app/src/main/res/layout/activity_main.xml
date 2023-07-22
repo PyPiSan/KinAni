@@ -34,7 +34,8 @@
                         android:paddingStart="5dp"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_head_logo"
-                        android:id="@+id/mainLogo"/>
+                        android:id="@+id/mainLogo"
+                        android:contentDescription="@string/app_title" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -78,6 +79,5 @@
             app:itemIconTint="@color/bottom_item_background"
             app:itemTextColor="@color/primaryTextColor"
             />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

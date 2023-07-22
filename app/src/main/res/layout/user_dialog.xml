@@ -5,8 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/primaryColor">
 
-
+        <ProgressBar
+            android:id="@+id/loginLoader"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
     <LinearLayout
+        android:id="@+id/loginBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

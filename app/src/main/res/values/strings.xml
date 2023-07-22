@@ -29,7 +29,7 @@
     <string name="anime_rating">Anime Rating</string>
     <string name="status">Status</string>
     <string name="username">User</string>
-    <string name="enter_username">Choose alias</string>
+    <string name="enter_username">Enter alias</string>
     <string name="password">Password</string>
     <string name="enter_password">Enter password</string>
     <string name="forgot_password">Forgot password ?</string>
@@ -43,4 +43,6 @@
     <string name="quality_seletor">Select Quality</string>
     <string name="like_alert">Oops! Don\'t you have any Favourite Anime.You have to add Anime to Likes to show here by clicking the heart icon…</string>
     <string name="none">none</string>
+    <string name="error_alert">Oops! Content Not Found, Please click Retry..</string>
+    <string name="retry">Retry</string>
 </resources>

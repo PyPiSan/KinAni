@@ -12,6 +12,48 @@
     tools:context=".view.SummaryView">
 
     <RelativeLayout
+        android:id="@+id/errorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/errorAnimationView"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="160dp"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/notfound"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/errorAnimationView"
+        android:text="@string/error_alert"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/errorText"
+            android:backgroundTint="@color/cardBackground"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/primaryTextColor"
+            android:layout_centerHorizontal="true"
+            android:text="@string/retry"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/zeroShimmerRelative"
         android:layout_width="match_parent"
         android:layout_height="@dimen/summary_header_image"

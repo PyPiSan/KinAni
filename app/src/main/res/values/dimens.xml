@@ -3,8 +3,8 @@
 
     <dimen name="image_height">140dp</dimen>
     <dimen name="image_width">120dp</dimen>
-    <dimen name="image_recent_height">200dp</dimen>
-    <dimen name="image_recent_width">180dp</dimen>
+    <dimen name="image_recent_height">140dp</dimen>
+    <dimen name="image_recent_width">120dp</dimen>
     <dimen name="summary_header_image">250dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
 </resources>

@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +45,9 @@ import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,8 +57,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SummaryView extends Fragment{
 
     private ImageView headImage, titleImage;
-    private TextView title, summary, releasedValue, statusValue, genreVal;
+    private TextView title, summary, releasedValue, statusValue, genreVal, aboutTextHead;
     private ListView episodes;
+
+    private Button retryButton;
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
@@ -65,7 +71,7 @@ public class SummaryView extends Fragment{
     private CardView cardImageTitle, cardHeadImage;
 
     private AppCompatSpinner episodeSpinner;
-    private RelativeLayout ratingLayout;
+    private RelativeLayout ratingLayout, errorView;
     private boolean isTextViewClicked = false;
     private LottieAnimationView likedFab;
     private Cursor cursor = null;
@@ -106,6 +112,25 @@ public class SummaryView extends Fragment{
         containerImgHead.startShimmer();
         containerImg.startShimmer();
         containerSummaryText.startShimmer();
+
+//        error view after timeout
+        errorView = view.findViewById(R.id.errorView);
+        aboutTextHead = view.findViewById(R.id.about);
+
+//        retry logic page reloading
+        retryButton = view.findViewById(R.id.retryButton);
+        retryButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                errorView.setVisibility(View.GONE);
+                containerImg.setVisibility(View.VISIBLE);
+                containerSummaryText.setVisibility(View.VISIBLE);
+                containerImgHead.setVisibility(View.VISIBLE);
+                aboutTextHead.setVisibility(View.VISIBLE);
+                getAnimeSummary(view, animeName);
+                bannerAd.load();
+            }
+        });
 
 //        Ads
         bannerAd = (InMobiBanner)view.findViewById(R.id.banner);
@@ -173,9 +198,14 @@ public class SummaryView extends Fragment{
         ratingLayout = view.findViewById(R.id.ratingLayout);
 
 //      fetching data
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .build();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
 
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
@@ -285,11 +315,24 @@ public class SummaryView extends Fragment{
 
                 } else {
                     Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
+                    bannerAd.destroy();
+                    errorView.setVisibility(View.VISIBLE);
+                    containerImg.setVisibility(View.GONE);
+                    containerSummaryText.setVisibility(View.GONE);
+                    containerImgHead.setVisibility(View.GONE);
+                    aboutTextHead.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<AnimeEpisodeListModel> call, Throwable t) {
+                bannerAd.destroy();
+                Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
+                errorView.setVisibility(View.VISIBLE);
+                containerImg.setVisibility(View.GONE);
+                containerSummaryText.setVisibility(View.GONE);
+                containerImgHead.setVisibility(View.GONE);
+                aboutTextHead.setVisibility(View.GONE);
             }
         });
 

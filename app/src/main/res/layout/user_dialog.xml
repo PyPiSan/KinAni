@@ -17,11 +17,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="9dp"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/username"
+            android:textStyle="bold"
             />
 
         <EditText
@@ -38,11 +39,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="9dp"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/password"
+            android:textStyle="bold"
             />
 
         <EditText
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="9dp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/forgot_password"
             android:textSize="18sp"

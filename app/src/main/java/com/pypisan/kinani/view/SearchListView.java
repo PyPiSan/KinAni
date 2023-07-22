@@ -63,6 +63,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     private ImageButton backButton, voice_search_button;
     private AnimeManager animeManager;
 
+    private boolean loaderState = false;
     private ProgressBar progressBar;
     private static final int REQ_CODE_SPEECH_INPUT = 0;
 
@@ -111,7 +112,10 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 //      Search view generate..
                 String searchString = String.valueOf(editText.getText());
                 if (!searchString.equals("")){
-                    progressBar.setAlpha(1);
+                    if (!loaderState) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        loaderState = true;
+                    }
                     insertDataToCard(searchString);
                 }else{
                     Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
@@ -161,6 +165,10 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             @Override
             public void onClick(View v) {
                 editText.setText("");
+                Log.d("search","anime list is " +animeSearchList.size());
+                adapterSearch.notifyItemRangeRemoved(0,animeSearchList.size());
+                recyclerView.setVisibility(View.GONE);
+                loaderState = false;
             }
         });
 
@@ -204,18 +212,22 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
                     }
                     progressBar.setVisibility(View.GONE);
+                    loaderState = false;
+                    recyclerView.setVisibility(View.VISIBLE);
                     adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), SearchListView.this::onItemClicked);
                     recyclerView.setAdapter(adapterSearch);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     bottomAppBar.setVisibility(View.VISIBLE);
                 } else {
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AnimeRecentModel> call, Throwable t) {
                 Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

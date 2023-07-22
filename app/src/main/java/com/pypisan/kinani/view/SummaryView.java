@@ -128,7 +128,7 @@ public class SummaryView extends Fragment{
                 containerImgHead.setVisibility(View.VISIBLE);
                 aboutTextHead.setVisibility(View.VISIBLE);
                 getAnimeSummary(view, animeName);
-                bannerAd.load();
+                bannerAd.setVisibility(View.VISIBLE);
             }
         });
 
@@ -315,7 +315,7 @@ public class SummaryView extends Fragment{
 
                 } else {
                     Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
-                    bannerAd.destroy();
+                    bannerAd.setVisibility(View.GONE);
                     errorView.setVisibility(View.VISIBLE);
                     containerImg.setVisibility(View.GONE);
                     containerSummaryText.setVisibility(View.GONE);
@@ -326,7 +326,7 @@ public class SummaryView extends Fragment{
 
             @Override
             public void onFailure(Call<AnimeEpisodeListModel> call, Throwable t) {
-                bannerAd.destroy();
+                bannerAd.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
                 errorView.setVisibility(View.VISIBLE);
                 containerImg.setVisibility(View.GONE);

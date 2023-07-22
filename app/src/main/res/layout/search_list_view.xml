@@ -68,7 +68,7 @@
             android:id="@+id/loadSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0"/>
+            android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler_view"
         android:layout_width="match_parent"

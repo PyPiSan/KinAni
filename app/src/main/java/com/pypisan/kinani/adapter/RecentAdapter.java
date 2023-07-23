@@ -68,6 +68,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
 //            Toast.makeText(view.getContext(), "Card is " + animeTitle, Toast.LENGTH_SHORT).show();
             listener.onItemClicked(animeTitle, animeDetailLink, animeImage);
         });
+
     }
 
     @Override

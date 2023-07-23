@@ -1,26 +1,22 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.MoviesView"
     android:tag="movies_fragment"
     android:id="@+id/nestedMovies"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginStart="10dp"
+    android:layout_marginTop="50dp"
     android:background="@color/primaryColor"
     android:layout_marginEnd="5dp">
-
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_movies_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:shimmer_direction="left_to_right">
-
         <include layout="@layout/recent_card_skeleton"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -28,13 +24,11 @@
         android:id="@+id/movie_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         />
         <ProgressBar
             android:id="@+id/movieProgress"
             android:layout_width="match_parent"
-            android:layout_below="@+id/movie_recycler_view"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-<!--    </RelativeLayout>-->
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/movie_recycler_view" />
 </RelativeLayout>

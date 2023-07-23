@@ -54,18 +54,20 @@
             </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Note: A RecyclerView can also be used -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:layout_marginBottom="?attr/actionBarSize">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginBottom="?attr/actionBarSize">-->
+        <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+        <!--        tools:ignore="SpeakableTextPresentCheck"-->
 
         <FrameLayout
             android:id="@+id/fragmentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.core.widget.NestedScrollView>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="?attr/actionBarSize"/>
+
+<!--    </androidx.core.widget.NestedScrollView>-->
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomAppBar"

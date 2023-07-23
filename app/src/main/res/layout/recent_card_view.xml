@@ -40,8 +40,6 @@
                 android:textColor="@color/primaryTextColor"
                 android:background="@color/cardBackground"
                 />
-
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

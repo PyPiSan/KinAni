@@ -123,9 +123,29 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //        2nd recycler view trending
         recyclerView_trending = view.findViewById(R.id.home_recycler_view_trending);
-        recyclerView_trending.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager trendingLinearLayout = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_trending.setLayoutManager(trendingLinearLayout);
         recyclerView_trending.setHasFixedSize(false);
+        recyclerView_trending.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = trendingLinearLayout.getItemCount();
+                int firstVisibleItem = trendingLinearLayout.findLastCompletelyVisibleItemPosition();
+                if (firstVisibleItem == totalItemCount-1) {
+                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
+                            visibleItemCount, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 //        Setting Data
         adapterTrending = new HomeViewAdapter(animeTrendingListInc, getContext(), this);

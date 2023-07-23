@@ -44,7 +44,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private ProgressBar progressBarMovie;
     private AnimeManager animeManager;
 //    private int previousTotal = 0;
-//    private boolean loading = false;
+    private boolean loading = false;
 //    private int visibleThreshold = 8;
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
@@ -75,7 +75,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         containerMovies.startShimmer();
         progressBarMovie = view.findViewById(R.id.movieProgress);
 
-        insertDataToCard("3");
+        insertDataToCard("1");
 
         //      initialization recycler
 
@@ -85,11 +85,11 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         recyclerView.setHasFixedSize(false);
 
         //        Item Declaration
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(2), true));
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(1), false));
 //        Log.d("hello", "anime list is " + animeList.size());
         adapterMovies = new RecentAdapter(getContext(), animeListInc, this);
 
-        recyclerView.setNestedScrollingEnabled(false);
+//        recyclerView.setNestedScrollingEnabled(false);
 //        infinite Scroller
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -101,9 +101,12 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                 visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (firstVisibleItem == totalItemCount-1) {
+                if (!loading && firstVisibleItem == totalItemCount-1) {
                     Toast.makeText(getContext(), firstVisibleItem + "Response " +
                             visibleItemCount, Toast.LENGTH_SHORT).show();
+//                    progressBarMovie.setVisibility(View.VISIBLE);
+//                    loading = true;
+                    insertDataToCard("2");
                 }
             }
         });

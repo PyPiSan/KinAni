@@ -11,9 +11,9 @@
     android:background="@color/primaryColor"
     android:layout_marginEnd="5dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_movies_layout"
@@ -36,5 +36,5 @@
             android:layout_below="@+id/movie_recycler_view"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,18 +91,22 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
         recyclerView.setNestedScrollingEnabled(false);
 //        infinite Scroller
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                visibleItemCount = recyclerView.getChildCount();
-//                totalItemCount = gridLayoutManager.getItemCount();
-//                firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-//                if (!loading && firstVisibleItem == totalItemCount-1) {
-//                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
-//                            visibleItemCount, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = gridLayoutManager.getItemCount();
+                firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (firstVisibleItem == totalItemCount-1) {
+                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
+                            visibleItemCount, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 

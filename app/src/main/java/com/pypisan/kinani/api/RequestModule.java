@@ -45,7 +45,7 @@ public interface RequestModule {
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
     })
-    @GET("popular")
+    @GET("recommendation")
     Call<AnimeRecentModel> getAnimeRecommend();
 
     @Headers({

@@ -87,6 +87,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 
 //        Insert data to card
     private void insertDataToCard() {
+        String pageNum = "1";
     // Add the cards data and display them
 //        fetching data
     animeList = new ArrayList<>();
@@ -96,7 +97,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
             .build();
 
     RequestModule animeTrending = retrofit.create(RequestModule.class);
-    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending();
+    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending(pageNum);
 
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override

@@ -16,8 +16,6 @@ import retrofit2.http.Query;
 
 public interface RequestModule {
 
-    String apiKey = "e7y6acFyHGqwtkBLKHx6eA";
-
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
     })
@@ -39,14 +37,14 @@ public interface RequestModule {
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
     })
-    @GET("trending")
-    Call<AnimeRecentModel> getAnimeTrending();
+    @GET("trending/")
+    Call<AnimeRecentModel> getAnimeTrending(@Query("page") String num);
 
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
     })
-    @GET("recommendation")
-    Call<AnimeRecentModel> getAnimeRecommend();
+    @GET("recommendation/")
+    Call<AnimeRecentModel> getAnimeRecommend(@Query("page") String num);
 
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
@@ -57,8 +55,8 @@ public interface RequestModule {
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
     })
-    @GET("schedule")
-    Call<RecentlyAiredModel> getAnimeSchedule();
+    @GET("schedule/")
+    Call<RecentlyAiredModel> getAnimeSchedule(@Query("page") String num);
 
     @Headers({
             "x-api-key: e7y6acFyHGqwtkBLKHx6eA"

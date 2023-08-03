@@ -231,6 +231,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     //  fetching data
     private void getTrendingList() {
+        String pageNum = "1";
         animeTrendingList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
@@ -238,7 +239,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .build();
 
         RequestModule animeTrend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending();
+        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending(pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -292,6 +293,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     //  fetching data
     private void recommendFetcher() {
+        String pageNum = "1";
         animeRecommendList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
@@ -299,7 +301,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .build();
 
         RequestModule animeRecommend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecommend.getAnimeRecommend();
+        Call<AnimeRecentModel> call = animeRecommend.getAnimeRecommend(pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -352,6 +354,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     }
 
     private void scheduleFetcher() {
+        String pageNum = "1";
         animeScheduleList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://anime.pypisan.com/v1/anime/")
@@ -359,7 +362,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .build();
 
         RequestModule animeSchedule = retrofit.create(RequestModule.class);
-        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule();
+        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule(pageNum);
 
         call.enqueue(new Callback<RecentlyAiredModel>() {
             @Override

@@ -6,13 +6,13 @@ import java.util.List;
 
 public class RecentlyAiredModel {
 
-    @SerializedName("data")
-    private final List<RecentlyAiredModel.datum> data = null;
+    @SerializedName("results")
+    private final List<RecentlyAiredModel.datum> results = null;
     @SerializedName("success")
     private Boolean success;
 
     public List<datum> getData() {
-        return data;
+        return results;
     }
 
     public Boolean getSuccess() {

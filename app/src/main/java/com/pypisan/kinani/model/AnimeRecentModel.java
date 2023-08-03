@@ -8,15 +8,15 @@ public class AnimeRecentModel {
 
     @SerializedName("success")
     private Boolean success;
-    @SerializedName("data")
-    private final List<datum> data = null;
+    @SerializedName("results")
+    private final List<datum> results = null;
 
     public Boolean getSuccess() {
         return success;
     }
 
     public List<datum> getData() {
-        return data;
+        return results;
     }
 
     public class datum {

@@ -39,11 +39,11 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
     private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapterMovies;
+    private RecentAdapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
     private AnimeManager animeManager;
     private int pageNumber;
-    private boolean lastPage = false;
+    private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
 
@@ -93,9 +93,10 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (!lastPage && firstVisibleItem == totalItemCount-1) {
+                if (!lastPage && !loading && firstVisibleItem == totalItemCount-1) {
                     recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
                     pageNumber +=1;
+                    loading=true;
                     insertDataToCard(String.valueOf(pageNumber));
                 }
             }
@@ -114,7 +115,9 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
         RequestModule moviesList = retrofit.create(RequestModule.class);
         Call<AnimeRecentModel> call = moviesList.getMovies(pageNum);
-
+        if (Integer.parseInt(pageNum)>1) {
+            adapterMovies.addNullData();
+        }
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
@@ -131,6 +134,10 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                         animeList.add(model);
                     }
                     adapterMovies.notifyItemInserted(resource.getResultSize());
+                    if (Integer.parseInt(pageNum)>1) {
+                        adapterMovies.removeNull((Integer.parseInt(pageNum)-1)*30);
+                    }
+                    loading=false;
                     if (resource.getResultSize()<30){
                         lastPage = true;
                     }

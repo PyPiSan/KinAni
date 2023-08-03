@@ -1,9 +1,9 @@
 package com.pypisan.kinani.view;
 
-import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,21 +38,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RecentView extends Fragment implements RecentAdapter.SelectListener {
 
     // Add RecyclerView member
-    private ArrayList<AnimeModel> animeList, animeListInc;
+    private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ShimmerFrameLayout container;
     private AnimeManager animeManager;
+
+    private int pageNumber;
+    private Parcelable recyclerViewState;
+    private boolean lastPage = false;
+    private int firstVisibleItem, totalItemCount;
 
 
     public RecentView() {
         // Required empty public constructor
     }
 
-
-    public static RecentView newInstance() {
-        return new RecentView();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,41 +67,52 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
         return inflater.inflate(R.layout.recent_view, container, false);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        animeListInc = new ArrayList<>();
+        animeList = new ArrayList<>();
         container = view.findViewById(R.id.shimmer_layout);
         container.startShimmer();
 
 // Data initialization
-
-        insertDataToCard("1");
+        pageNumber = 1;
+        insertDataToCard(String.valueOf(pageNumber));
 
 //      initialization recycler
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
 
 
 //        Item Declaration
 
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
-//        Log.d("hello", "anime list is " + animeListInc.size());
-        adapter = new RecentAdapter(getContext(), animeListInc, this);
+        adapter = new RecentAdapter(getContext(), animeList, this);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                totalItemCount = gridLayoutManager.getItemCount();
+                firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (!lastPage && firstVisibleItem == totalItemCount-1) {
+                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+                    pageNumber +=1;
+                    insertDataToCard(String.valueOf(pageNumber));
+                }
+            }
+        });
     }
 
     private void insertDataToCard(String pageNum) {
 //        Add the cards data and display them
 //        fetching data
-        if (pageNum.equals("")){
-            pageNum="1";
-        }
-        animeList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -109,29 +122,28 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//                Log.d("Hey1", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
-                    AnimeModel model = new AnimeModel();
-//                    int i = 0;
+                    AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
                                 animes.getTitle(), animes.getReleased());
                         animeList.add(model);
-//                        Log.d("hello1", "anime list is " + i);
-//                        i +=1;
 
                     }
                 }
-                onRecentDataLoad(0);
+                adapter.notifyItemInserted(resource.getResultSize());
+                if (resource.getResultSize()<30){
+                    lastPage = true;
+                }
                 container.stopShimmer();
                 container.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
+                recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
             }
 
             @Override
@@ -139,23 +151,6 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 //                Log.d("Hey3", "Response code is : 400" + t.getMessage());
             }
         });
-    }
-
-    private void onRecentDataLoad(int offset) {
-        if (animeListInc != null) {
-            animeListInc.clear();
-        }
-        if (animeList.size() <= 42) {
-            for (int i = offset; i < animeList.size(); i++) {
-                animeListInc.add(animeList.get(i));
-            }
-            adapter.notifyItemInserted(animeList.size());
-        } else {
-            for (int i = offset; i < 42; i++) {
-                animeListInc.add(animeList.get(i));
-            }
-            adapter.notifyItemInserted(39);
-        }
     }
 
     // convert dp to pixels

@@ -11,6 +11,9 @@ public class AnimeRecentModel {
     @SerializedName("results")
     private final List<datum> results = null;
 
+    @SerializedName("total")
+    private int resultSize;
+
     public Boolean getSuccess() {
         return success;
     }
@@ -18,6 +21,8 @@ public class AnimeRecentModel {
     public List<datum> getData() {
         return results;
     }
+
+    public int getResultSize(){return resultSize;}
 
     public class datum {
 

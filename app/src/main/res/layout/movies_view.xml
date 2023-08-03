@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="10dp"
-    android:layout_marginTop="50dp"
+    android:layout_marginTop="?attr/actionBarSize"
     android:background="@color/primaryColor"
     android:layout_marginEnd="5dp">
 
@@ -25,10 +25,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
-        <ProgressBar
-            android:id="@+id/movieProgress"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/movie_recycler_view" />
 </RelativeLayout>

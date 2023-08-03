@@ -3,12 +3,11 @@ package com.pypisan.kinani.view;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +24,7 @@ import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,23 +37,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MoviesView extends Fragment implements RecentAdapter.SelectListener {
 
-    private ArrayList<AnimeModel> animeList, animeListInc;
+    private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
-    private ProgressBar progressBarMovie;
     private AnimeManager animeManager;
-//    private int previousTotal = 0;
-    private boolean loading = false;
-//    private int visibleThreshold = 8;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private int pageNumber;
+    private boolean lastPage = false;
+    private int firstVisibleItem, totalItemCount;
+    private Parcelable recyclerViewState;
 
     public MoviesView() {
         // Required empty public constructor
-    }
-
-    public static MoviesView newInstance() {
-        return new MoviesView();
     }
 
     @Override
@@ -70,12 +65,11 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        animeListInc = new ArrayList<>();
+        animeList = new ArrayList<>();
         containerMovies = view.findViewById(R.id.shimmer_movies_layout);
         containerMovies.startShimmer();
-        progressBarMovie = view.findViewById(R.id.movieProgress);
-
-        insertDataToCard("1");
+        pageNumber = 1;
+        insertDataToCard(String.valueOf(pageNumber));
 
         //      initialization recycler
 
@@ -84,10 +78,9 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-        //        Item Declaration
+//        Item Declaration
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(1), false));
-//        Log.d("hello", "anime list is " + animeList.size());
-        adapterMovies = new RecentAdapter(getContext(), animeListInc, this);
+        adapterMovies = new RecentAdapter(getContext(), animeList, this);
 
 //        recyclerView.setNestedScrollingEnabled(false);
 //        infinite Scroller
@@ -98,15 +91,12 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
             }
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                visibleItemCount = recyclerView.getChildCount();
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (!loading && firstVisibleItem == totalItemCount-1) {
-                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
-                            visibleItemCount, Toast.LENGTH_SHORT).show();
-//                    progressBarMovie.setVisibility(View.VISIBLE);
-//                    loading = true;
-                    insertDataToCard("2");
+                if (!lastPage && firstVisibleItem == totalItemCount-1) {
+                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+                    pageNumber +=1;
+                    insertDataToCard(String.valueOf(pageNumber));
                 }
             }
         });
@@ -115,13 +105,9 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
     private void insertDataToCard(String pageNum) {
         // Add the cards data and display them
-//        fetching data
-        if (pageNum.equals("")) {
-            pageNum = "3";
-        }
-        animeList = new ArrayList<>();
+        //        fetching data
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory
                         .create())
                 .build();
@@ -132,27 +118,28 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//            Log.d("Hey1", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
-                    AnimeModel model = new AnimeModel();
-//                    int i = 0;
+                    AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         model = new AnimeModel(animes.getImageLink(),
                                 animes.getAnimeDetailLink(),
                                 animes.getTitle(),
                                 animes.getReleased());
                         animeList.add(model);
                     }
-                    onMoviesDataLoad(0);
+                    adapterMovies.notifyItemInserted(resource.getResultSize());
+                    if (resource.getResultSize()<30){
+                        lastPage = true;
+                    }
                     containerMovies.stopShimmer();
                     containerMovies.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(adapterMovies);
+                    recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 
                 } else {
 //                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
@@ -164,23 +151,6 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 //            Log.d("Hey3", "Response code is : 400" + t.getMessage());
             }
         });
-    }
-
-    private void onMoviesDataLoad(int offset) {
-        if (animeListInc != null) {
-            animeListInc.clear();
-        }
-        if (animeList.size() <= 40) {
-            for (int i = offset; i < animeList.size(); i++) {
-                animeListInc.add(animeList.get(i));
-            }
-            adapterMovies.notifyItemInserted(animeList.size());
-        } else {
-            for (int i = offset; i < 20; i++) {
-                animeListInc.add(animeList.get(i));
-            }
-            adapterMovies.notifyItemInserted(animeListInc.size());
-        }
     }
 
     @Override

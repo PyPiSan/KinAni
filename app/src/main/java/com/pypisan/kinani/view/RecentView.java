@@ -40,13 +40,13 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecentAdapter adapter;
     private ShimmerFrameLayout container;
     private AnimeManager animeManager;
 
     private int pageNumber;
     private Parcelable recyclerViewState;
-    private boolean lastPage = false;
+    private boolean lastPage,loading = false;
     private int firstVisibleItem, totalItemCount;
 
 
@@ -82,6 +82,19 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
         recyclerView = view.findViewById(R.id.my_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (adapter.getItemViewType(position)){
+                    case 0:
+                        return 1;
+                    case 1:
+                        return 3;
+                    default:
+                        return -1;
+                }
+            }
+        });
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
 
@@ -99,9 +112,10 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
-                if (!lastPage && firstVisibleItem == totalItemCount-1) {
+                if (!lastPage && !loading && firstVisibleItem == totalItemCount-1) {
                     recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
                     pageNumber +=1;
+                    loading=true;
                     insertDataToCard(String.valueOf(pageNumber));
                 }
             }
@@ -118,6 +132,9 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
         RequestModule animeRecent = retrofit.create(RequestModule.class);
         Call<AnimeRecentModel> call = animeRecent.newAnime(pageNum);
+        if (Integer.parseInt(pageNum)>1) {
+            adapter.addNullData();
+        }
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -135,9 +152,13 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                     }
                 }
                 adapter.notifyItemInserted(resource.getResultSize());
+                if (Integer.parseInt(pageNum)>1) {
+                    adapter.removeNull((Integer.parseInt(pageNum)-1)*30);
+                }
                 if (resource.getResultSize()<30){
                     lastPage = true;
                 }
+                loading=false;
                 container.stopShimmer();
                 container.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);

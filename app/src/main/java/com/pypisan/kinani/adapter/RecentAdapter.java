@@ -137,7 +137,7 @@ public class RecentAdapter extends RecyclerView.Adapter<RecentAdapter.RecentView
         notifyItemInserted(dataSet.size() +1);
     }
     public void removeNull(int pos) {
-        Log.d("T", "size is " +dataSet.size()+"pos is "+pos);
+//        Log.d("T", "size is " +dataSet.size()+"pos is "+pos);
         dataSet.remove(pos);
         notifyItemRemoved(dataSet.size()-1);
     }

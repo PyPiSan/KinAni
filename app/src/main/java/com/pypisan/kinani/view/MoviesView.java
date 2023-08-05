@@ -75,6 +75,19 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
         recyclerView = view.findViewById(R.id.movie_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (adapterMovies.getItemViewType(position)){
+                    case 0:
+                        return 1;
+                    case 1:
+                        return 3;
+                    default:
+                        return -1;
+                }
+            }
+        });
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
 
@@ -137,10 +150,10 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                     if (Integer.parseInt(pageNum)>1) {
                         adapterMovies.removeNull((Integer.parseInt(pageNum)-1)*30);
                     }
-                    loading=false;
                     if (resource.getResultSize()<30){
                         lastPage = true;
                     }
+                    loading=false;
                     containerMovies.stopShimmer();
                     containerMovies.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);

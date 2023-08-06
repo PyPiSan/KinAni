@@ -14,9 +14,8 @@ KinAni is an **in progress** Android app where you can watch anime, the source o
 
 https://github.com/PyPiSan/KinAni/assets/75712540/f1478c44-f9de-4f76-9d47-216dbf766d5c
 
-
-![Login Demo](https://github.com/PyPiSan/KinAni/assets/75712540/f7114e6b-2ad6-4ecf-865e-3f77fd804886)
-![Add Anime to Like List](https://github.com/PyPiSan/KinAni/assets/75712540/c69d6439-a10e-41b8-8fe9-d877f50b1fd9)
+<img src="https://github.com/PyPiSan/KinAni/assets/75712540/f7114e6b-2ad6-4ecf-865e-3f77fd804886" alt="Login Demo" width="200" height="400">
+<img src="https://github.com/PyPiSan/KinAni/assets/75712540/c69d6439-a10e-41b8-8fe9-d877f50b1fd9" alt="Add Anime to Like List" width="200" height="400">
 
 
 

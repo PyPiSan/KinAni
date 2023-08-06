@@ -131,7 +131,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                 .build();
 
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecent.newAnime(pageNum);
+        Call<AnimeRecentModel> call = animeRecent.newAnime(Constant.key ,pageNum);
         if (Integer.parseInt(pageNum)>1) {
             adapter.addNullData();
         }

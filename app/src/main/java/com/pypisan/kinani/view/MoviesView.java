@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.content.ComponentName;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -127,7 +128,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                 .build();
 
         RequestModule moviesList = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = moviesList.getMovies(pageNum);
+        Call<AnimeRecentModel> call = moviesList.getMovies(Constant.key, pageNum);
         if (Integer.parseInt(pageNum)>1) {
             adapterMovies.addNullData();
         }

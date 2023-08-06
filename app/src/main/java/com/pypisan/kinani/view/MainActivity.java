@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         .addConverterFactory(GsonConverterFactory.create()).build();
 
                 RequestModule getID = retrofit.create(RequestModule.class);
-                Call<UserModel> call = getID.getUser(new UserRequest(user, pass));
+                Call<UserModel> call = getID.getLogin(new UserRequest(user, pass));
                 call.enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {

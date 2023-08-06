@@ -44,6 +44,7 @@ import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.WatchRequest;
 import com.pypisan.kinani.model.EpisodeVideoModel;
+import com.pypisan.kinani.storage.Constant;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -232,7 +233,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
-        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(new WatchRequest(title, episode_num, ""));
+        Call<EpisodeVideoModel> call = episodeLink.getEpisodeVideo(Constant.key,
+                new WatchRequest(title, episode_num, ""));
         call.enqueue(new Callback<EpisodeVideoModel>() {
             @Override
             public void onResponse(Call<EpisodeVideoModel> call, Response<EpisodeVideoModel> response) {

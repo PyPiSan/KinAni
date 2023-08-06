@@ -119,7 +119,7 @@ public class AnimeManager {
 
     public Cursor findOneUser(String user){
         Cursor cursor;
-        cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
+        cursor = database.rawQuery("SELECT * FROM UserData WHERE user=?", new String[]{user});
         return cursor;
     }
 }

@@ -34,7 +34,7 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
 
     private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecentAdapter adapter;
     private AnimeManager animeManager;
 
     private LottieAnimationView errorPage;
@@ -42,10 +42,6 @@ public class LikedView extends Fragment implements RecentAdapter.SelectListener 
 
     public LikedView() {
         // Required empty public constructor
-    }
-
-    public static LikedView newInstance() {
-        return new LikedView();
     }
 
     @Override

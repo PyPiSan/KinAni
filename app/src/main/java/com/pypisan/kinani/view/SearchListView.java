@@ -38,6 +38,7 @@ import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 
 import java.util.ArrayList;
@@ -195,7 +196,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecent.searchAnime(searchString);
+        Call<AnimeRecentModel> call = animeRecent.searchAnime(Constant.key,searchString);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override

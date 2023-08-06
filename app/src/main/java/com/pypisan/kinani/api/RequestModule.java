@@ -5,73 +5,52 @@ import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
+import com.pypisan.kinani.model.UserInit;
 import com.pypisan.kinani.model.UserModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface RequestModule {
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
-    @GET("recent")
-    Call<AnimeRecentModel> getAnime();
-
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
     @POST("episodes")
-    Call<AnimeEpisodeListModel> getEpisodeList(@Body Jtitle body);
+    Call<AnimeEpisodeListModel> getEpisodeList(@Header("x-api-key") String apikey, @Body Jtitle body);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
+
     @POST("watch_link")
-    Call<EpisodeVideoModel> getEpisodeVideo(@Body WatchRequest body);
+    Call<EpisodeVideoModel> getEpisodeVideo(@Header("x-api-key") String apikey, @Body WatchRequest body);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
+
     @GET("trending/")
-    Call<AnimeRecentModel> getAnimeTrending(@Query("page") String num);
+    Call<AnimeRecentModel> getAnimeTrending(@Header("x-api-key") String apikey,@Query("page") String num);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
+
     @GET("recommendation/")
-    Call<AnimeRecentModel> getAnimeRecommend(@Query("page") String num);
+    Call<AnimeRecentModel> getAnimeRecommend(@Header("x-api-key") String apikey,@Query("page") String num);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
     @GET("search/")
-    Call<AnimeRecentModel> searchAnime(@Query("name") String one);
+    Call<AnimeRecentModel> searchAnime(@Header("x-api-key") String apikey, @Query("name") String one);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
+
     @GET("schedule/")
-    Call<RecentlyAiredModel> getAnimeSchedule(@Query("page") String num);
+    Call<RecentlyAiredModel> getAnimeSchedule(@Header("x-api-key") String apikey, @Query("page") String num);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
+
     @GET("new/")
-    Call<AnimeRecentModel> newAnime(@Query("page") String num);
+    Call<AnimeRecentModel> newAnime(@Header("x-api-key") String apikey, @Query("page") String num);
 
-    @Headers({
-            "x-api-key: e7y6acFyHGqwtkBLKHx6eA"
-    })
     @GET("movies/")
-    Call<AnimeRecentModel> getMovies(@Query("page") String num);
+    Call<AnimeRecentModel> getMovies(@Header("x-api-key") String apikey, @Query("page") String num);
 
     @POST("users")
-    Call<UserModel> getUser(@Body UserRequest body);
+    Call<UserModel> getUser(@Body UserInit body);
+
+    @POST("login")
+    Call<UserModel> getLogin(@Body UserRequest body);
 
 }
 

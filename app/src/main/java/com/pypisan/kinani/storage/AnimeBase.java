@@ -17,7 +17,7 @@ public class AnimeBase extends SQLiteOpenHelper {
     public static final String USER = "user";
     public static final String APIKEY = "apikey";
     static final String DB_NAME = "ANIME.DB";
-    static final int DB_VERSION = 4;
+    static final int DB_VERSION = 6;
     private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DETAIL + " TEXT NOT NULL, " + TITLE +
             " TEXT NOT NULL, " + IMAGE + " TEXT);";

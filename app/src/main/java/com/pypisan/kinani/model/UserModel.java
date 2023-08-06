@@ -9,11 +9,15 @@ public class UserModel {
     @SerializedName("success")
     private Boolean status;
 
+    @SerializedName("ads")
+    private Boolean ads;
+
     public String getApikey() {
         return apikey;
     }
 
-    public Boolean getUserStatus() {
-        return status;
-    }
+    public Boolean getUserStatus() {return status;}
+
+    public Boolean getAds(){return ads;}
+
 }

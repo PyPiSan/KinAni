@@ -43,6 +43,7 @@ import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.Jtitle;
 import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -209,7 +210,7 @@ public class SummaryView extends Fragment{
                 .build();
 
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
-        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(new Jtitle(animeName));
+        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(Constant.key, new Jtitle(animeName));
         call.enqueue(new Callback<AnimeEpisodeListModel>() {
             @Override
             public void onResponse(Call<AnimeEpisodeListModel> call, Response<AnimeEpisodeListModel> response) {

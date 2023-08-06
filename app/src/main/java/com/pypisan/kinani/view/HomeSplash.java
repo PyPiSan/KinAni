@@ -17,8 +17,10 @@ import com.inmobi.sdk.SdkInitializationListener;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
+import com.pypisan.kinani.model.UserInit;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +67,10 @@ public class HomeSplash extends AppCompatActivity {
         animeManager.open();
         Cursor cursor = animeManager.findOneUser(deviceUser);
         if (cursor != null && cursor.getCount() != 0){
+            while (cursor.moveToNext()) {
+                Constant.key=cursor.getString(2);
+//                Toast.makeText(getApplicationContext(),cursor.getString(2), Toast.LENGTH_SHORT).show();
+            }
             animeManager.close();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -79,19 +85,19 @@ public class HomeSplash extends AppCompatActivity {
             Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
-            Call<UserModel> call = getID.getUser(new UserRequest(deviceUser, "xYz1254tvebej"));
+            Call<UserModel> call = getID.getUser(new UserInit(deviceUser));
             call.enqueue(new Callback<UserModel>() {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                     boolean flag = false;
                     UserModel resource = response.body();
                     if (response.code() == 200) {
-                        boolean status = resource.getUserStatus();
-                        flag = status;
+                        flag = resource.getUserStatus();
+                        Constant.key=resource.getApikey();
                     }
                     if (flag) {
-                        animeManager.insertUser(deviceUser, resource.getApikey());
-                        Toast.makeText(getApplicationContext(), resource.getApikey(), Toast.LENGTH_SHORT).show();
+                        animeManager.insertUser(deviceUser, Constant.key);
+//                        Toast.makeText(getApplicationContext(), Constant.key, Toast.LENGTH_SHORT).show();
                         animeManager.close();
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
@@ -103,7 +109,7 @@ public class HomeSplash extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<UserModel> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Failed Server", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_SHORT).show();
                 }
             });
         }

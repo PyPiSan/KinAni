@@ -28,6 +28,7 @@ import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.ScheduleModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,12 +137,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = trendingLinearLayout.getItemCount();
                 int firstVisibleItem = trendingLinearLayout.findLastCompletelyVisibleItemPosition();
                 if (firstVisibleItem == totalItemCount-1) {
-                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
-                            visibleItemCount, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
+//                            visibleItemCount, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,9 +177,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         animeManager = new AnimeManager(getContext());
         animeManager.open();
         Cursor cursor = animeManager.readAllDataRecent();
-        if (cursor.getCount() == 0) {
-//            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
-        } else {
+        if (cursor.getCount() != 0) {
             recentTextHeader.setVisibility(View.VISIBLE);
             AnimeModel model;
 //            Log.d("H1", "anime list is " + cursor.getCount());
@@ -234,12 +232,12 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         String pageNum = "1";
         animeTrendingList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestModule animeTrend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending(pageNum);
+        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending(Constant.key,pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -296,12 +294,12 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         String pageNum = "1";
         animeRecommendList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestModule animeRecommend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecommend.getAnimeRecommend(pageNum);
+        Call<AnimeRecentModel> call = animeRecommend.getAnimeRecommend(Constant.key,pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -357,12 +355,12 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         String pageNum = "1";
         animeScheduleList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestModule animeSchedule = retrofit.create(RequestModule.class);
-        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule(pageNum);
+        Call<RecentlyAiredModel> call = animeSchedule.getAnimeSchedule(Constant.key,pageNum);
 
         call.enqueue(new Callback<RecentlyAiredModel>() {
             @Override

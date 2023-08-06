@@ -24,6 +24,7 @@ import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private RecentAdapter adapter;
     private AnimeManager animeManager;
 
     public TrendingView() {
@@ -97,7 +98,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
             .build();
 
     RequestModule animeTrending = retrofit.create(RequestModule.class);
-    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending(pageNum);
+    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending(Constant.key,pageNum);
 
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override

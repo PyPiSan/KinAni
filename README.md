@@ -1,5 +1,6 @@
 # Kinani
-An Android app, you can watch Anime.
+An Android app where you can watch Anime.
+
 ![KinAni](https://github.com/PyPiSan/KinAni/assets/75712540/4a047124-e0d8-4a68-b293-806845e2e09e)
 
 # KinAni (Project-In-Progress)

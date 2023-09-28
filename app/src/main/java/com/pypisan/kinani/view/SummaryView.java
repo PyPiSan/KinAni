@@ -278,10 +278,10 @@ public class SummaryView extends Fragment{
                         episodeSpinner.setVisibility(View.VISIBLE);
 //                    Creating drop down for episodes
                     String episodeNum = animeDetail.getEpisode_num();
-                    if (episodeNum.equals("1")) {
-                        episodeNum = "2";
-                    }
-                    int episodeNumVal = Integer.parseInt(episodeNum);
+//                    if (episodeNum.equals("1")) {
+//                        episodeNum = "2";
+//                    }
+                    int episodeNumVal = Integer.parseInt(episodeNum)+1;
 //                    Log.d("E10", "episode_number is " + episodeNumVal);
                     String[] episodes = new String[episodeNumVal];
                     episodes[0] = "Select An Episode";

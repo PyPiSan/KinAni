@@ -21,12 +21,12 @@ public class AnimeEpisodeListModel {
 
     public class datum {
 
-        @SerializedName("image_url")
+        @SerializedName("image")
         private String imageUrl;
 
-        @SerializedName("anime_detail_link")
+        @SerializedName("link")
         private String animeDetailLink;
-        @SerializedName("anime_title")
+        @SerializedName("title")
         private String title;
         @SerializedName("summary")
         private String summary;

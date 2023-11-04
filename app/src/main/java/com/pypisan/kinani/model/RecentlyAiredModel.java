@@ -21,15 +21,15 @@ public class RecentlyAiredModel {
 
     public class datum {
 
-        @SerializedName("image_url")
+        @SerializedName("image")
         private String image;
-        @SerializedName("anime_title")
+        @SerializedName("title")
         private String title;
         @SerializedName("episodes")
         private String episode;
         @SerializedName("schedule")
         private String schedule;
-        @SerializedName("anime_detail_link")
+        @SerializedName("link")
         private String detailLink;
 
         public String getImage() {

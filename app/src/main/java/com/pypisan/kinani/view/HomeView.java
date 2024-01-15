@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ShimmerFrameLayout containerTrending, containerSchedule, containerRecommend,
             containerRecent;
     private TextView recentTextHeader;
+    private ImageView trendingMore, recommendationMore;
 
     public HomeView() {
         // Required empty public constructor
@@ -90,6 +92,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
 
         recentTextHeader = view.findViewById(R.id.recents);
+
+//        For More Arrow
+        trendingMore = view.findViewById(R.id.trending_more);
+        recommendationMore = view.findViewById(R.id.recommended_more);
 
 //        Ads
         bannerAdTop = (InMobiBanner)view.findViewById(R.id.banner);
@@ -169,6 +175,22 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);
         bannerAdTop.load();
         bannerAdBottom.load();
+
+//        More click listener
+
+        trendingMore.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onClickLoadMore("trending", animeTrendingList);
+            }
+        });
+
+        recommendationMore.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onClickLoadMore("recommendation", animeTrendingList);
+            }
+        });
     }
 //       Fetching Liked list from DB
 
@@ -413,5 +435,17 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         }
     }
 
+    private void onClickLoadMore(String tag, ArrayList<AnimeModel> animeList){
+
+        Bundle bundle = new Bundle();
+        bundle.putString("view", tag);
+//        bundle.putParcelableArrayList("data",animeList);
+        Fragment fragment = CommonGridView.newInstance();
+        fragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentView, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
 }

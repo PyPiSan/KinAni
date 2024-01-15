@@ -45,4 +45,5 @@
     <string name="none">none</string>
     <string name="error_alert">Oops! Content Not Found, Please click Retry..</string>
     <string name="retry">Retry</string>
+    <string name="more">more</string>
 </resources>

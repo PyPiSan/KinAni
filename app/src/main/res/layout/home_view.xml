@@ -67,11 +67,13 @@
         android:textSize="22sp"
         android:layout_marginStart="16dp"/>
         <ImageView
+            android:id="@+id/trending_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_forward"
             android:layout_marginStart="330dp"
-            android:layout_alignStart="@+id/textTrend"/>
+            android:layout_alignStart="@+id/textTrend"
+            android:contentDescription="@string/more" />
     </RelativeLayout>
 
 
@@ -117,11 +119,13 @@
         android:textSize="22sp"
         />
         <ImageView
+            android:id="@+id/recommended_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_forward"
             android:layout_marginStart="330dp"
-            android:layout_alignStart="@+id/textRecommend"/>
+            android:layout_alignStart="@+id/textRecommend"
+            android:contentDescription="@string/more"/>
     </RelativeLayout>
 
     <RelativeLayout

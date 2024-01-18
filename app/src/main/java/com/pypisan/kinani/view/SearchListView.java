@@ -61,8 +61,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     private BottomNavigationView bottomAppBar;
     private EditText editText;
     private ImageView ivClearText;
-    private ImageButton backButton, voice_search_button;
-    private AnimeManager animeManager;
+    private ImageButton voice_search_button;
 
     private boolean loaderState = false;
     private ProgressBar progressBar;
@@ -97,7 +96,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         voice_search_button = view.findViewById(R.id.search_bar_voice_icon);
         editText = view.findViewById(R.id.search_bar_edit_text);
         ivClearText = view.findViewById(R.id.iv_clear_text);
-        backButton = view.findViewById(R.id.back_button);
+        ImageButton backButton = view.findViewById(R.id.back_button);
         progressBar = view.findViewById(R.id.loadSearch);
 
 //      initialization recycler
@@ -177,11 +176,10 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             @Override
             public void onClick(View v) {
                 Fragment fragment = new HomeView();
-                Fragment current = getActivity().getSupportFragmentManager().findFragmentByTag("home_fragment");
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentView, fragment)
-                        .addToBackStack(null)
                         .commit();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
@@ -235,7 +233,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
     @Override
     public void onItemClicked(String title, String detail, String image) {
-        animeManager = new AnimeManager(getContext());
+        AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
         animeManager.insertRecent(detail, title, image);
         animeManager.close();
@@ -303,6 +301,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     }
 
     private void setUpOnBackPressed(){
+        Toast.makeText(getContext(), "Back Pressed Method", Toast.LENGTH_SHORT).show();
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -311,6 +310,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     setEnabled(false);
                     requireActivity().onBackPressed();
                 }
+                Toast.makeText(getContext(), "Back Pressed Disabled", Toast.LENGTH_SHORT).show();
             }
         });
     }

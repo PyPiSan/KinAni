@@ -52,7 +52,6 @@ public class SummaryView extends Fragment{
     private TextView title, summary, releasedValue, statusValue, genreVal, aboutTextHead;
 //    private ListView episodes;
 
-    private Button retryButton;
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
@@ -110,7 +109,7 @@ public class SummaryView extends Fragment{
         aboutTextHead = view.findViewById(R.id.about);
 
 //        retry logic page reloading
-        retryButton = view.findViewById(R.id.retryButton);
+        Button retryButton = view.findViewById(R.id.retryButton);
         retryButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

@@ -90,11 +90,13 @@ public class AnimeManager {
     public void insertRecent(String detail, String title, String imageLink){
         Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeRecent WHERE title=?", new String[]{title});
-        if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
+        if (cursor.getCount() >= 1){
+            database.delete(AnimeBase.TABLE_NAME_2, "title=?", new String[]{title});
+        }ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.DETAIL, detail);
         contentValues.put(AnimeBase.TITLE, title);
         contentValues.put(AnimeBase.IMAGE, imageLink);
-        database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);}
+        database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);
     }
 
     public Cursor readAllDataRecent(){

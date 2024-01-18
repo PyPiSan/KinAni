@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -43,18 +45,20 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ArrayList<AnimeModel> animeRecentNum, animeTrendingList, animeTrendingListInc,
             animeRecommendList, animeRecommendListInc;
 
-    private RecyclerView recyclerView_recent, recyclerView_trending, recyclerView_recommend,
-            recyclerView_schedule;
+    private RecyclerView recyclerView_trending;
+    private RecyclerView recyclerView_recommend;
+    private RecyclerView recyclerView_schedule;
 
-    private RecyclerView.Adapter adapter, adapterTrending, scheduleAdapter, adapterRecommend;
+    private RecyclerView.Adapter adapterTrending;
+    private RecyclerView.Adapter scheduleAdapter;
+    private RecyclerView.Adapter adapterRecommend;
     private AnimeManager animeManager;
-    private InMobiBanner bannerAdTop, bannerAdBottom;
 
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
-    private ShimmerFrameLayout containerTrending, containerSchedule, containerRecommend,
-            containerRecent;
+    private ShimmerFrameLayout containerTrending;
+    private ShimmerFrameLayout containerSchedule;
+    private ShimmerFrameLayout containerRecommend;
     private TextView recentTextHeader;
-    private ImageView trendingMore, recommendationMore;
 
     public HomeView() {
         // Required empty public constructor
@@ -83,7 +87,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         animeScheduleListInc = new ArrayList<>();
         animeRecommendListInc = new ArrayList<>();
 
-        containerRecent = view.findViewById(R.id.shimmer_view_container_recent);
+        ShimmerFrameLayout containerRecent = view.findViewById(R.id.shimmer_view_container_recent);
         containerTrending = view.findViewById(R.id.shimmer_view_container);
         containerSchedule = view.findViewById(R.id.shimmer_view_container_schedule);
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
@@ -91,12 +95,12 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recentTextHeader = view.findViewById(R.id.recents);
 
 //        For More Arrow
-        trendingMore = view.findViewById(R.id.trending_more);
-        recommendationMore = view.findViewById(R.id.recommended_more);
+        ImageView trendingMore = view.findViewById(R.id.trending_more);
+        ImageView recommendationMore = view.findViewById(R.id.recommended_more);
 
 //        Ads
-        bannerAdTop = (InMobiBanner)view.findViewById(R.id.banner);
-        bannerAdBottom = (InMobiBanner)view.findViewById(R.id.banner2);
+        InMobiBanner bannerAdTop = (InMobiBanner) view.findViewById(R.id.banner);
+        InMobiBanner bannerAdBottom = (InMobiBanner) view.findViewById(R.id.banner2);
 
 //        Starting Shimmer Effect
         containerRecent.startShimmer();
@@ -111,13 +115,13 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recommendFetcher();
 
 //      1st initialization recycler recent
-        recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
+        RecyclerView recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
         recyclerView_recent.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         recyclerView_recent.setHasFixedSize(false);
 
         //        Setting Data
-        adapter = new HomeViewAdapter(animeRecentNum, getContext(), this);
+        RecyclerView.Adapter adapter = new HomeViewAdapter(animeRecentNum, getContext(), this);
         containerRecent.stopShimmer();
         containerRecent.setVisibility(View.GONE);
         recyclerView_recent.setVisibility(View.VISIBLE);
@@ -131,23 +135,6 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 LinearLayoutManager.HORIZONTAL, false);
         recyclerView_trending.setLayoutManager(trendingLinearLayout);
         recyclerView_trending.setHasFixedSize(false);
-        recyclerView_trending.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int totalItemCount = trendingLinearLayout.getItemCount();
-                int firstVisibleItem = trendingLinearLayout.findLastCompletelyVisibleItemPosition();
-                if (firstVisibleItem == totalItemCount-1) {
-//                    Toast.makeText(getContext(), firstVisibleItem + "Response " +
-//                            visibleItemCount, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
 //        Setting Data
@@ -207,7 +194,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 animeRecentNum.add(model);
 //                Log.d("H4", "anime list is " + animeNum.size());
                 i++;
-                if (i == 10) {
+                if (i == 15) {
                     break;
                 }
             }
@@ -295,16 +282,16 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         if (animeTrendingListInc != null) {
             animeTrendingListInc.clear();
         }
-        if (animeTrendingList.size() <= 10) {
+        if (animeTrendingList.size() <= 15) {
             for (int i = offset; i < animeTrendingList.size(); i++) {
                 animeTrendingListInc.add(animeTrendingList.get(i));
             }
-            adapterTrending.notifyDataSetChanged();
+            adapterTrending.notifyItemInserted(animeTrendingList.size());
         } else {
-            for (int i = offset; i < 10; i++) {
+            for (int i = offset; i < 15; i++) {
                 animeTrendingListInc.add(animeTrendingList.get(i));
             }
-            adapterTrending.notifyDataSetChanged();
+            adapterTrending.notifyItemInserted(14);
         }
     }
 
@@ -357,16 +344,16 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         if (animeRecommendListInc != null) {
             animeRecommendListInc.clear();
         }
-        if (animeRecommendList.size() <= 10) {
+        if (animeRecommendList.size() <= 15) {
             for (int i = offset; i < animeRecommendList.size(); i++) {
                 animeRecommendListInc.add(animeRecommendList.get(i));
             }
             adapterRecommend.notifyItemInserted(animeRecommendList.size());
         } else {
-            for (int i = offset; i < 10; i++) {
+            for (int i = offset; i < 15; i++) {
                 animeRecommendListInc.add(animeRecommendList.get(i));
             }
-            adapterRecommend.notifyItemInserted(9);
+            adapterRecommend.notifyItemInserted(14);
         }
     }
 

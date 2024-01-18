@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
 import com.pypisan.kinani.model.UserModel;
+
+import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -109,8 +112,12 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setContentView(R.layout.user_dialog);
         myDialog.setCancelable(false);
         LinearLayout loginBox = myDialog.findViewById(R.id.loginBox);
+        LinearLayout signUpBox = myDialog.findViewById(R.id.signUpBox);
         Button login = myDialog.findViewById(R.id.loginButton);
+        TextView signUp = myDialog.findViewById(R.id.lbl_signup);
+        TextView forgotPass = myDialog.findViewById(R.id.lbl_forgot);
         Button cancel = myDialog.findViewById(R.id.cancelButton);
+        Button cancel2 = myDialog.findViewById(R.id.cancelButton2);
         EditText username = myDialog.findViewById(R.id.et_username);
         EditText password = myDialog.findViewById(R.id.et_password);
         ProgressBar loginLoader = myDialog.findViewById(R.id.loginLoader);
@@ -171,6 +178,26 @@ public class MainActivity extends AppCompatActivity {
                 myDialog.cancel();
             }
         });
+        cancel2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+            }
+        });
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginBox.setVisibility(View.GONE);
+                signUpBox.setVisibility(View.VISIBLE);
+            }
+        });
+
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                loginBox.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void onSearchClicked(){
@@ -212,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
                 HomeIndex = getSupportFragmentManager().getBackStackEntryCount() +1 ;
             }
 //            Begin Transition
-//            Log.d("fragHello", "1 " + tag + " backstack " + currentStack + " homeindex " + HomeIndex);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentView, selectedFragment, tag)
                     .addToBackStack(null)

@@ -7,16 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,17 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
-import com.pypisan.kinani.adapter.EpisodeAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.Jtitle;
@@ -59,7 +50,7 @@ public class SummaryView extends Fragment{
 
     private ImageView headImage, titleImage;
     private TextView title, summary, releasedValue, statusValue, genreVal, aboutTextHead;
-    private ListView episodes;
+//    private ListView episodes;
 
     private Button retryButton;
     private ArrayAdapter<String> episodeAdapter;
@@ -67,7 +58,7 @@ public class SummaryView extends Fragment{
     private AnimeManager animeManager;
     private String animetitle, animeDetailLink, animeLink;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
-    private Animation animationImage;
+//    private Animation animationImage;
     private InMobiBanner bannerAd;
     private CardView cardImageTitle, cardHeadImage;
 
@@ -140,7 +131,7 @@ public class SummaryView extends Fragment{
         bannerAd.load();
 
 //        For animation
-        animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);
+        Animation animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);
 
 //        For FAB Like
         likedFab = view.findViewById(R.id.ActionButton);
@@ -189,7 +180,7 @@ public class SummaryView extends Fragment{
         titleImage = view.findViewById(R.id.animePicTitle);
         title = view.findViewById(R.id.titleName);
         summary = view.findViewById(R.id.summaryText);
-        episodes = view.findViewById(R.id.episodeList);
+//        episodes = view.findViewById(R.id.episodeList);
         releasedValue = view.findViewById(R.id.releasedVal);
         statusValue = view.findViewById(R.id.statusVal);
         genreVal = view.findViewById(R.id.genreVal);

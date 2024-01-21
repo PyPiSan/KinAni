@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ import com.pypisan.kinani.model.UserModel;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,13 +44,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private int HomeIndex;
+//    private View newView, movieView, dramaView, defaultView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_KinAni);
         setContentView(R.layout.activity_main);
-
+//
         bottomNav = findViewById(R.id.bottomAppBar);
+//        newView = findViewById(R.id.newRelease);
+//        movieView = findViewById(R.id.movies);
+//        dramaView = findViewById(R.id.drama);
+//        defaultView = findViewById(R.id.home);
         bottomNav.setOnItemSelectedListener(navListner);
 
 //        Toolbar setting
@@ -189,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loginBox.setVisibility(View.GONE);
                 signUpBox.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -214,8 +223,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
             String tag = null;
-            Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
-
+//            Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
             switch (item.getItemId()) {
                 case R.id.newRelease:
                     selectedFragment = new RecentView();
@@ -225,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new MoviesView();
                     tag = "movies_fragment";
                     break;
-                case R.id.liked:
+                case R.id.drama:
                     selectedFragment = new LikedView();
                     tag = "liked_fragment";
                     break;
@@ -234,15 +242,15 @@ public class MainActivity extends AppCompatActivity {
                     tag = "home_fragment";
                     break;
             }
-            int currentStack = getSupportFragmentManager().getBackStackEntryCount();
             if (tag.equals("home_fragment")){
                 HomeIndex = getSupportFragmentManager().getBackStackEntryCount() +1 ;
             }
-//            Begin Transition
+//          Begin Transition
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentView, selectedFragment, tag)
                     .addToBackStack(null)
                     .commit();
+//            Toast.makeText(getApplicationContext(),"View Selected is"+ Arrays.toString(movieView.getDrawableState()), Toast.LENGTH_LONG).show();
             return true;
         }
     };

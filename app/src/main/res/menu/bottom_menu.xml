@@ -17,9 +17,9 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/movies_icon"/>
     <item
-        android:id="@+id/liked"
-        android:title="@string/liked"
-        android:icon="@drawable/liked_icon"
+        android:id="@+id/drama"
+        android:title="@string/drama"
+        android:icon="@drawable/drama_icon"
         app:showAsAction="ifRoom"/>
 
 

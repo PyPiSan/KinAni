@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">KinAni</string>
-    <string name="apikey">e7y6acFyHGqwtkBLKHx6eA</string>
     <string name="app_title">KinAni</string>
     <string name="app_label">Search KinAni</string>
     <string name="search_hint">Anime..</string>
@@ -14,11 +13,10 @@
     <string name="search_anime">Search Anime</string>
     <string name="speech_not_supported">Unknown Language</string>
     <string name="speech_prompt">search</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recentlyAired">Recently Aired</string>
     <string name="home">Home</string>
     <string name="new_label">New</string>
-    <string name="liked">Liked</string>
+    <string name="drama">Drama</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
     <string name="movies">Movies</string>

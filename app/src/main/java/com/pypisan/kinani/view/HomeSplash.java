@@ -16,7 +16,6 @@ import com.inmobi.sdk.InMobiSdk;
 import com.inmobi.sdk.SdkInitializationListener;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
-import com.pypisan.kinani.api.UserRequest;
 import com.pypisan.kinani.model.UserInit;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
@@ -63,6 +62,7 @@ public class HomeSplash extends AppCompatActivity {
 
         @SuppressLint("HardwareIds") String deviceUser = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+        String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
 
         animeManager.open();
         Cursor cursor = animeManager.findOneUser(deviceUser);
@@ -85,7 +85,7 @@ public class HomeSplash extends AppCompatActivity {
             Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
-            Call<UserModel> call = getID.getUser(new UserInit(deviceUser));
+            Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin));
             call.enqueue(new Callback<UserModel>() {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {

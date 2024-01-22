@@ -4,44 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.LikedView"
+    tools:context=".view.DramaView"
     android:tag="liked_fragment"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="5dp"
     android:layout_marginTop="?attr/actionBarSize"
     android:background="@color/primaryColor">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animationView"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="160dp"
-            android:layout_centerHorizontal="true"
-            app:lottie_rawRes="@raw/notfound"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"/>
-        <TextView
-            android:id="@+id/alertText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="5dp"
-            android:layout_below="@+id/animationView"
-            android:text="@string/like_alert"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="18sp"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <com.airbnb.lottie.LottieAnimationView-->
+<!--            android:id="@+id/animationView"-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:layout_marginTop="160dp"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            app:lottie_rawRes="@raw/notfound"-->
+<!--            app:lottie_autoPlay="true"-->
+<!--            app:lottie_loop="true"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/alertText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:layout_below="@+id/animationView"-->
+<!--            android:text="@string/like_alert"-->
+<!--            android:textColor="@color/primaryTextColor"-->
+<!--            android:textSize="18sp"/>-->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/my_recycler_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:scrollbars="vertical"-->
+<!--        android:visibility="gone"-->
+<!--        />-->
+
+<!--    </RelativeLayout>-->
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_drama_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        android:visibility="gone"
-        />
+        app:shimmer_direction="left_to_right">
+        <include layout="@layout/recent_card_skeleton"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
-    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drama_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </RelativeLayout>

@@ -1,6 +1,5 @@
 package com.pypisan.kinani.view;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,30 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;;
 
 import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
 import com.pypisan.kinani.model.UserModel;
-
-import org.w3c.dom.Text;
-
-import java.util.Arrays;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +32,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView bottomNav;
     private int HomeIndex;
 //    private View newView, movieView, dramaView, defaultView;
     @Override
@@ -51,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.Theme_KinAni);
         setContentView(R.layout.activity_main);
 //
-        bottomNav = findViewById(R.id.bottomAppBar);
+        BottomNavigationView bottomNav = findViewById(R.id.bottomAppBar);
 //        newView = findViewById(R.id.newRelease);
 //        movieView = findViewById(R.id.movies);
 //        dramaView = findViewById(R.id.drama);
@@ -234,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                     tag = "movies_fragment";
                     break;
                 case R.id.drama:
-                    selectedFragment = new LikedView();
+                    selectedFragment = new DramaView();
                     tag = "drama_fragment";
                     break;
                 case R.id.home:

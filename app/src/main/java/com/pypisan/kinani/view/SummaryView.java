@@ -3,7 +3,6 @@ package com.pypisan.kinani.view;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
-import com.pypisan.kinani.model.Jtitle;
+import com.pypisan.kinani.model.Title;
 import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
@@ -87,6 +86,7 @@ public class SummaryView extends Fragment{
 //                R.drawable.bg9, R.drawable.bg10};
 //            int[] anim = new int[]{R.raw.liked};
         String animeName = getArguments().getString("title");
+        String type = getArguments().getString("type");
         animeManager = new AnimeManager(getContext());
 
 //        recyclerEpisode = view.findViewById(R.id.episodeRecycler);
@@ -118,7 +118,7 @@ public class SummaryView extends Fragment{
                 containerSummaryText.setVisibility(View.VISIBLE);
                 containerImgHead.setVisibility(View.VISIBLE);
                 aboutTextHead.setVisibility(View.VISIBLE);
-                getAnimeSummary(view, animeName);
+                getAnimeSummary(view, animeName, type);
                 bannerAd.setVisibility(View.VISIBLE);
             }
         });
@@ -126,7 +126,7 @@ public class SummaryView extends Fragment{
 //        Ads
         bannerAd = (InMobiBanner)view.findViewById(R.id.banner);
 //        Fetching Anime Detail Summary
-        getAnimeSummary(view, animeName);
+        getAnimeSummary(view, animeName, type);
         bannerAd.load();
 
 //        For animation
@@ -174,7 +174,7 @@ public class SummaryView extends Fragment{
         return inflater.inflate(R.layout.summary_view, container, false);
     }
 
-    private void getAnimeSummary(View view, String animeName) {
+    private void getAnimeSummary(View view, String animeName, String type) {
         headImage = view.findViewById(R.id.animePic);
         titleImage = view.findViewById(R.id.animePicTitle);
         title = view.findViewById(R.id.titleName);
@@ -187,6 +187,12 @@ public class SummaryView extends Fragment{
         cardHeadImage = view.findViewById(R.id.cardHeadImage);
         episodeSpinner = view.findViewById(R.id.episodeSpinner);
         ratingLayout = view.findViewById(R.id.ratingLayout);
+        String url;
+        if ( type != null && type.equals("drama")){
+            url = Constant.baseDramaUrl;
+        }else{
+            url = Constant.baseUrl;
+        }
 
 //      fetching data
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -194,13 +200,13 @@ public class SummaryView extends Fragment{
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
 
         RequestModule animeEpisode = retrofit.create(RequestModule.class);
-        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(Constant.key, new Jtitle(animeName));
+        Call<AnimeEpisodeListModel> call = animeEpisode.getEpisodeList(Constant.key, new Title(animeName));
         call.enqueue(new Callback<AnimeEpisodeListModel>() {
             @Override
             public void onResponse(Call<AnimeEpisodeListModel> call, Response<AnimeEpisodeListModel> response) {

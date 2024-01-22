@@ -1,14 +1,12 @@
 package com.pypisan.kinani.view;
 
-import android.content.ComponentName;
-import android.content.res.Resources;
-import android.graphics.Rect;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +16,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
-import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
@@ -36,20 +34,21 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MoviesView extends Fragment implements RecentAdapter.SelectListener {
+public class DramaView extends Fragment implements RecentAdapter.SelectListener {
 
-    private ArrayList<AnimeModel> animeList;
+    private ArrayList<AnimeModel> dramaList;
     private RecyclerView recyclerView;
-    private RecentAdapter adapterMovies;
-    private ShimmerFrameLayout containerMovies;
-    private AnimeManager animeManager;
+    private RecentAdapter adapterDrama;
+    private ShimmerFrameLayout containerDrama;
+
+    private LottieAnimationView errorPage;
     private int pageNumber;
     private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
 
-    public MoviesView() {
-        // Required empty public constructor
+    public DramaView() {
+//    Required empty public constructor
     }
 
     @Override
@@ -58,28 +57,33 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.movies_view, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+//      Inflate the layout for this fragment
+        return inflater.inflate(R.layout.liked_view, container, false);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        animeList = new ArrayList<>();
-        containerMovies = view.findViewById(R.id.shimmer_movies_layout);
-        containerMovies.startShimmer();
+
+//      errorPage = view.findViewById(R.id.animationView);
+        dramaList = new ArrayList<>();
+        containerDrama = view.findViewById(R.id.shimmer_drama_layout);
+        containerDrama.startShimmer();
         pageNumber = 1;
         insertDataToCard(String.valueOf(pageNumber));
 
-        //      initialization recycler
 
-        recyclerView = view.findViewById(R.id.movie_recycler_view);
+//      initialization recycler
+
+        recyclerView = view.findViewById(R.id.drama_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                switch (adapterMovies.getItemViewType(position)){
+                switch (adapterDrama.getItemViewType(position)){
                     case 0:
                         return 1;
                     case 1:
@@ -92,11 +96,13 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
 
-//        Item Declaration
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(1), false));
-        adapterMovies = new RecentAdapter(getContext(), animeList, this);
 
-//        infinite Scroller
+//      Item Declaration
+        adapterDrama = new RecentAdapter(getContext(), dramaList, this);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapterDrama);
+
+//      infinite Scroller
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -114,14 +120,37 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                 }
             }
         });
-
     }
+
+//       Fetching Liked list from DB
+
+//    private void likedList(){
+//        dramaList = new ArrayList<>();
+//        animeManager = new AnimeManager(getContext());
+//        animeManager.open();
+//        Cursor cursor = animeManager.readAllDataLiked();
+//        if (cursor.getCount() == 0){
+//            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
+//            animeManager.close();
+//        }else {
+//            AnimeModel model;
+////            Log.d("C1", "anime list is " + cursor.getCount());
+//            while (cursor.moveToNext()) {
+//                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), "");
+//                dramaList.add(model);
+////                Log.d("C4", "anime list is " + animeList.size());
+//                errorPage.setVisibility(View.GONE);
+//                recyclerView.setVisibility(View.VISIBLE);
+//            }
+//            animeManager.close();
+//        }
+//    }
 
     private void insertDataToCard(String pageNum) {
 //      Add the cards data and display them
 //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.baseUrl)
+                .baseUrl(Constant.baseDramaUrl)
                 .addConverterFactory(GsonConverterFactory
                         .create())
                 .build();
@@ -129,7 +158,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         RequestModule moviesList = retrofit.create(RequestModule.class);
         Call<AnimeRecentModel> call = moviesList.getMovies(Constant.key, pageNum);
         if (Integer.parseInt(pageNum)>1) {
-            adapterMovies.addNullData();
+            adapterDrama.addNullData();
         }
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -144,21 +173,21 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                                 animes.getAnimeDetailLink(),
                                 animes.getTitle(),
                                 animes.getReleased());
-                        animeList.add(model);
+                        dramaList.add(model);
                     }
-                    adapterMovies.notifyItemInserted(resource.getResultSize());
+                    adapterDrama.notifyItemInserted(resource.getResultSize());
                     if (Integer.parseInt(pageNum)>1) {
-                        adapterMovies.removeNull((Integer.parseInt(pageNum)-1)*30);
+                        adapterDrama.removeNull((Integer.parseInt(pageNum)-1)*30);
                     }
                     if (resource.getResultSize()<30){
                         lastPage = true;
                     }
                     loading=false;
-                    containerMovies.stopShimmer();
-                    containerMovies.setVisibility(View.GONE);
+                    containerDrama.stopShimmer();
+                    containerDrama.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setAdapter(adapterMovies);
+                    recyclerView.setAdapter(adapterDrama);
                     recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 
                 } else {
@@ -175,52 +204,14 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
     @Override
     public void onItemClicked(String title, String detail, String image) {
-        animeManager = new AnimeManager(getContext());
-        animeManager.open();
-        animeManager.insertRecent(detail, title, image);
-        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("type", "drama");
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentView, fragment, "summary_view");
         transaction.addToBackStack(null);
         transaction.commit();
-
-    }
-
-    private class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private final int spanCount;
-        private final int spacing;
-        private final boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-
-            int position = parent.getChildAdapterPosition(view);
-            int column = position % spanCount;
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount;
-                outRect.right = (column + 1) * spacing / spanCount;
-                if (position < spanCount) {
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing;
-            } else {
-                outRect.left = column * spacing / spanCount;
-                outRect.right = spacing - (column + 1);
-                if (position >= spanCount) {
-                    outRect.top = spacing;
-                }
-            }
-        }
     }
 }

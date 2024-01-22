@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.drama:
                     selectedFragment = new LikedView();
-                    tag = "liked_fragment";
+                    tag = "drama_fragment";
                     break;
                 case R.id.home:
                     selectedFragment = new HomeView();

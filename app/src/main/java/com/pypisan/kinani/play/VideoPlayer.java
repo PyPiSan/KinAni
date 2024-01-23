@@ -58,7 +58,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
-    private Uri hlsUri;
     private CastContext mCastContext;
     private MediaRouteButton mMediaRouteButton;
     private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
@@ -66,7 +65,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
-    private String episode_num;
+    private String episode_num, type;
     private String[] videoLink = new String[4];
 
     private Dialog settingDialog;
@@ -86,6 +85,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         String title = videoIntent.getStringExtra("title");
         String summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
+        type = videoIntent.getStringExtra("type");
 
 
         animeTitleView = findViewById(R.id.animeTitleText);
@@ -115,7 +115,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         summaryTextView.setText(summary);
         videoHead.setText(String.format("%s : Episode %s", title, episode_num));
         videoHead.setSelected(true);
-        getEpisodeLink(title, episode_num);
+        getEpisodeLink(title, episode_num, type);
 
 //        for casting video
         mCastContext = CastContext.getSharedInstance(this);
@@ -157,7 +157,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 reloadButton.setVisibility(View.GONE);
                 videoLoading.setVisibility(View.VISIBLE);
-                getEpisodeLink(title, episode_num);
+                getEpisodeLink(title, episode_num, type);
             }
         });
 
@@ -226,10 +226,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
     }
 
-    private void getEpisodeLink(String title, String episode_num) {
+    private void getEpisodeLink(String title, String episode_num, String type) {
         //      fetching data
+        String url;
+        if ( type != null && type.equals("drama")){
+            url = Constant.baseDramaUrl;
+        }else{
+            url = Constant.baseUrl;
+        }
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule episodeLink = retrofit.create(RequestModule.class);
@@ -275,7 +281,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(), "Playing, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
-        hlsUri = Uri.parse(link);
+        Uri hlsUri = Uri.parse(link);
         int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
                     | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
             DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
@@ -363,7 +369,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);
         videoLoading.setVisibility(View.VISIBLE);
-        getEpisodeLink(title, episode_num);
+        getEpisodeLink(title, episode_num, type);
     }
 
     private void onPreviousClick(String title){
@@ -383,7 +389,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);
         videoLoading.setVisibility(View.VISIBLE);
-        getEpisodeLink(title, episode_num);
+        getEpisodeLink(title, episode_num, type);
     }
 
     private void onQualitySelected(int index){

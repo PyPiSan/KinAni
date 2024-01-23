@@ -54,7 +54,7 @@ public class SummaryView extends Fragment{
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
-    private String animetitle, animeDetailLink, animeLink;
+    private String animeTitle, animeDetailLink, animeLink;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
 //    private Animation animationImage;
     private InMobiBanner bannerAd;
@@ -151,15 +151,15 @@ public class SummaryView extends Fragment{
                 animeManager.open();
                 cursor = animeManager.findOne(animeName);
                 if (cursor == null || cursor.getCount() == 0) {
-                    animeManager.insertLiked(animeDetailLink, animetitle, animeLink);
+                    animeManager.insertLiked(animeDetailLink, animeTitle, animeLink);
                     likedFab.setAnimation(R.raw.liked);
                     likedFab.playAnimation();
-                    Toast.makeText(getContext(), "Added to Liked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Added to Watchlist", Toast.LENGTH_SHORT).show();
                 }else{
-                    animeManager.deleteLiked(animetitle);
+                    animeManager.deleteLiked(animeTitle);
                     likedFab.setAnimation(R.raw.heart);
                     likedFab.playAnimation();
-                    Toast.makeText(getContext(), "Removed from Liked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Removed from Watchlist", Toast.LENGTH_SHORT).show();
                 }
                 animeManager.close();
             }
@@ -220,7 +220,7 @@ public class SummaryView extends Fragment{
                     animeDetail = resource.getData();
 //                    Log.d("E2", "Response is " + animeDetail.getTitle());
 
-                    animetitle = animeDetail.getTitle();
+                    animeTitle = animeDetail.getTitle();
                     animeLink = animeDetail.getImageLink();
                     animeDetailLink = animeDetail.getAnimeDetailLink();
 //                    int randNum = ThreadLocalRandom.current().nextInt(0, 10);
@@ -241,7 +241,7 @@ public class SummaryView extends Fragment{
                     containerImg.setVisibility(View.GONE);
                     cardImageTitle.setVisibility(View.VISIBLE);
 
-                    title.setText(animetitle);
+                    title.setText(animeTitle);
                     releasedValue.setText(animeDetail.getReleased());
                     statusValue.setText(animeDetail.getStatus());
                     containerSummaryText.stopShimmer();
@@ -297,9 +297,10 @@ public class SummaryView extends Fragment{
                             if (position != 0) {
                                 Intent i = new Intent(getContext(), VideoPlayer.class);
                                 i.putExtra("episode_num", String.valueOf(position));
-                                i.putExtra("title", animetitle);
+                                i.putExtra("title", animeTitle);
                                 i.putExtra("summary", animeDetail.getSummary());
                                 i.putExtra("server_name", "server1");
+                                i.putExtra("type", type);
                                 startActivity(i);
                             }
                         }
@@ -311,7 +312,7 @@ public class SummaryView extends Fragment{
                 }
 
                 } else {
-                    Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Content Not Found", Toast.LENGTH_LONG).show();
                     bannerAd.setVisibility(View.GONE);
                     errorView.setVisibility(View.VISIBLE);
                     containerImg.setVisibility(View.GONE);
@@ -324,7 +325,7 @@ public class SummaryView extends Fragment{
             @Override
             public void onFailure(Call<AnimeEpisodeListModel> call, Throwable t) {
                 bannerAd.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Content Not Found", Toast.LENGTH_LONG).show();
                 errorView.setVisibility(View.VISIBLE);
                 containerImg.setVisibility(View.GONE);
                 containerSummaryText.setVisibility(View.GONE);

@@ -377,11 +377,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 if (status) {
                     List<RecentlyAiredModel.datum> data = resource.getData();
                     ScheduleModel scheduleModel = new ScheduleModel();
-                    for (RecentlyAiredModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + animes.getSchedule());
+                    for (RecentlyAiredModel.datum anime : data) {
+//                        Log.d("Hey3", "Response code is : " + anime.getSchedule());
 
-                        scheduleModel = new ScheduleModel(animes.getTitle(),
-                                animes.getImage(), animes.getEpisode(), animes.getSchedule());
+                        scheduleModel = new ScheduleModel(anime.getTitle(),
+                                anime.getImage(), anime.getEpisode(), anime.getSchedule());
                         animeScheduleList.add(scheduleModel);
                     }
                 }

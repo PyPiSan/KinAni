@@ -20,10 +20,10 @@
     <string name="search">Search</string>
     <string name="profile">Profile</string>
     <string name="movies">Movies</string>
-    <string name="about_anime">About Anime</string>
+    <string name="about_anime">About</string>
     <string name="genre">Genre</string>
     <string name="episode_select">SELECT AN EPISODE</string>
-    <string name="anime_rating">Anime Rating</string>
+    <string name="anime_rating">Rating</string>
     <string name="status">Status</string>
     <string name="username">User</string>
     <string name="enter_username">Enter alias</string>

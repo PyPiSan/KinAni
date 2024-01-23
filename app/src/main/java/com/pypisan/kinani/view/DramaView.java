@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,7 +59,7 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 //      Inflate the layout for this fragment
-        return inflater.inflate(R.layout.liked_view, container, false);
+        return inflater.inflate(R.layout.drama_view, container, false);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -123,28 +122,6 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
     }
 
 //       Fetching Liked list from DB
-
-//    private void likedList(){
-//        dramaList = new ArrayList<>();
-//        animeManager = new AnimeManager(getContext());
-//        animeManager.open();
-//        Cursor cursor = animeManager.readAllDataLiked();
-//        if (cursor.getCount() == 0){
-//            Toast.makeText(getContext(), "Nothing to show", Toast.LENGTH_SHORT).show();
-//            animeManager.close();
-//        }else {
-//            AnimeModel model;
-////            Log.d("C1", "anime list is " + cursor.getCount());
-//            while (cursor.moveToNext()) {
-//                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), "");
-//                dramaList.add(model);
-////                Log.d("C4", "anime list is " + animeList.size());
-//                errorPage.setVisibility(View.GONE);
-//                recyclerView.setVisibility(View.VISIBLE);
-//            }
-//            animeManager.close();
-//        }
-//    }
 
     private void insertDataToCard(String pageNum) {
 //      Add the cards data and display them

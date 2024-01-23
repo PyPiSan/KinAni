@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.inmobi.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -52,10 +53,55 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/watchListRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/thirdRelative"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@+id/watchlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/watchlist"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/primaryTextColor"
+            android:layout_marginStart="16dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/fourthRelative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/watchListRelative"
+            android:layout_marginStart="11dp"
+            android:visibility="gone">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container_watchlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:shimmer_direction="left_to_right"
+                >
+                <include layout="@layout/skeleton_layout"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recycler_view_watchlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/trending"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/thirdRelative">
+        android:layout_below="@+id/fourthRelative">
     <TextView
         android:id="@+id/textTrend"
         android:layout_width="wrap_content"
@@ -153,7 +199,7 @@
         android:visibility="gone"
         />
     </RelativeLayout>
-        <RelativeLayout
+    <RelativeLayout
             android:id="@+id/ads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -168,7 +214,51 @@
                 ads:placementId="plid-1688560554226"
                 ads:refreshInterval="60"
                 />
-        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/continueWatching"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ads"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+        >
+    <TextView
+                android:id="@+id/textContinueWatching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/continue_watching"
+                android:textColor="@color/primaryTextColor"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/continueWatchingRelative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/continueWatching"
+            android:layout_marginStart="12dp"
+            android:visibility="gone"
+            >
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_view_container_continue_watching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:shimmer_direction="left_to_right"
+                >
+                <include layout="@layout/skeleton_layout"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recycler_view_continue_watching"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                />
+    </RelativeLayout>
     <TextView
         android:id="@+id/recentlyAired"
         android:layout_width="wrap_content"
@@ -177,7 +267,7 @@
         android:textStyle="bold"
         android:textSize="22sp"
         android:textColor="@color/primaryTextColor"
-        android:layout_below="@+id/ads"
+        android:layout_below="@+id/continueWatchingRelative"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="16dp" />

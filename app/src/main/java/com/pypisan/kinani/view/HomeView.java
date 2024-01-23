@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,22 +44,17 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeRecentNum, animeTrendingList, animeTrendingListInc,
-            animeRecommendList, animeRecommendListInc;
+            animeRecommendList, animeRecommendListInc, animeWatchList;
 
-    private RecyclerView recyclerView_trending;
-    private RecyclerView recyclerView_recommend;
-    private RecyclerView recyclerView_schedule;
+    private RecyclerView recyclerView_trending, recyclerView_recommend, recyclerView_schedule;
 
-    private RecyclerView.Adapter adapterTrending;
-    private RecyclerView.Adapter scheduleAdapter;
-    private RecyclerView.Adapter adapterRecommend;
+    private RecyclerView.Adapter adapterTrending, scheduleAdapter,adapterRecommend;
     private AnimeManager animeManager;
 
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
-    private ShimmerFrameLayout containerTrending;
-    private ShimmerFrameLayout containerSchedule;
-    private ShimmerFrameLayout containerRecommend;
+    private ShimmerFrameLayout containerTrending,containerSchedule,containerRecommend;
     private TextView recentTextHeader;
+    private RelativeLayout watchList, fourthRelative;
 
     public HomeView() {
         // Required empty public constructor
@@ -88,31 +84,35 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         animeRecommendListInc = new ArrayList<>();
 
         ShimmerFrameLayout containerRecent = view.findViewById(R.id.shimmer_view_container_recent);
+        ShimmerFrameLayout containerWatchList = view.findViewById(R.id.shimmer_view_container_watchlist);
         containerTrending = view.findViewById(R.id.shimmer_view_container);
         containerSchedule = view.findViewById(R.id.shimmer_view_container_schedule);
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
 
         recentTextHeader = view.findViewById(R.id.recents);
+        watchList = view.findViewById(R.id.watchListRelative);
+        fourthRelative = view.findViewById(R.id.fourthRelative);
 
-//        For More Arrow
+//      For More Arrow
         ImageView trendingMore = view.findViewById(R.id.trending_more);
         ImageView recommendationMore = view.findViewById(R.id.recommended_more);
 
-//        Ads
+//      Ads
         InMobiBanner bannerAdTop = (InMobiBanner) view.findViewById(R.id.banner);
         InMobiBanner bannerAdBottom = (InMobiBanner) view.findViewById(R.id.banner2);
 
-//        Starting Shimmer Effect
+//      Starting Shimmer Effect
         containerRecent.startShimmer();
         containerTrending.startShimmer();
         containerSchedule.startShimmer();
         containerRecommend.startShimmer();
 
-//        Fetching Data
+//      Fetching Data
         scheduleFetcher();
         recentlyWatchedList();
         getTrendingList();
         recommendFetcher();
+        watchList();
 
 //      1st initialization recycler recent
         RecyclerView recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
@@ -120,7 +120,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 LinearLayoutManager.HORIZONTAL, false));
         recyclerView_recent.setHasFixedSize(false);
 
-        //        Setting Data
+//      Setting Data
         RecyclerView.Adapter adapter = new HomeViewAdapter(animeRecentNum, getContext(), this);
         containerRecent.stopShimmer();
         containerRecent.setVisibility(View.GONE);
@@ -128,8 +128,22 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_recent.setItemAnimator(new DefaultItemAnimator());
         recyclerView_recent.setAdapter(adapter);
 
+//      2nd recycler view watchlist
+        RecyclerView recyclerView_watchList = view.findViewById(R.id.home_recycler_view_watchlist);
+        recyclerView_watchList.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        recyclerView_watchList.setHasFixedSize(false);
 
-//        2nd recycler view trending
+//      Setting Data
+        RecyclerView.Adapter adapterWatchList = new HomeViewAdapter(animeWatchList, getContext(), this);
+        containerWatchList.stopShimmer();
+        containerWatchList.setVisibility(View.GONE);
+        recyclerView_watchList.setVisibility(View.VISIBLE);
+        recyclerView_watchList.setItemAnimator(new DefaultItemAnimator());
+        recyclerView_watchList.setAdapter(adapterWatchList);
+
+
+//      3rd recycler view trending
         recyclerView_trending = view.findViewById(R.id.home_recycler_view_trending);
         LinearLayoutManager trendingLinearLayout = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false);
@@ -137,10 +151,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_trending.setHasFixedSize(false);
 
 
-//        Setting Data
+//      Setting Data
         adapterTrending = new HomeViewAdapter(animeTrendingListInc, getContext(), this);
 
-//        3rd recycler view recommends
+//      4th recycler view recommends
         recyclerView_recommend = view.findViewById(R.id.home_recycler_view_recommends);
         recyclerView_recommend.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
@@ -150,17 +164,17 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         adapterRecommend = new HomeViewAdapter(animeRecommendListInc, getContext(), this);
 
 
-//        4th recycler view aired at
+//      5th recycler view aired at
         recyclerView_schedule = view.findViewById(R.id.home_recycler_view_recentlyAired);
         recyclerView_schedule.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView_schedule.setHasFixedSize(false);
 
-//        Setting Data
+//      Setting Data
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);
         bannerAdTop.load();
         bannerAdBottom.load();
 
-//        More click listener
+//      More click listener
 
         trendingMore.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -176,7 +190,6 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             }
         });
     }
-//       Fetching Liked list from DB
 
     private void recentlyWatchedList() {
         animeRecentNum = new ArrayList<>();
@@ -186,13 +199,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         if (cursor.getCount() != 0) {
             recentTextHeader.setVisibility(View.VISIBLE);
             AnimeModel model;
-//            Log.d("H1", "anime list is " + cursor.getCount());
             int i = 1;
             while (cursor.moveToNext()) {
                 model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), null);
-//                Log.d("H3", "cursor at " + i + cursor.getString(1));
                 animeRecentNum.add(model);
-//                Log.d("H4", "anime list is " + animeNum.size());
                 i++;
                 if (i == 15) {
                     break;
@@ -202,6 +212,22 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         }
     }
 
+    private void watchList(){
+        animeWatchList = new ArrayList<>();
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        Cursor cursor = animeManager.readAllDataLiked();
+        if (cursor.getCount() != 0){
+            watchList.setVisibility(View.VISIBLE);
+            fourthRelative.setVisibility(View.VISIBLE);
+            AnimeModel model;
+            while (cursor.moveToNext()) {
+                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), "");
+                animeWatchList.add(model);
+            }
+            animeManager.close();
+        }
+    }
 
     @Override
     public void onItemClicked(String title, String detail, String image) {

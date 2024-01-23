@@ -51,4 +51,6 @@
     <string name="female">Female</string>
     <string name="Other">Other</string>
     <string name="hopin">Hop In!</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="continue_watching">Continue Watching</string>
 </resources>

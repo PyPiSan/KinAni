@@ -2,7 +2,6 @@ package com.pypisan.kinani.view;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                     tag = "movies_fragment";
                     break;
                 case R.id.drama:
-                    selectedFragment = new DramaView();
+                    selectedFragment = new KShowView();
                     tag = "drama_fragment";
                     break;
                 case R.id.home:

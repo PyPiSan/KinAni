@@ -153,10 +153,10 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
         
         if (tag.equals("trending")) {
             RequestModule animeTrend = retrofit.create(RequestModule.class);
-            call = animeTrend.getAnimeTrending(Constant.key, pageNum);
+            call = animeTrend.getTrending(Constant.key, pageNum);
         } else {
             RequestModule animeRecommend = retrofit.create(RequestModule.class);
-            call = animeRecommend.getAnimeRecommend(Constant.key,pageNum);
+            call = animeRecommend.getRecommend(Constant.key,pageNum);
         }
         if (Integer.parseInt(pageNum)>1) {
             commonAdapter.addNullData();

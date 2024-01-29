@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -269,7 +268,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .build();
 
         RequestModule animeTrend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeTrend.getAnimeTrending(Constant.key,pageNum);
+        Call<AnimeRecentModel> call = animeTrend.getTrending(Constant.key,pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -331,7 +330,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .build();
 
         RequestModule animeRecommend = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecommend.getAnimeRecommend(Constant.key,pageNum);
+        Call<AnimeRecentModel> call = animeRecommend.getRecommend(Constant.key,pageNum);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override

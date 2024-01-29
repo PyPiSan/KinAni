@@ -16,7 +16,7 @@
     <string name="recentlyAired">Recently Aired</string>
     <string name="home">Home</string>
     <string name="new_label">New</string>
-    <string name="drama">Drama</string>
+    <string name="drama">KShow</string>
     <string name="search">Search</string>
     <string name="profile">Profile</string>
     <string name="movies">Movies</string>
@@ -53,4 +53,6 @@
     <string name="hopin">Hop In!</string>
     <string name="watchlist">Watchlist</string>
     <string name="continue_watching">Continue Watching</string>
+    <string name="trendingDrama">Trending</string>
+    <string name="top_shows">Top Shows</string>
 </resources>

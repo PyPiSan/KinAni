@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +97,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
             .build();
 
     RequestModule animeTrending = retrofit.create(RequestModule.class);
-    Call<AnimeRecentModel> call = animeTrending.getAnimeTrending(Constant.key,pageNum);
+    Call<AnimeRecentModel> call = animeTrending.getTrending(Constant.key,pageNum);
 
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override

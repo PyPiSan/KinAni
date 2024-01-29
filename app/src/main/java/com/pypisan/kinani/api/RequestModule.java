@@ -26,11 +26,11 @@ public interface RequestModule {
 
 
     @GET("trending/")
-    Call<AnimeRecentModel> getAnimeTrending(@Header("x-api-key") String apikey,@Query("page") String num);
+    Call<AnimeRecentModel> getTrending(@Header("x-api-key") String apikey, @Query("page") String num);
 
 
     @GET("recommendation/")
-    Call<AnimeRecentModel> getAnimeRecommend(@Header("x-api-key") String apikey,@Query("page") String num);
+    Call<AnimeRecentModel> getRecommend(@Header("x-api-key") String apikey, @Query("page") String num);
 
     @GET("search/")
     Call<AnimeRecentModel> searchAnime(@Header("x-api-key") String apikey, @Query("name") String one);

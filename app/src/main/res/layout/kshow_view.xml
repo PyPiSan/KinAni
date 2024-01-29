@@ -1,0 +1,81 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.KShowView"
+    android:tag="KShow_fragment"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="@color/primaryColor">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_drama_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shimmer_direction="left_to_right">
+        <include layout="@layout/recent_card_skeleton"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/drama_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    <LinearLayout
+        android:id="@+id/viewSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/round_border"
+        android:padding="8dp"
+        app:elevation="8dp"
+        android:layout_alignBottom="@id/drama_recycler_view"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/trendingDramaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/trendingDrama"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecondary"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/moviesDramaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/movies"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecondary"
+            android:layout_marginStart="12dp"/>
+
+        <TextView
+            android:id="@+id/topDramaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/top_shows"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +18,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.RecentAdapter;
@@ -33,20 +35,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DramaView extends Fragment implements RecentAdapter.SelectListener {
+public class KShowView extends Fragment implements RecentAdapter.SelectListener {
 
     private ArrayList<AnimeModel> dramaList;
     private RecyclerView recyclerView;
     private RecentAdapter adapterDrama;
     private ShimmerFrameLayout containerDrama;
-
-    private LottieAnimationView errorPage;
     private int pageNumber;
+    private String viewType = "movies";
     private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
+    private LinearLayout viewSelector;
 
-    public DramaView() {
+    public KShowView() {
 //    Required empty public constructor
     }
 
@@ -59,7 +61,7 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 //      Inflate the layout for this fragment
-        return inflater.inflate(R.layout.drama_view, container, false);
+        return inflater.inflate(R.layout.kshow_view, container, false);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -67,12 +69,56 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//      errorPage = view.findViewById(R.id.animationView);
         dramaList = new ArrayList<>();
         containerDrama = view.findViewById(R.id.shimmer_drama_layout);
         containerDrama.startShimmer();
+        viewSelector = view.findViewById(R.id.viewSelector);
+        TextView trendingDramaButton = view.findViewById(R.id.trendingDramaButton);
+        TextView moviesDramaButton = view.findViewById(R.id.moviesDramaButton);
+        TextView topDramaButton = view.findViewById(R.id.topDramaButton);
         pageNumber = 1;
-        insertDataToCard(String.valueOf(pageNumber));
+        insertDataToCard(String.valueOf(pageNumber), viewType);
+        trendingDramaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewType = "trending";
+                containerDrama.setVisibility(View.VISIBLE);
+                containerDrama.startShimmer();
+                dramaList.clear();
+                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
+                recyclerView.setAdapter(null);
+                pageNumber = 1;
+                insertDataToCard(String.valueOf(pageNumber), viewType);
+            }
+        });
+
+        moviesDramaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewType = "movies";
+                containerDrama.setVisibility(View.VISIBLE);
+                containerDrama.startShimmer();
+                dramaList.clear();
+                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
+                recyclerView.setAdapter(null);
+                pageNumber = 1;
+                insertDataToCard(String.valueOf(pageNumber), viewType);
+            }
+        });
+
+        topDramaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewType = "top";
+                containerDrama.setVisibility(View.VISIBLE);
+                containerDrama.startShimmer();
+                dramaList.clear();
+                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
+                recyclerView.setAdapter(null);
+                pageNumber = 1;
+                insertDataToCard(String.valueOf(pageNumber), viewType);
+            }
+        });
 
 
 //      initialization recycler
@@ -115,7 +161,7 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
                     recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
                     pageNumber +=1;
                     loading=true;
-                    insertDataToCard(String.valueOf(pageNumber));
+                    insertDataToCard(String.valueOf(pageNumber), viewType);
                 }
             }
         });
@@ -123,7 +169,7 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
 
 //       Fetching Liked list from DB
 
-    private void insertDataToCard(String pageNum) {
+    private void insertDataToCard(String pageNum, String viewName) {
 //      Add the cards data and display them
 //      fetching data
         Retrofit retrofit = new Retrofit.Builder()
@@ -131,9 +177,22 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
                 .addConverterFactory(GsonConverterFactory
                         .create())
                 .build();
-
-        RequestModule moviesList = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = moviesList.getMovies(Constant.key, pageNum);
+        RequestModule contentList = retrofit.create(RequestModule.class);
+        Call<AnimeRecentModel> call;
+        switch (viewName) {
+            case "movies":
+                call = contentList.getMovies(Constant.key, pageNum);
+                break;
+            case "trending":
+                call = contentList.getTrending(Constant.key, pageNum);
+                break;
+            case "top":
+                call = contentList.getRecommend(Constant.key, pageNum);
+                break;
+            default:
+                call = contentList.getMovies(Constant.key, pageNum);
+                break;
+        }
         if (Integer.parseInt(pageNum)>1) {
             adapterDrama.addNullData();
         }
@@ -145,11 +204,11 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
                     AnimeModel model;
-                    for (AnimeRecentModel.datum animes : data) {
-                        model = new AnimeModel(animes.getImageLink(),
-                                animes.getAnimeDetailLink(),
-                                animes.getTitle(),
-                                animes.getReleased());
+                    for (AnimeRecentModel.datum drama : data) {
+                        model = new AnimeModel(drama.getImageLink(),
+                                drama.getAnimeDetailLink(),
+                                drama.getTitle(),
+                                drama.getReleased());
                         dramaList.add(model);
                     }
                     adapterDrama.notifyItemInserted(resource.getResultSize());
@@ -162,7 +221,8 @@ public class DramaView extends Fragment implements RecentAdapter.SelectListener 
                     loading=false;
                     containerDrama.stopShimmer();
                     containerDrama.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+//                    recyclerView.setVisibility(View.VISIBLE);
+                    viewSelector.setVisibility(View.VISIBLE);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(adapterDrama);
                     recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);

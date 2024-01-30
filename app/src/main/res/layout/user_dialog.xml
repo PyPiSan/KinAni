@@ -79,7 +79,10 @@
             android:layout_marginStart="9dp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/forgot_password"
+            android:clickable="true"
+            android:focusable="true"
             android:textSize="18sp"
+            android:background="?android:selectableItemBackground"
             />
 
         <TextView
@@ -91,7 +94,10 @@
             android:layout_marginStart="9dp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/signup"
+            android:clickable="true"
+            android:focusable="true"
             android:textSize="18sp"
+            android:background="?android:selectableItemBackground"
             />
         </LinearLayout>
 
@@ -222,6 +228,7 @@
             android:autofillHints="18" />
 
         <RadioGroup
+            android:id="@+id/gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

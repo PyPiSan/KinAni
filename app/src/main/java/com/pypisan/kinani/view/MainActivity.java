@@ -1,6 +1,8 @@
 package com.pypisan.kinani.view;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +27,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
+import com.pypisan.kinani.api.SignUpRequest;
 import com.pypisan.kinani.model.UserModel;
+import com.pypisan.kinani.storage.AnimeManager;
+import com.pypisan.kinani.storage.Constant;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +40,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private int HomeIndex;
+    private Menu mMenuItem;
 //    private View newView, movieView, dramaView, defaultView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-        CastButtonFactory.setUpMediaRouteButton(this, menu,
-                R.id.media_route_menu_item);
+//        menu.getItem(1).setIcon(R.drawable.ic_head_logo);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -114,9 +122,18 @@ public class MainActivity extends AppCompatActivity {
         TextView forgotPass = myDialog.findViewById(R.id.lbl_forgot);
         Button cancel = myDialog.findViewById(R.id.cancelButton);
         Button cancel2 = myDialog.findViewById(R.id.cancelButton2);
+        Button hopIn = myDialog.findViewById(R.id.signUpButton);
+//      Login Fields
         EditText username = myDialog.findViewById(R.id.et_username);
         EditText password = myDialog.findViewById(R.id.et_password);
         ProgressBar loginLoader = myDialog.findViewById(R.id.loginLoader);
+
+//      Signup Fields
+        EditText alias = myDialog.findViewById(R.id.et_name);
+        EditText pass1 = myDialog.findViewById(R.id.et_new_password);
+        EditText pass2 = myDialog.findViewById(R.id.et_repeat_password);
+        EditText age = myDialog.findViewById(R.id.et_age);
+        RadioGroup radioGroup = myDialog.findViewById(R.id.gender);
         myDialog.show();
 
         login.setOnClickListener(new View.OnClickListener()
@@ -132,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 loginBox.setVisibility(View.GONE);
                 loginLoader.setVisibility(View.VISIBLE);
                 String[] apiVal = new String[1];
-                Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
+                Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                         .addConverterFactory(GsonConverterFactory.create()).build();
 
                 RequestModule getID = retrofit.create(RequestModule.class);
@@ -185,6 +202,86 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 loginBox.setVisibility(View.GONE);
                 signUpBox.setVisibility(View.VISIBLE);
+            }
+        });
+
+        hopIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userValue = String.valueOf(alias.getText());
+                String passValue = String.valueOf(pass1.getText());
+                String repeatPass = String.valueOf(pass2.getText());
+                String ageValue = String.valueOf(age.getText());
+                String gender = "Other";
+                if (userValue.equals("") || userValue.length()<8){
+                    Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
+                            Toast.LENGTH_SHORT).show();
+                }else if (passValue.equals("") || passValue.length()<8){
+                    Toast.makeText(getApplicationContext(), "Password must be greater than 6 chars",
+                            Toast.LENGTH_SHORT).show();
+                } else if (repeatPass.equals("")|| !passValue.equals(repeatPass)){
+                    Toast.makeText(getApplicationContext(), "Password is not matching",
+                            Toast.LENGTH_SHORT).show();
+                }else if (ageValue.equals("")){
+                    Toast.makeText(getApplicationContext(), "Age must be a value",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    // get selected radio button from radioGroup
+                    int selectedId = radioGroup.getCheckedRadioButtonId();
+                    // find the radiobutton by returned id
+                    if (selectedId!=-1){
+                        RadioButton radioButton = myDialog.findViewById(selectedId);
+                        gender = radioButton.getText().toString();
+                    }
+                    signUpBox.setVisibility(View.GONE);
+                    loginLoader.setVisibility(View.VISIBLE);
+                    AnimeManager animeManager = new AnimeManager(getApplicationContext());
+                    animeManager.open();
+                    String uid="1233";
+                    Cursor cursor = animeManager.findAllUser();
+                    if (cursor != null && cursor.getCount() != 0){
+                        while (cursor.moveToNext()) {
+                            uid =cursor.getString(1);
+                        }
+                    }
+                    animeManager.close();
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                            .addConverterFactory(GsonConverterFactory.create()).build();
+
+                    RequestModule userSignUp = retrofit.create(RequestModule.class);
+                    Call<UserModel> call = userSignUp.signUp(Constant.key,
+                            new SignUpRequest(uid,userValue, passValue,ageValue,gender));
+
+                    call.enqueue(new Callback<UserModel>() {
+                        @Override
+                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                            boolean flag = false;
+                            UserModel resource = response.body();
+                            if (response.code() == 200) {
+                                boolean status = resource.getUserStatus();
+                                flag = status;
+                            }
+                            if (flag) {
+                                Toast.makeText(getApplicationContext(), "SignUp Successful "+resource.getMessage(), Toast.LENGTH_SHORT).show();
+                                myDialog.cancel();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(), Toast.LENGTH_LONG).show();
+                                loginLoader.setVisibility(View.GONE);
+                                signUpBox.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserModel> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_SHORT).show();
+                            loginLoader.setVisibility(View.GONE);
+                            signUpBox.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                }
+
 
             }
         });

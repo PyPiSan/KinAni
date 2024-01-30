@@ -16,7 +16,7 @@ import com.inmobi.sdk.InMobiSdk;
 import com.inmobi.sdk.SdkInitializationListener;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
-import com.pypisan.kinani.model.UserInit;
+import com.pypisan.kinani.api.UserInit;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
@@ -69,7 +69,7 @@ public class HomeSplash extends AppCompatActivity {
         if (cursor != null && cursor.getCount() != 0){
             while (cursor.moveToNext()) {
                 Constant.key=cursor.getString(2);
-//                Toast.makeText(getApplicationContext(),cursor.getString(2), Toast.LENGTH_SHORT).show();
+                Constant.logo =cursor.getString(4);
             }
             animeManager.close();
             new Handler().postDelayed(new Runnable() {
@@ -82,7 +82,7 @@ public class HomeSplash extends AppCompatActivity {
             }, 1000);
 
         }else {
-            Retrofit retrofit = new Retrofit.Builder().baseUrl("https://anime.pypisan.com/v1/")
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
             Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin));
@@ -96,20 +96,20 @@ public class HomeSplash extends AppCompatActivity {
                         Constant.key=resource.getApikey();
                     }
                     if (flag) {
-                        animeManager.insertUser(deviceUser, Constant.key);
+                        animeManager.insertUser(deviceUser, Constant.key, true,false,"");
 //                        Toast.makeText(getApplicationContext(), Constant.key, Toast.LENGTH_SHORT).show();
                         animeManager.close();
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserModel> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_LONG).show();
                 }
             });
         }

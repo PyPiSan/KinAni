@@ -38,7 +38,6 @@
     <string name="qualityTwo">480p</string>
     <string name="qualityOne">360p</string>
     <string name="quality_selector">Select Quality</string>
-    <string name="like_alert">Oops! Don\'t you have any Favourite Anime.You have to add Anime to Likes to show here by clicking the heart icon…</string>
     <string name="none">none</string>
     <string name="error_alert">Oops! Content Not Found, Please click Retry..</string>
     <string name="retry">Retry</string>

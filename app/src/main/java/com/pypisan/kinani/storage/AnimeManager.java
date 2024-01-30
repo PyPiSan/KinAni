@@ -112,18 +112,27 @@ public class AnimeManager {
     }
 
 //    Insert User credentials
-    public void insertUser(String user, String apikey){
+    public void insertUser(String user, String apikey, Boolean ads,Boolean loggedIn, String logo){
     Cursor cursor;
     cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
     if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.USER, user);
         contentValues.put(AnimeBase.APIKEY, apikey);
+        contentValues.put(AnimeBase.AD, ads);
+        contentValues.put(AnimeBase.LOGGED, loggedIn);
+        contentValues.put(AnimeBase.LOGO, logo);
         database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);}
         }
 
     public Cursor findOneUser(String user){
         Cursor cursor;
         cursor = database.rawQuery("SELECT * FROM UserData WHERE user=?", new String[]{user});
+        return cursor;
+    }
+
+    public Cursor findAllUser(){
+        Cursor cursor;
+        cursor = database.rawQuery("SELECT * FROM UserData LIMIT 1",null);
         return cursor;
     }
 }

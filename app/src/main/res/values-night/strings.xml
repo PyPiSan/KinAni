@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="more">more</string>
-    <string name="signup">Sign Up</string>
-    <string name="password_again">Repeat Password</string>
-    <string name="age">Age</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="Other">Other</string>
-    <string name="hopin">Hop In!</string>
-    <string name="watchlist">Watchlist</string>
-    <string name="continue_watching">Continue Watching</string>
-    <string name="trendingDrama">Trending</string>
 </resources>

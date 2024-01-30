@@ -1,11 +1,9 @@
 package com.pypisan.kinani.api;
 
-import com.pypisan.kinani.model.Title;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
-import com.pypisan.kinani.model.UserInit;
 import com.pypisan.kinani.model.UserModel;
 
 import retrofit2.Call;
@@ -55,6 +53,9 @@ public interface RequestModule {
 
     @POST("login")
     Call<UserModel> getLogin(@Body UserRequest body);
+
+    @POST("signup")
+    Call<UserModel> signUp(@Header("x-api-key") String apikey, @Body SignUpRequest body);
 
 }
 

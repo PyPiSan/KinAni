@@ -30,7 +30,7 @@ import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
-import com.pypisan.kinani.model.Title;
+import com.pypisan.kinani.api.Title;
 import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
@@ -89,12 +89,6 @@ public class SummaryView extends Fragment{
         showType = getArguments().getString("type");
         animeManager = new AnimeManager(getContext());
 
-//        recyclerEpisode = view.findViewById(R.id.episodeRecycler);
-//        recyclerEpisode.setLayoutManager(new GridLayoutManager(getContext(), 3));
-//        recyclerEpisode.setHasFixedSize(true);
-
-//        adapterEpisode = new EpisodeAdapter(getContext(), 300, this);
-//        recyclerEpisode.setAdapter(adapterEpisode);
 //        for shimmer effect
         containerImgHead = view.findViewById(R.id.shimmer_view_animePic);
         containerImg = view.findViewById(R.id.shimmer_view_titleImage);

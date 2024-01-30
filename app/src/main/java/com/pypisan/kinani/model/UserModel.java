@@ -12,6 +12,9 @@ public class UserModel {
     @SerializedName("ads")
     private Boolean ads;
 
+    @SerializedName("message")
+    private String message;
+
     public String getApikey() {
         return apikey;
     }
@@ -20,4 +23,7 @@ public class UserModel {
 
     public Boolean getAds(){return ads;}
 
+    public String getMessage() {
+        return message;
+    }
 }

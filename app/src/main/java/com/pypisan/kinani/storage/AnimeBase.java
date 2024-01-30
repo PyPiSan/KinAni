@@ -17,8 +17,11 @@ public class AnimeBase extends SQLiteOpenHelper {
     public static final String TABLE_NAME_3 = "UserData";
     public static final String USER = "user";
     public static final String APIKEY = "apikey";
+    public static final String AD = "ad";
+    public static final String LOGGED = "logged";
+    public static final String LOGO = "logo";
     static final String DB_NAME = "ANIME.DB";
-    static final int DB_VERSION = 7;
+    static final int DB_VERSION = 9;
     private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DETAIL + " TEXT NOT NULL, " + TITLE +
             " TEXT NOT NULL, " + IMAGE + " TEXT, " + TYPE + " TEXT);";
@@ -29,7 +32,7 @@ public class AnimeBase extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE3 = "create table " + TABLE_NAME_3 + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USER + " TEXT NOT NULL, " + APIKEY +
-            " TEXT NOT NULL);";
+            " TEXT NOT NULL, " + AD + "BOLLEAN NOT NULL, "+ LOGGED + "BOLLEAN NOT NULL, " + LOGO + "TEXT);";
 
     //    constructor
     public AnimeBase(Context context) {

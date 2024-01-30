@@ -3,7 +3,9 @@ package com.pypisan.kinani.view;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;;
-
-import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
@@ -32,6 +32,8 @@ import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
+import java.util.Random;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private int HomeIndex;
     private Menu mMenuItem;
+    private String uid="";
 //    private View newView, movieView, dramaView, defaultView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-//        menu.getItem(1).setIcon(R.drawable.ic_head_logo);
+        mMenuItem=menu;
+        if (Constant.loggedInStatus){
+            menu.getItem(1).setIcon(Drawable.createFromPath(Constant.logo));
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -103,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                 onSearchClicked();
                 return true;
             case R.id.account:
-                callLoginDialog();
+                if (!Constant.loggedInStatus){
+                    callLoginDialog();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -217,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
                             Toast.LENGTH_SHORT).show();
                 }else if (passValue.equals("") || passValue.length()<8){
-                    Toast.makeText(getApplicationContext(), "Password must be greater than 6 chars",
+                    Toast.makeText(getApplicationContext(), "Password must be greater than 8 chars",
                             Toast.LENGTH_SHORT).show();
                 } else if (repeatPass.equals("")|| !passValue.equals(repeatPass)){
                     Toast.makeText(getApplicationContext(), "Password is not matching",
@@ -238,7 +246,6 @@ public class MainActivity extends AppCompatActivity {
                     loginLoader.setVisibility(View.VISIBLE);
                     AnimeManager animeManager = new AnimeManager(getApplicationContext());
                     animeManager.open();
-                    String uid="1233";
                     Cursor cursor = animeManager.findAllUser();
                     if (cursor != null && cursor.getCount() != 0){
                         while (cursor.moveToNext()) {
@@ -263,7 +270,12 @@ public class MainActivity extends AppCompatActivity {
                                 flag = status;
                             }
                             if (flag) {
-                                Toast.makeText(getApplicationContext(), "SignUp Successful "+resource.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "SignUp Successful ",
+                                        Toast.LENGTH_SHORT).show();
+                                Constant.logo = randomUserIcon();
+                                animeManager.open();
+                                animeManager.insertUser(uid,"",true,true,Constant.logo);
+                                mMenuItem.getItem(1).setIcon(Drawable.createFromPath(Constant.logo));
                                 myDialog.cancel();
                             } else {
                                 Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(), Toast.LENGTH_LONG).show();
@@ -302,13 +314,13 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    //    Bottom Nav Listener
+//    Bottom Nav Listener
     private final BottomNavigationView.OnItemSelectedListener navListner = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
             String tag = null;
-//            Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
+//          Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
             switch (item.getItemId()) {
                 case R.id.newRelease:
                     selectedFragment = new RecentView();
@@ -347,5 +359,12 @@ public class MainActivity extends AppCompatActivity {
             // if there is only one entry in the backstack, show the home screen
             getSupportFragmentManager().popBackStack();
         }
+    }
+
+    private String randomUserIcon(){
+        Random rand = new Random();
+        String[] image = {"R.drawable.user_icon1", "R.drawable.user_icon2"};
+        int rand_int = rand.nextInt(image.length);
+        return image[rand_int];
     }
 }

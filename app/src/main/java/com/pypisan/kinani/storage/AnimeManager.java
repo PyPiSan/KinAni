@@ -1,5 +1,6 @@
 package com.pypisan.kinani.storage;
 
+import static com.airbnb.lottie.L.TAG;
 import static com.pypisan.kinani.storage.AnimeBase._ID;
 
 import android.content.ContentValues;
@@ -115,14 +116,22 @@ public class AnimeManager {
     public void insertUser(String user, String apikey, Boolean ads,Boolean loggedIn, String logo){
     Cursor cursor;
     cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
-    if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
+    if (cursor.getCount() == 0){
+        ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.USER, user);
         contentValues.put(AnimeBase.APIKEY, apikey);
-        contentValues.put(AnimeBase.AD, ads);
-        contentValues.put(AnimeBase.LOGGED, loggedIn);
+        contentValues.put(AnimeBase.ADSTATUS, ads);
+        contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
         contentValues.put(AnimeBase.LOGO, logo);
-        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);}
+        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);
+    }else if (cursor.getCount()==1){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AnimeBase.ADSTATUS, ads);
+        contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
+        contentValues.put(AnimeBase.LOGO, logo);
+        database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
         }
+    }
 
     public Cursor findOneUser(String user){
         Cursor cursor;

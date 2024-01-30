@@ -69,8 +69,11 @@ public class HomeSplash extends AppCompatActivity {
         if (cursor != null && cursor.getCount() != 0){
             while (cursor.moveToNext()) {
                 Constant.key=cursor.getString(2);
-                Constant.logo =cursor.getString(4);
+                Constant.logo =cursor.getString(5);
+                Constant.loggedInStatus = cursor.getExtras().getBoolean("logged", false);
             }
+//            Toast.makeText(getApplicationContext(), "logo"+Constant.logo,
+//                    Toast.LENGTH_LONG).show();
             animeManager.close();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -97,7 +100,6 @@ public class HomeSplash extends AppCompatActivity {
                     }
                     if (flag) {
                         animeManager.insertUser(deviceUser, Constant.key, true,false,"");
-//                        Toast.makeText(getApplicationContext(), Constant.key, Toast.LENGTH_SHORT).show();
                         animeManager.close();
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);

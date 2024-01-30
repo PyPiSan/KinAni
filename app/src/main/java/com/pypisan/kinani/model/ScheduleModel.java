@@ -2,13 +2,14 @@ package com.pypisan.kinani.model;
 
 public class ScheduleModel {
 
-    private String title, image, episode, schedule;
+    private String title, image, episode, schedule,showType;
 
-    public ScheduleModel(String title, String image, String episode, String schedule) {
+    public ScheduleModel(String title, String image, String episode, String schedule,String showType) {
         this.title = title;
         this.image = image;
         this.episode = episode;
         this.schedule = schedule;
+        this.showType = showType;
     }
 
     public ScheduleModel(){
@@ -28,5 +29,9 @@ public class ScheduleModel {
 
     public String getSchedule() {
         return schedule;
+    }
+
+    public String getShowType() {
+        return showType;
     }
 }

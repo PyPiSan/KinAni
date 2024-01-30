@@ -55,6 +55,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
         String name = scheduleData.get(position).getTitle();
         String episodeNum = scheduleData.get(position).getEpisode();
         String schedule = scheduleData.get(position).getSchedule();
+        String showType = scheduleData.get(position).getShowType();
 
         Glide.with(context)
                 .load(image)
@@ -65,7 +66,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
 
         holder.cardView.setOnClickListener(view -> {
 //            Toast.makeText(view.getContext(), "Card is " + name + position, Toast.LENGTH_SHORT).show();
-            listener.onItemClicked(name, "", image);
+            listener.onItemClicked(name, "", image,showType);
         });
     }
 
@@ -75,7 +76,7 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
     }
 
     public interface SelectListener {
-        void onItemClicked(String title, String detail, String image);
+        void onItemClicked(String title, String detail, String image, String showType);
     }
 
     public class RecentlyAiredViewHolder extends RecyclerView.ViewHolder {

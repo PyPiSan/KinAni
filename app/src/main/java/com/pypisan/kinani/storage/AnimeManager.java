@@ -71,13 +71,14 @@ public class AnimeManager {
         return cursor;
     }
 
-    public void insertLiked(String detail, String title, String imageLink){
+    public void insertLiked(String detail, String title, String imageLink, String showType){
         Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeLiked WHERE title=?", new String[]{title});
         if (cursor.getCount() == 0){ContentValues contentValues = new ContentValues();
             contentValues.put(AnimeBase.DETAIL, detail);
             contentValues.put(AnimeBase.TITLE, title);
             contentValues.put(AnimeBase.IMAGE, imageLink);
+            contentValues.put(AnimeBase.TYPE, showType);
             database.insert(AnimeBase.TABLE_NAME, null, contentValues);}
     }
 
@@ -87,7 +88,7 @@ public class AnimeManager {
         return cursor;
     }
 //    Recent View Table
-    public void insertRecent(String detail, String title, String imageLink){
+    public void insertRecent(String detail, String title, String imageLink,String showType){
         Cursor cursor;
         cursor = database.rawQuery("SELECT title FROM AnimeRecent WHERE title=?", new String[]{title});
         if (cursor.getCount() >= 1){
@@ -96,6 +97,7 @@ public class AnimeManager {
         contentValues.put(AnimeBase.DETAIL, detail);
         contentValues.put(AnimeBase.TITLE, title);
         contentValues.put(AnimeBase.IMAGE, imageLink);
+        contentValues.put(AnimeBase.TYPE, showType);
         database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);
     }
 

@@ -42,7 +42,6 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecentAdapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
-    private AnimeManager animeManager;
     private int pageNumber;
     private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
@@ -143,7 +142,7 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
                         model = new AnimeModel(animes.getImageLink(),
                                 animes.getAnimeDetailLink(),
                                 animes.getTitle(),
-                                animes.getReleased());
+                                animes.getReleased(),"anime");
                         animeList.add(model);
                     }
                     adapterMovies.notifyItemInserted(resource.getResultSize());
@@ -175,12 +174,13 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
 
     @Override
     public void onItemClicked(String title, String detail, String image) {
-        animeManager = new AnimeManager(getContext());
+        AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image);
+        animeManager.insertRecent(detail, title, image,"anime");
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("image", image);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

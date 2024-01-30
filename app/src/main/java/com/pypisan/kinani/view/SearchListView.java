@@ -206,7 +206,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased());
+                                animes.getTitle(), animes.getReleased(), "anime");
                         animeSearchList.add(model);
 
                     }
@@ -235,10 +235,11 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     public void onItemClicked(String title, String detail, String image) {
         AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image);
+        animeManager.insertRecent(detail, title, image,"anime");
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("image", image);
         Fragment fragment = new SummaryView();
         fragment.setArguments(bundle);
         getActivity().getSupportFragmentManager()

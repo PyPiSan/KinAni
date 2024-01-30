@@ -54,7 +54,7 @@ public class SummaryView extends Fragment{
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
-    private String animeTitle, animeDetailLink, animeLink;
+    private String animeTitle, animeDetailLink, animeLink,showType;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
 //    private Animation animationImage;
     private InMobiBanner bannerAd;
@@ -86,7 +86,7 @@ public class SummaryView extends Fragment{
 //                R.drawable.bg9, R.drawable.bg10};
 //            int[] anim = new int[]{R.raw.liked};
         String animeName = getArguments().getString("title");
-        String type = getArguments().getString("type");
+        showType = getArguments().getString("type");
         animeManager = new AnimeManager(getContext());
 
 //        recyclerEpisode = view.findViewById(R.id.episodeRecycler);
@@ -118,7 +118,7 @@ public class SummaryView extends Fragment{
                 containerSummaryText.setVisibility(View.VISIBLE);
                 containerImgHead.setVisibility(View.VISIBLE);
                 aboutTextHead.setVisibility(View.VISIBLE);
-                getAnimeSummary(view, animeName, type);
+                getAnimeSummary(view, animeName, showType);
                 bannerAd.setVisibility(View.VISIBLE);
             }
         });
@@ -126,7 +126,7 @@ public class SummaryView extends Fragment{
 //        Ads
         bannerAd = (InMobiBanner)view.findViewById(R.id.banner);
 //        Fetching Anime Detail Summary
-        getAnimeSummary(view, animeName, type);
+        getAnimeSummary(view, animeName, showType);
         bannerAd.load();
 
 //        For animation
@@ -151,7 +151,7 @@ public class SummaryView extends Fragment{
                 animeManager.open();
                 cursor = animeManager.findOne(animeName);
                 if (cursor == null || cursor.getCount() == 0) {
-                    animeManager.insertLiked(animeDetailLink, animeTitle, animeLink);
+                    animeManager.insertLiked(animeDetailLink, animeTitle, animeLink,showType);
                     likedFab.setAnimation(R.raw.liked);
                     likedFab.playAnimation();
                     Toast.makeText(getContext(), "Added to Watchlist", Toast.LENGTH_SHORT).show();
@@ -192,6 +192,7 @@ public class SummaryView extends Fragment{
             url = Constant.baseDramaUrl;
         }else{
             url = Constant.baseUrl;
+            showType="anime";
         }
 
 //      fetching data

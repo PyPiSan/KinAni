@@ -24,6 +24,7 @@ import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
+import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     private RecentAdapter adapterDrama;
     private ShimmerFrameLayout containerDrama;
     private int pageNumber;
-    private String viewType = "movies";
+    private String viewType = "kShows";
     private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
@@ -190,7 +191,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                 call = contentList.getRecommend(Constant.key, pageNum);
                 break;
             default:
-                call = contentList.getMovies(Constant.key, pageNum);
+                call = contentList.getKShows(Constant.key, pageNum);
                 break;
         }
         if (Integer.parseInt(pageNum)>1) {
@@ -208,7 +209,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                         model = new AnimeModel(drama.getImageLink(),
                                 drama.getAnimeDetailLink(),
                                 drama.getTitle(),
-                                drama.getReleased());
+                                drama.getReleased(),"drama");
                         dramaList.add(model);
                     }
                     adapterDrama.notifyItemInserted(resource.getResultSize());
@@ -241,9 +242,15 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
 
     @Override
     public void onItemClicked(String title, String detail, String image) {
+        AnimeManager animeManager = new AnimeManager(getContext());
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        animeManager.insertRecent(detail, title, image,"drama");
+        animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("type", "drama");
+        bundle.putString("image", image);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

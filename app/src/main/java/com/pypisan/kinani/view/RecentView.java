@@ -146,7 +146,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased());
+                                animes.getTitle(), animes.getReleased(), "anime");
                         animeList.add(model);
 
                     }
@@ -184,10 +184,11 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     public void onItemClicked(String title, String detail, String image) {
         animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image);
+        animeManager.insertRecent(detail, title, image, "anime");
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("image", image);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

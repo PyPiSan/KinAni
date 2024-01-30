@@ -46,6 +46,9 @@ public interface RequestModule {
     @GET("movies/")
     Call<AnimeRecentModel> getMovies(@Header("x-api-key") String apikey, @Query("page") String num);
 
+    @GET("kshow/")
+    Call<AnimeRecentModel> getKShows(@Header("x-api-key") String apikey, @Query("page") String num);
+
 
     @POST("users")
     Call<UserModel> getUser(@Body UserInit body);

@@ -200,7 +200,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             AnimeModel model;
             int i = 1;
             while (cursor.moveToNext()) {
-                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), null);
+                model = new AnimeModel(cursor.getString(3), cursor.getString(1),
+                        cursor.getString(2), null, cursor.getString(4));
                 animeRecentNum.add(model);
                 i++;
                 if (i == 15) {
@@ -221,7 +222,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             fourthRelative.setVisibility(View.VISIBLE);
             AnimeModel model;
             while (cursor.moveToNext()) {
-                model = new AnimeModel(cursor.getString(3), cursor.getString(1), cursor.getString(2), "");
+                model = new AnimeModel(cursor.getString(3),
+                        cursor.getString(1), cursor.getString(2), "",
+                        cursor.getString(4));
                 animeWatchList.add(model);
             }
             animeManager.close();
@@ -229,13 +232,15 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     }
 
     @Override
-    public void onItemClicked(String title, String detail, String image) {
+    public void onItemClicked(String title, String detail, String image, String type) {
         animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image);
+        animeManager.insertRecent(detail, title, image,type);
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("image", image);
+        bundle.putString("type", type);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -282,7 +287,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         model = new AnimeModel(animes.getImageLink(),
-                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased());
+                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime");
                         animeTrendingList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -344,7 +349,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         modelRecommend = new AnimeModel(animes.getImageLink(),
-                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased());
+                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime");
                         animeRecommendList.add(modelRecommend);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -406,7 +411,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //                        Log.d("Hey3", "Response code is : " + anime.getSchedule());
 
                         scheduleModel = new ScheduleModel(anime.getTitle(),
-                                anime.getImage(), anime.getEpisode(), anime.getSchedule());
+                                anime.getImage(), anime.getEpisode(), anime.getSchedule(),"anime");
                         animeScheduleList.add(scheduleModel);
                     }
                 }

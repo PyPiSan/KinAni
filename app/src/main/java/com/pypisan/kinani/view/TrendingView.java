@@ -112,7 +112,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
                 for (AnimeRecentModel.datum animes : data) {
 //                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                     model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                            animes.getTitle(), animes.getReleased());
+                            animes.getTitle(), animes.getReleased(),"anime");
                     animeList.add(model);
 //                        Log.d("hello1", "anime list is " + i);
 //                        i +=1;
@@ -141,10 +141,11 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     public void onItemClicked(String title, String detail, String image) {
         animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image);
+        animeManager.insertRecent(detail, title, image, "anime");
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
+        bundle.putString("image", image);
         Fragment fragment = SummaryView.newInstance();
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

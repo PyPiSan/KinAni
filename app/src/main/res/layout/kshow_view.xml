@@ -43,7 +43,12 @@
             android:layout_height="wrap_content"
             android:text="@string/trendingDrama"
             android:textColor="@color/primaryTextColor"
-            android:textSize="15sp"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textAlignment="center"
+            android:layout_marginStart="5dp"
+            android:background="?android:selectableItemBackground"
             android:textStyle="bold"/>
         <View
             android:layout_width="2dp"
@@ -58,7 +63,11 @@
             android:layout_marginStart="10dp"
             android:text="@string/movies"
             android:textColor="@color/primaryTextColor"
-            android:textSize="15sp"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textAlignment="center"
+            android:background="?android:selectableItemBackground"
             android:textStyle="bold"/>
         <View
             android:layout_width="2dp"
@@ -73,8 +82,53 @@
             android:layout_marginStart="10dp"
             android:text="@string/top_shows"
             android:textColor="@color/primaryTextColor"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:layout_marginEnd="5dp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:selectableItemBackground"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/viewSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/round_border"
+        android:padding="8dp"
+        app:elevation="8dp"
+        android:layout_alignBottom="@id/drama_recycler_view"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/selectedDramaButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:layout_marginStart="5dp"
+            android:textStyle="bold"/>
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecondary"
+            android:layout_marginStart="12dp"/>
+
+        <ImageView
+            android:id="@+id/clear_selection"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_close"
+            android:contentDescription="@string/clear" />
 
     </LinearLayout>
 

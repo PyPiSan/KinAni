@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     private boolean lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
-    private LinearLayout viewSelector;
+    private LinearLayout viewSelector, viewSelected;
 
     public KShowView() {
 //    Required empty public constructor
@@ -74,11 +75,15 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
         containerDrama = view.findViewById(R.id.shimmer_drama_layout);
         containerDrama.startShimmer();
         viewSelector = view.findViewById(R.id.viewSelector);
+        viewSelected = view.findViewById(R.id.viewSelected);
         TextView trendingDramaButton = view.findViewById(R.id.trendingDramaButton);
         TextView moviesDramaButton = view.findViewById(R.id.moviesDramaButton);
         TextView topDramaButton = view.findViewById(R.id.topDramaButton);
+        TextView selectedDramaButton = view.findViewById(R.id.selectedDramaButton);
+        ImageView clearView = view.findViewById(R.id.clear_selection);
         pageNumber = 1;
         insertDataToCard(String.valueOf(pageNumber), viewType);
+        viewSelector.setVisibility(View.VISIBLE);
         trendingDramaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +95,9 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                 recyclerView.setAdapter(null);
                 pageNumber = 1;
                 insertDataToCard(String.valueOf(pageNumber), viewType);
+                viewSelector.setVisibility(View.GONE);
+                selectedDramaButton.setText(R.string.trending);
+                viewSelected.setVisibility(View.VISIBLE);
             }
         });
 
@@ -104,6 +112,9 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                 recyclerView.setAdapter(null);
                 pageNumber = 1;
                 insertDataToCard(String.valueOf(pageNumber), viewType);
+                viewSelector.setVisibility(View.GONE);
+                selectedDramaButton.setText(R.string.movies);
+                viewSelected.setVisibility(View.VISIBLE);
             }
         });
 
@@ -118,6 +129,27 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                 recyclerView.setAdapter(null);
                 pageNumber = 1;
                 insertDataToCard(String.valueOf(pageNumber), viewType);
+                viewSelector.setVisibility(View.GONE);
+                selectedDramaButton.setText(R.string.top_shows);
+                viewSelected.setVisibility(View.VISIBLE);
+            }
+        });
+
+        clearView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewType = "kShows";
+                containerDrama.setVisibility(View.VISIBLE);
+                containerDrama.startShimmer();
+                dramaList.clear();
+                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
+                recyclerView.setAdapter(null);
+                lastPage = false;
+                loading = false;
+                pageNumber = 1;
+                insertDataToCard(String.valueOf(pageNumber), viewType);
+                viewSelected.setVisibility(View.GONE);
+                viewSelector.setVisibility(View.VISIBLE);
             }
         });
 
@@ -223,7 +255,6 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                     containerDrama.stopShimmer();
                     containerDrama.setVisibility(View.GONE);
 //                    recyclerView.setVisibility(View.VISIBLE);
-                    viewSelector.setVisibility(View.VISIBLE);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.setAdapter(adapterDrama);
                     recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);

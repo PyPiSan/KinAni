@@ -113,8 +113,9 @@ public class AnimeManager {
     }
 
 //    Insert User credentials
-    public void insertUser(String user, String apikey, Boolean ads,Boolean loggedIn, String logo){
+    public void insertUser(String user, String apikey, Boolean ads, Boolean loggedIn, Integer logo){
     Cursor cursor;
+    long result = 0;
     cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
     if (cursor.getCount() == 0){
         ContentValues contentValues = new ContentValues();
@@ -123,13 +124,17 @@ public class AnimeManager {
         contentValues.put(AnimeBase.ADSTATUS, ads);
         contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
         contentValues.put(AnimeBase.LOGO, logo);
-        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);
+        result = database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);
     }else if (cursor.getCount()==1){
+        Log.d("Hi", "Find one user");
         ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.ADSTATUS, ads);
         contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
         contentValues.put(AnimeBase.LOGO, logo);
-        database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
+        result = database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
+        }
+    if (result==-1){
+        Log.d("Hi", "Not inserted");
         }
     }
 

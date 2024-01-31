@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private int HomeIndex;
     private Menu mMenuItem;
     private String uid="";
-//    private View newView, movieView, dramaView, defaultView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
 //        defaultView = findViewById(R.id.home);
         bottomNav.setOnItemSelectedListener(navListner);
 
-//        Toolbar setting
+//      Toolbar setting
         Toolbar myToolbar = findViewById(R.id.topNav);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        Home Fragment as default
+//      Home Fragment as default
         Fragment fragment = HomeView.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragmentView, fragment, "home_fragment")
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.top_menu, menu);
         mMenuItem=menu;
         if (Constant.loggedInStatus){
-            menu.getItem(1).setIcon(Drawable.createFromPath(Constant.logo));
+            menu.getItem(1).setIcon(Constant.logo);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -275,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
                                 Constant.logo = randomUserIcon();
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
-                                mMenuItem.getItem(1).setIcon(Drawable.createFromPath(Constant.logo));
+                                animeManager.close();
+                                mMenuItem.getItem(1).setIcon(Constant.logo);
                                 myDialog.cancel();
                             } else {
                                 Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(), Toast.LENGTH_LONG).show();
@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-//    Bottom Nav Listener
+//  Bottom Nav Listener
     private final BottomNavigationView.OnItemSelectedListener navListner = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -361,9 +361,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String randomUserIcon(){
+    private int randomUserIcon(){
         Random rand = new Random();
-        String[] image = {"R.drawable.user_icon1", "R.drawable.user_icon2"};
+        Integer[] image = {R.drawable.user_icon1, R.drawable.user_icon2};
         int rand_int = rand.nextInt(image.length);
         return image[rand_int];
     }

@@ -3,7 +3,6 @@ package com.pypisan.kinani.view;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -167,8 +166,7 @@ public class MainActivity extends AppCompatActivity {
                         boolean flag = false;
                         UserModel resource = response.body();
                         if (response.code() == 200) {
-                            boolean status = resource.getUserStatus();
-                            flag = status;
+                            flag = resource.getUserStatus();
                         }
                         if (flag) {
                             apiVal[0] = resource.getApikey();
@@ -265,8 +263,7 @@ public class MainActivity extends AppCompatActivity {
                             boolean flag = false;
                             UserModel resource = response.body();
                             if (response.code() == 200) {
-                                boolean status = resource.getUserStatus();
-                                flag = status;
+                                flag = resource.getUserStatus();
                             }
                             if (flag) {
                                 Toast.makeText(getApplicationContext(), "SignUp Successful ",

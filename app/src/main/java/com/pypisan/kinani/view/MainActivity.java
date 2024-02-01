@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!Constant.loggedInStatus){
                     callLoginDialog();
                 }
+                openUserPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -220,16 +221,16 @@ public class MainActivity extends AppCompatActivity {
                 String gender = "Other";
                 if (userValue.equals("") || userValue.length()<8){
                     Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }else if (passValue.equals("") || passValue.length()<8){
                     Toast.makeText(getApplicationContext(), "Password must be greater than 8 chars",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 } else if (repeatPass.equals("")|| !passValue.equals(repeatPass)){
                     Toast.makeText(getApplicationContext(), "Password is not matching",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }else if (ageValue.equals("")){
                     Toast.makeText(getApplicationContext(), "Age must be a value",
-                            Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_LONG).show();
                 }
                 else{
                     // get selected radio button from radioGroup
@@ -266,16 +267,18 @@ public class MainActivity extends AppCompatActivity {
                                 flag = resource.getUserStatus();
                             }
                             if (flag) {
-                                Toast.makeText(getApplicationContext(), "SignUp Successful ",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), resource.getMessage(),
+                                        Toast.LENGTH_LONG).show();
                                 Constant.logo = randomUserIcon();
+                                Constant.loggedInStatus = true;
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
                                 animeManager.close();
                                 mMenuItem.getItem(1).setIcon(Constant.logo);
                                 myDialog.cancel();
                             } else {
-                                Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(),
+                                        Toast.LENGTH_LONG).show();
                                 loginLoader.setVisibility(View.GONE);
                                 signUpBox.setVisibility(View.VISIBLE);
                             }
@@ -283,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<UserModel> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_LONG).show();
                             loginLoader.setVisibility(View.GONE);
                             signUpBox.setVisibility(View.VISIBLE);
                         }
@@ -368,5 +371,13 @@ public class MainActivity extends AppCompatActivity {
                 R.drawable.user_icon19};
         int rand_int = rand.nextInt(image.length);
         return image[rand_int];
+    }
+
+    private void openUserPage(){
+        Fragment fragment = new UserPageView();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentView, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

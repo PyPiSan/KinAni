@@ -4,11 +4,5 @@
     <stroke
         android:width="3dp"
         android:color="@color/primaryTransColor" />
-
-<!--    <gradient-->
-<!--        android:startColor="#374533"-->
-<!--        android:centerColor="#432727"-->
-<!--        android:endColor="#222430"-->
-<!--        android:angle="135"/>-->
     <corners android:radius="20dp" />
 </shape>

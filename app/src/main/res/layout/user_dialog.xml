@@ -115,6 +115,8 @@
             android:layout_marginStart="10dp"
             android:textColor="@color/primaryTextColor"
             android:text="@string/login"
+            android:focusable="true"
+            android:clickable="true"
             />
             <Button
                 android:id="@+id/cancelButton"
@@ -125,6 +127,8 @@
                 android:backgroundTint="@color/cardBackground"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
+                android:focusable="true"
+                android:clickable="true"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
@@ -263,6 +267,8 @@
                 android:layout_marginStart="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/hopin"
+                android:focusable="true"
+                android:clickable="true"
                 />
             <Button
                 android:id="@+id/cancelButton2"
@@ -273,6 +279,8 @@
                 android:backgroundTint="@color/cardBackground"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
+                android:focusable="true"
+                android:clickable="true"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

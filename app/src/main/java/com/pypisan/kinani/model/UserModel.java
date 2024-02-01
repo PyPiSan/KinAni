@@ -15,6 +15,20 @@ public class UserModel {
     @SerializedName("message")
     private String message;
 
+    @SerializedName("is_logged")
+    private Boolean isLogged;
+
+    @SerializedName("icon")
+    private Integer icon;
+
+    public Integer getIcon() {
+        return icon;
+    }
+
+    public Boolean getLogged() {
+        return isLogged;
+    }
+
     public String getApikey() {
         return apikey;
     }

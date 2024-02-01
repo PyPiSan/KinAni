@@ -24,12 +24,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:layout_alignBottom="@id/drama_recycler_view"
+        android:layout_centerHorizontal="true" />
+
     <LinearLayout
         android:id="@+id/viewSelector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_view_selector"
         android:padding="8dp"
         app:elevation="8dp"
         android:layout_alignBottom="@id/drama_recycler_view"
@@ -96,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/round_border"
+        android:background="@drawable/round_view_selector"
         android:padding="8dp"
         app:elevation="8dp"
         android:layout_alignBottom="@id/drama_recycler_view"
@@ -121,9 +130,10 @@
 
         <ImageView
             android:id="@+id/clear_selection"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
@@ -131,5 +141,4 @@
             android:contentDescription="@string/clear" />
 
     </LinearLayout>
-
 </RelativeLayout>

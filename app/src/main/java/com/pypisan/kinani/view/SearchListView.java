@@ -190,7 +190,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
         animeSearchList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://anime.pypisan.com/v1/anime/")
+                .baseUrl(Constant.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
@@ -299,20 +299,5 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             }
 
         }
-    }
-
-    private void setUpOnBackPressed(){
-        Toast.makeText(getContext(), "Back Pressed Method", Toast.LENGTH_SHORT).show();
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if(isEnabled()) {
-                    Toast.makeText(getContext(), "Back Pressed", Toast.LENGTH_SHORT).show();
-                    setEnabled(false);
-                    requireActivity().onBackPressed();
-                }
-                Toast.makeText(getContext(), "Back Pressed Disabled", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

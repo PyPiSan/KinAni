@@ -1,13 +1,13 @@
 package com.pypisan.kinani.view;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,6 +27,7 @@ import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
 import com.pypisan.kinani.api.SignUpRequest;
+import com.pypisan.kinani.model.SignUpModel;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
@@ -109,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.account:
                 if (!Constant.loggedInStatus){
                     callLoginDialog();
+                }else{
+                    openUserPage();
                 }
-                openUserPage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -146,8 +148,11 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v){
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
                 String user = String.valueOf(username.getText());
                 String pass = String.valueOf(password.getText());
                 if (user.equals("") || pass.equals("")){
@@ -175,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                             myDialog.cancel();
                         } else {
                             apiVal[0] = "";
-                            Toast.makeText(getApplicationContext(), "Login Failed,Try Again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login Failed, "+resource.getMessage(), Toast.LENGTH_SHORT).show();
                             loginLoader.setVisibility(View.GONE);
                             loginBox.setVisibility(View.VISIBLE);
                         }
@@ -214,6 +219,10 @@ public class MainActivity extends AppCompatActivity {
         hopIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
                 String userValue = String.valueOf(alias.getText());
                 String passValue = String.valueOf(pass1.getText());
                 String repeatPass = String.valueOf(pass2.getText());
@@ -253,23 +262,22 @@ public class MainActivity extends AppCompatActivity {
                     animeManager.close();
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                             .addConverterFactory(GsonConverterFactory.create()).build();
-
+                    Constant.logo = randomUserIcon();
                     RequestModule userSignUp = retrofit.create(RequestModule.class);
-                    Call<UserModel> call = userSignUp.signUp(Constant.key,
-                            new SignUpRequest(uid,userValue, passValue,ageValue,gender));
+                    Call<SignUpModel> call = userSignUp.signUp(Constant.key,
+                            new SignUpRequest(uid,userValue, passValue,ageValue,gender, Constant.logo));
 
-                    call.enqueue(new Callback<UserModel>() {
+                    call.enqueue(new Callback<SignUpModel>() {
                         @Override
-                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        public void onResponse(Call<SignUpModel> call, Response<SignUpModel> response) {
                             boolean flag = false;
-                            UserModel resource = response.body();
+                            SignUpModel resource = response.body();
                             if (response.code() == 200) {
-                                flag = resource.getUserStatus();
+                                flag = resource.getStatus();
                             }
+                            Toast.makeText(getApplicationContext(), resource.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                             if (flag) {
-                                Toast.makeText(getApplicationContext(), resource.getMessage(),
-                                        Toast.LENGTH_LONG).show();
-                                Constant.logo = randomUserIcon();
                                 Constant.loggedInStatus = true;
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
@@ -277,15 +285,13 @@ public class MainActivity extends AppCompatActivity {
                                 mMenuItem.getItem(1).setIcon(Constant.logo);
                                 myDialog.cancel();
                             } else {
-                                Toast.makeText(getApplicationContext(), "SignUp Failed, "+resource.getMessage(),
-                                        Toast.LENGTH_LONG).show();
                                 loginLoader.setVisibility(View.GONE);
                                 signUpBox.setVisibility(View.VISIBLE);
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<UserModel> call, Throwable t) {
+                        public void onFailure(Call<SignUpModel> call, Throwable t) {
                             Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_LONG).show();
                             loginLoader.setVisibility(View.GONE);
                             signUpBox.setVisibility(View.VISIBLE);

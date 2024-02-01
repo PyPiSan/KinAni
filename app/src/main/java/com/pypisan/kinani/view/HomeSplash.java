@@ -64,25 +64,28 @@ public class HomeSplash extends AppCompatActivity {
                 Settings.Secure.ANDROID_ID);
         String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
 
-        animeManager.open();
-        Cursor cursor = animeManager.findOneUser(deviceUser);
-        if (cursor != null && cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                Constant.key=cursor.getString(2);
-                Constant.logo =cursor.getInt(5);
-                Constant.loggedInStatus = cursor.getInt(4) > 0;
-            }
-            animeManager.close();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(HomeSplash.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }, 1000);
-
-        }else {
+//        Cursor cursor = animeManager.findOneUser(deviceUser);
+//        if (cursor != null && cursor.getCount() != 0){
+//            while (cursor.moveToNext()) {
+//                Constant.key=cursor.getString(2);
+//                Constant.logo =cursor.getInt(5);
+//                if (cursor.getInt(4) > 0){
+//                    Constant.loggedInStatus = true;
+//                }else{
+//                    Constant.loggedInStatus = false;
+//                }
+//            }
+//            animeManager.close();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(HomeSplash.this, MainActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }, 1000);
+//
+//        }else {
             Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
@@ -97,7 +100,15 @@ public class HomeSplash extends AppCompatActivity {
                         Constant.key=resource.getApikey();
                     }
                     if (flag) {
-                        animeManager.insertUser(deviceUser, Constant.key, true,false,0);
+                        animeManager.open();
+                        if (resource.getLogged()){
+                            Constant.loggedInStatus = true;
+                            Constant.logo =resource.getIcon();
+                            animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),resource.getIcon());
+                        }else{
+                            Constant.loggedInStatus = false;
+                            animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),0);
+                        }
                         animeManager.close();
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
@@ -112,7 +123,7 @@ public class HomeSplash extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_LONG).show();
                 }
             });
-        }
+//        }
 
 
     }

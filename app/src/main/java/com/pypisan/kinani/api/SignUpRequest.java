@@ -7,11 +7,14 @@ public class SignUpRequest {
     final String age;
     final String gender;
 
-    public SignUpRequest(String uid, String user_name, String password, String age, String gender) {
+    final int icon;
+
+    public SignUpRequest(String uid, String user_name, String password, String age, String gender, int icon) {
         this.uid = uid;
         this.user_name = user_name;
         this.password = password;
         this.age = age;
         this.gender = gender;
+        this.icon = icon;
     }
 }

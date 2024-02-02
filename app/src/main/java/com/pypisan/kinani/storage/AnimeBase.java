@@ -20,8 +20,11 @@ public class AnimeBase extends SQLiteOpenHelper {
     public static final String ADSTATUS = "ad";
     public static final String LOGINSTATUS = "logged";
     public static final String LOGO = "logo";
+    public static final String TABLE_NAME_4 = "ContinueWatch";
+    public static final String EPISODE = "episode";
+    public static final String TIME = "time";
     static final String DB_NAME = "ANIME.DB";
-    static final int DB_VERSION = 16;
+    static final int DB_VERSION = 18;
     private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DETAIL + " TEXT NOT NULL, " + TITLE +
             " TEXT NOT NULL, " + IMAGE + " TEXT, " + TYPE + " TEXT);";
@@ -32,7 +35,13 @@ public class AnimeBase extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE3 = "create table " + TABLE_NAME_3 + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + USER + " TEXT NOT NULL, " + APIKEY +
-            " TEXT NOT NULL, " + ADSTATUS + " BOLLEAN NOT NULL, " + LOGINSTATUS + " BOLLEAN NOT NULL, " + LOGO + " INTEGER);";
+            " TEXT NOT NULL, " + ADSTATUS + " BOLLEAN NOT NULL, " + LOGINSTATUS
+            + " BOLLEAN NOT NULL, " + LOGO + " INTEGER);";
+
+    private static final String CREATE_TABLE4 = "create table " + TABLE_NAME_4 + "(" + _ID
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DETAIL + " TEXT NOT NULL, " + TITLE +
+            " TEXT NOT NULL, " + IMAGE + " TEXT, " + TYPE + " TEXT, " + EPISODE + " TEXT, " +
+        TIME + " INTEGER);";
 
     //    constructor
     public AnimeBase(Context context) {
@@ -45,6 +54,7 @@ public class AnimeBase extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE);
         db.execSQL(CREATE_TABLE2);
         db.execSQL(CREATE_TABLE3);
+        db.execSQL(CREATE_TABLE4);
     }
 
     @Override
@@ -52,6 +62,7 @@ public class AnimeBase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
         onCreate(db);
     }
 }

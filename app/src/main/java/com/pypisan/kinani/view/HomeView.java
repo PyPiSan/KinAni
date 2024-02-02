@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,9 +45,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeRecentNum, animeTrendingList, animeTrendingListInc,
-            animeRecommendList, animeRecommendListInc, animeWatchList;
+            animeRecommendList, animeRecommendListInc, animeWatchList, animeContinueWatchList;
 
-    private RecyclerView recyclerView_trending, recyclerView_recommend, recyclerView_schedule;
+    private RecyclerView recyclerView_trending, recyclerView_recommend, recyclerView_schedule,
+            recyclerView_continue;
 
     private RecyclerView.Adapter adapterTrending, scheduleAdapter,adapterRecommend;
     private AnimeManager animeManager;
@@ -53,7 +56,10 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
     private ShimmerFrameLayout containerTrending,containerSchedule,containerRecommend;
     private TextView recentTextHeader;
-    private RelativeLayout watchList, fourthRelative;
+    private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
+    private Boolean moreRecommendedVisible = false;
+    private Boolean moreTrendingVisible = false;
+    private Boolean moreWatchListVisible = false;
 
     public HomeView() {
         // Required empty public constructor
@@ -84,6 +90,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
         ShimmerFrameLayout containerRecent = view.findViewById(R.id.shimmer_view_container_recent);
         ShimmerFrameLayout containerWatchList = view.findViewById(R.id.shimmer_view_container_watchlist);
+        ShimmerFrameLayout containerContinueWatching = view.findViewById(R.id.shimmer_view_container_continue_watching);
         containerTrending = view.findViewById(R.id.shimmer_view_container);
         containerSchedule = view.findViewById(R.id.shimmer_view_container_schedule);
         containerRecommend = view.findViewById(R.id.shimmer_view_container_recommend);
@@ -91,8 +98,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recentTextHeader = view.findViewById(R.id.recents);
         watchList = view.findViewById(R.id.watchListRelative);
         fourthRelative = view.findViewById(R.id.fourthRelative);
+        continueWatch = view.findViewById(R.id.continueWatching);
+        continueWatchingRelative = view.findViewById(R.id.continueWatchingRelative);
 
 //      For More Arrow
+        ImageView watchListMore = view.findViewById(R.id.watchlist_more);
         ImageView trendingMore = view.findViewById(R.id.trending_more);
         ImageView recommendationMore = view.findViewById(R.id.recommended_more);
 
@@ -102,6 +112,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      Starting Shimmer Effect
         containerRecent.startShimmer();
+        containerContinueWatching.startShimmer();
         containerTrending.startShimmer();
         containerSchedule.startShimmer();
         containerRecommend.startShimmer();
@@ -109,6 +120,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //      Fetching Data
         scheduleFetcher();
         recentlyWatchedList();
+        continueWatchList();
         getTrendingList();
         recommendFetcher();
         watchList();
@@ -129,9 +141,30 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      2nd recycler view watchlist
         RecyclerView recyclerView_watchList = view.findViewById(R.id.home_recycler_view_watchlist);
-        recyclerView_watchList.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager watchListLinearLayout = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_watchList.setLayoutManager(watchListLinearLayout);
         recyclerView_watchList.setHasFixedSize(false);
+        recyclerView_watchList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = watchListLinearLayout.findLastCompletelyVisibleItemPosition();
+                if (dx > 0 && !moreWatchListVisible) {
+                    // Scrolled upward
+                    moreWatchListVisible = true;
+                    watchListMore.setVisibility(View.VISIBLE);
+                }else if(firstVisibleItem < 2 && moreWatchListVisible){
+                    moreWatchListVisible = false;
+                    watchListMore.setVisibility(View.GONE);
+                }
+            }
+        });
 
 //      Setting Data
         RecyclerView.Adapter adapterWatchList = new HomeViewAdapter(animeWatchList, getContext(), this);
@@ -148,6 +181,26 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 LinearLayoutManager.HORIZONTAL, false);
         recyclerView_trending.setLayoutManager(trendingLinearLayout);
         recyclerView_trending.setHasFixedSize(false);
+        recyclerView_trending.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = trendingLinearLayout.findLastCompletelyVisibleItemPosition();
+                if (dx > 0 && !moreTrendingVisible) {
+                    // Scrolled upward
+                    moreTrendingVisible = true;
+                    trendingMore.setVisibility(View.VISIBLE);
+                }else if(firstVisibleItem < 2 && moreTrendingVisible){
+                    moreTrendingVisible = false;
+                    trendingMore.setVisibility(View.GONE);
+                }
+            }
+        });
 
 
 //      Setting Data
@@ -155,9 +208,30 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      4th recycler view recommends
         recyclerView_recommend = view.findViewById(R.id.home_recycler_view_recommends);
-        recyclerView_recommend.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager recommendedLinearLayout = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_recommend.setLayoutManager(recommendedLinearLayout);
         recyclerView_recommend.setHasFixedSize(false);
+        recyclerView_recommend.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = recommendedLinearLayout.findLastCompletelyVisibleItemPosition();
+                if (dx > 0 && !moreRecommendedVisible) {
+                    // Scrolled upward
+                    moreRecommendedVisible = true;
+                    recommendationMore.setVisibility(View.VISIBLE);
+                }else if(firstVisibleItem < 2 && moreRecommendedVisible){
+                    moreRecommendedVisible = false;
+                    recommendationMore.setVisibility(View.GONE);
+                }
+            }
+        });
 
 //        Setting Data
         adapterRecommend = new HomeViewAdapter(animeRecommendListInc, getContext(), this);
@@ -173,6 +247,19 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         bannerAdTop.load();
         bannerAdBottom.load();
 
+//      Continue Watching Recycler
+        recyclerView_continue = view.findViewById(R.id.home_recycler_view_continue_watching);
+        recyclerView_continue.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView_continue.setHasFixedSize(false);
+
+        RecyclerView.Adapter adapterContinue = new HomeViewAdapter(animeContinueWatchList,
+                getContext(), this);
+        containerContinueWatching.stopShimmer();
+        containerContinueWatching.setVisibility(View.GONE);
+        recyclerView_continue.setVisibility(View.VISIBLE);
+        recyclerView_continue.setItemAnimator(new DefaultItemAnimator());
+        recyclerView_continue.setAdapter(adapterContinue);
+
 //      More click listener
 
         trendingMore.setOnClickListener(new View.OnClickListener(){
@@ -185,9 +272,35 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recommendationMore.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                onClickLoadMore("recommendation", animeTrendingList);
+                onClickLoadMore("recommendation", animeRecommendList);
             }
         });
+
+        watchListMore.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onClickLoadMore("watchlist", animeWatchList);
+            }
+        });
+    }
+
+    private void continueWatchList() {
+        animeContinueWatchList = new ArrayList<>();
+        animeManager = new AnimeManager(getContext());
+        animeManager.open();
+        Cursor cursor = animeManager.readAllDataContinueWatch();
+        if (cursor.getCount() != 0){
+            continueWatch.setVisibility(View.VISIBLE);
+            continueWatchingRelative.setVisibility(View.VISIBLE);
+            AnimeModel model;
+            while (cursor.moveToNext()) {
+                model = new AnimeModel(cursor.getString(3),
+                        cursor.getString(1), cursor.getString(2), "",
+                        cursor.getString(4));
+                animeWatchList.add(model);
+            }
+            animeManager.close();
+        }
     }
 
     private void recentlyWatchedList() {
@@ -278,19 +391,15 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//                Log.d("Hey1", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
-                    AnimeModel model = new AnimeModel();
+                    AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         model = new AnimeModel(animes.getImageLink(),
                                 animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime");
                         animeTrendingList.add(model);
-//                        Log.d("hello1", "anime list is " + i);
-//                        i +=1;
                     }
                     onTrendingDataLoad(0);
                     containerTrending.stopShimmer();
@@ -340,19 +449,16 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
             public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//                Log.d("Hey1", "Response code is : " + response.code());
                 AnimeRecentModel resource = response.body();
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<AnimeRecentModel.datum> data = resource.getData();
-                    AnimeModel modelRecommend = new AnimeModel();
+                    AnimeModel modelRecommend;
                     for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                         modelRecommend = new AnimeModel(animes.getImageLink(),
-                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime");
+                                animes.getAnimeDetailLink(), animes.getTitle(),
+                                animes.getReleased(),"anime");
                         animeRecommendList.add(modelRecommend);
-//                        Log.d("hello1", "anime list is " + i);
-//                        i +=1;
                     }
                     onRecommendDataLoad(0);
                     containerRecommend.stopShimmer();
@@ -406,16 +512,13 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 boolean status = resource.getSuccess();
                 if (status) {
                     List<RecentlyAiredModel.datum> data = resource.getData();
-                    ScheduleModel scheduleModel = new ScheduleModel();
+                    ScheduleModel scheduleModel;
                     for (RecentlyAiredModel.datum anime : data) {
-//                        Log.d("Hey3", "Response code is : " + anime.getSchedule());
-
                         scheduleModel = new ScheduleModel(anime.getTitle(),
                                 anime.getImage(), anime.getEpisode(), anime.getSchedule(),"anime");
                         animeScheduleList.add(scheduleModel);
                     }
                 }
-//                Log.d("Home", "List size is : " + animeScheduleList.size());
                 onScheduleDataLoad(0);
                 containerSchedule.stopShimmer();
                 containerSchedule.setVisibility(View.GONE);

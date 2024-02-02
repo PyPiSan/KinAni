@@ -102,6 +102,22 @@ public class AnimeManager {
         database.insert(AnimeBase.TABLE_NAME_2, null, contentValues);
     }
 
+    public void insertContinueWatch(String detail, String title, String imageLink,String showType,
+                                    String episode, Integer time){
+        Cursor cursor;
+        cursor = database.rawQuery("SELECT title FROM ContinueWatch WHERE title=?", new String[]{title});
+        if (cursor.getCount() >= 1){
+            database.delete(AnimeBase.TABLE_NAME_4, "title=?", new String[]{title});
+        }ContentValues contentValues = new ContentValues();
+        contentValues.put(AnimeBase.DETAIL, detail);
+        contentValues.put(AnimeBase.TITLE, title);
+        contentValues.put(AnimeBase.IMAGE, imageLink);
+        contentValues.put(AnimeBase.TYPE, showType);
+        contentValues.put(AnimeBase.EPISODE, episode);
+        contentValues.put(AnimeBase.TIME, time);
+        database.insert(AnimeBase.TABLE_NAME_4, null, contentValues);
+    }
+
     public Cursor readAllDataRecent(){
         String query = "SELECT * FROM " + AnimeBase.TABLE_NAME_2 + " ORDER BY "+ _ID + " DESC";
         database = animeBase.getWritableDatabase();
@@ -147,6 +163,17 @@ public class AnimeManager {
     public Cursor findAllUser(){
         Cursor cursor;
         cursor = database.rawQuery("SELECT * FROM UserData LIMIT 1",null);
+        return cursor;
+    }
+
+//    For Continue Watching
+    public Cursor readAllDataContinueWatch() {
+        String query = "SELECT * FROM " + AnimeBase.TABLE_NAME_4 + " ORDER BY "+ _ID + " DESC";
+        database = animeBase.getWritableDatabase();
+        Cursor cursor = null;
+        if (database != null){
+            cursor = database.rawQuery(query, null);
+        }
         return cursor;
     }
 }

@@ -44,6 +44,7 @@ import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.WatchRequest;
 import com.pypisan.kinani.model.EpisodeVideoModel;
+import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
 import retrofit2.Call;
@@ -65,7 +66,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
-    private String episode_num, type;
+    private String episode_num, type,title,summary,image;
     private String[] videoLink = new String[4];
 
     private Dialog settingDialog;
@@ -82,8 +83,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        for getting video summary params
         Intent videoIntent = getIntent();
 
-        String title = videoIntent.getStringExtra("title");
-        String summary = videoIntent.getStringExtra("summary");
+        title = videoIntent.getStringExtra("title");
+        summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
         type = videoIntent.getStringExtra("type");
 
@@ -340,10 +341,17 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void onBackPressed() {
         super.onBackPressed();
         changeOrientation(false);
+        long time = 0;
         if(playerState) {
+            time = player.getContentPosition();
             player.stop();
             player.release();
         }
+        AnimeManager animeManager= new AnimeManager(getApplicationContext());;
+        animeManager.open();
+        animeManager.insertContinueWatch(summary, title, image, type,episode_num,(int) time);
+        animeManager.close();
+
     }
 
 //    @Override

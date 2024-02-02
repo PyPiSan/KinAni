@@ -3,7 +3,9 @@ package com.pypisan.kinani.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -45,7 +47,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     private ShimmerFrameLayout containerDrama;
     private int pageNumber;
     private String viewType = "kShows";
-    private boolean lastPage, loading = false;
+    private boolean viewVisible, lastPage, loading = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
     private LinearLayout viewSelector, viewSelected;
@@ -191,7 +193,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
                 if (!lastPage && !loading && firstVisibleItem == totalItemCount-1) {
-                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+//                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
                     pageNumber +=1;
                     loading=true;
                     insertDataToCard(String.valueOf(pageNumber), viewType);
@@ -289,4 +291,5 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
 }

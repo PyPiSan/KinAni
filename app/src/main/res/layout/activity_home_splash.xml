@@ -19,5 +19,14 @@
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/logo3"
         android:contentDescription="@string/app_name" />
+    <ProgressBar
+        android:id="@+id/loader"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appIcon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

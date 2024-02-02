@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.inmobi.sdk.InMobiSdk;
@@ -36,6 +38,7 @@ public class HomeSplash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_splash);
+        ProgressBar loader = findViewById(R.id.loader);
         AnimeManager animeManager = new AnimeManager(getApplicationContext());
         JSONObject consentObject = new JSONObject();
         try {
@@ -110,16 +113,19 @@ public class HomeSplash extends AppCompatActivity {
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),0);
                         }
                         animeManager.close();
+                        loader.setVisibility(View.GONE);
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
+                        loader.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Failed, Try Again", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserModel> call, Throwable t) {
+                    loader.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_LONG).show();
                 }
             });

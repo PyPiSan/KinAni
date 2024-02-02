@@ -87,6 +87,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
         type = videoIntent.getStringExtra("type");
+        image = videoIntent.getStringExtra("image");
 
 
         animeTitleView = findViewById(R.id.animeTitleText);

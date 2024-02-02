@@ -249,7 +249,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      Continue Watching Recycler
         recyclerView_continue = view.findViewById(R.id.home_recycler_view_continue_watching);
-        recyclerView_continue.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView_continue.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView_continue.setHasFixedSize(false);
 
         RecyclerView.Adapter adapterContinue = new HomeViewAdapter(animeContinueWatchList,
@@ -297,7 +298,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 model = new AnimeModel(cursor.getString(3),
                         cursor.getString(1), cursor.getString(2), "",
                         cursor.getString(4));
-                animeWatchList.add(model);
+                animeContinueWatchList.add(model);
             }
             animeManager.close();
         }

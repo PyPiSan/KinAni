@@ -296,6 +296,7 @@ public class SummaryView extends Fragment{
                                 i.putExtra("summary", animeDetail.getSummary());
                                 i.putExtra("server_name", "server1");
                                 i.putExtra("type", type);
+                                i.putExtra("image", animeLink);
                                 startActivity(i);
                             }
                         }

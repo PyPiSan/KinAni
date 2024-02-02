@@ -38,9 +38,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
 
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeList;
-    private RecyclerView recyclerView;
     private RecentAdapter adapter;
-    private AnimeManager animeManager;
 
     public TrendingView() {
         // Required empty public constructor
@@ -66,33 +64,30 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Data initialization
+//      Data initialization
 
         insertDataToCard();
 
 //      initialization recycler
 
-        recyclerView = view.findViewById(R.id.my_recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setHasFixedSize(false);
 
-//        Item Declaration
-
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(5), true));
-//        Log.d("hello", "anime list is " + animeList.size());
+//      Item Declaration
         adapter = new RecentAdapter(getContext(), animeList, this);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         }
 
-//        Insert data to card
+//  Insert data to card
     private void insertDataToCard() {
         String pageNum = "1";
-    // Add the cards data and display them
-//        fetching data
+//  Add the cards data and display them
+//  fetching data
     animeList = new ArrayList<>();
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://anime.pypisan.com/v1/anime/")
+            .baseUrl(Constant.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -102,26 +97,18 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
     call.enqueue(new Callback<AnimeRecentModel>() {
         @Override
         public void onResponse(Call<AnimeRecentModel> call, Response<AnimeRecentModel> response) {
-//            Log.d("Hey1", "Response code is : " + response.code());
             AnimeRecentModel resource = response.body();
             boolean status = resource.getSuccess();
             if (status) {
                 List<AnimeRecentModel.datum> data = resource.getData();
-                AnimeModel model = new AnimeModel();
-//                    int i = 0;
+                AnimeModel model;
                 for (AnimeRecentModel.datum animes : data) {
-//                        Log.d("Hey3", "Response code is : " + response.body() +  i);
                     model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
                             animes.getTitle(), animes.getReleased(),"anime");
                     animeList.add(model);
-//                        Log.d("hello1", "anime list is " + i);
-//                        i +=1;
                     adapter.notifyDataSetChanged();
 
                 }
-            } else {
-//                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
-//                Log.d("Hey2", "Response code is : " + response.code());
             }
         }
 
@@ -131,15 +118,10 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
         }
     });
 }
-    // convert dp to pixels
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
 
     @Override
     public void onItemClicked(String title, String detail, String image) {
-        animeManager = new AnimeManager(getContext());
+        AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
         animeManager.insertRecent(detail, title, image, "anime");
         animeManager.close();

@@ -2,7 +2,10 @@ package com.pypisan.kinani.view;
 
 import static android.app.appsearch.AppSearchResult.RESULT_OK;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -109,7 +113,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//      Search view generate..
+//              Search view generate..
                 String searchString = String.valueOf(editText.getText());
                 if (!searchString.equals("")){
                     if (!loaderState) {
@@ -165,7 +169,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             @Override
             public void onClick(View v) {
                 editText.setText("");
-                Log.d("search","anime list is " +animeSearchList.size());
                 adapterSearch.notifyItemRangeRemoved(0,animeSearchList.size());
                 recyclerView.setVisibility(View.GONE);
                 loaderState = false;

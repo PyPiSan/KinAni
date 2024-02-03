@@ -47,7 +47,9 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     private ShimmerFrameLayout containerDrama;
     private int pageNumber;
     private String viewType = "kShows";
-    private boolean viewVisible, lastPage, loading = false;
+    private boolean lastPage, loading = false;
+    private boolean showViewVisible= false;
+    private boolean clickedViewVisible= false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
     private LinearLayout viewSelector, viewSelected;
@@ -85,11 +87,12 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
         ImageView clearView = view.findViewById(R.id.clear_selection);
         pageNumber = 1;
         insertDataToCard(String.valueOf(pageNumber), viewType);
-        viewSelector.setVisibility(View.VISIBLE);
+//        viewSelector.setVisibility(View.VISIBLE);
         trendingDramaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewType = "trending";
+                clickedViewVisible = true;
                 containerDrama.setVisibility(View.VISIBLE);
                 containerDrama.startShimmer();
                 dramaList.clear();
@@ -107,6 +110,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
             @Override
             public void onClick(View v) {
                 viewType = "movies";
+                clickedViewVisible = true;
                 containerDrama.setVisibility(View.VISIBLE);
                 containerDrama.startShimmer();
                 dramaList.clear();
@@ -124,6 +128,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
             @Override
             public void onClick(View v) {
                 viewType = "top";
+                clickedViewVisible = true;
                 containerDrama.setVisibility(View.VISIBLE);
                 containerDrama.startShimmer();
                 dramaList.clear();
@@ -141,6 +146,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
             @Override
             public void onClick(View v) {
                 viewType = "kShows";
+                clickedViewVisible = false;
                 containerDrama.setVisibility(View.VISIBLE);
                 containerDrama.startShimmer();
                 dramaList.clear();
@@ -192,8 +198,16 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 totalItemCount = gridLayoutManager.getItemCount();
                 firstVisibleItem = gridLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (dy > 0 && !showViewVisible && !clickedViewVisible) {
+                    // Scrolled upward
+                    showViewVisible = true;
+                    viewSelector.setVisibility(View.VISIBLE);
+                }else if(firstVisibleItem < 10 && showViewVisible && !clickedViewVisible){
+                    showViewVisible = false;
+                    viewSelector.setVisibility(View.GONE);
+                }
                 if (!lastPage && !loading && firstVisibleItem == totalItemCount-1) {
-//                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
                     pageNumber +=1;
                     loading=true;
                     insertDataToCard(String.valueOf(pageNumber), viewType);

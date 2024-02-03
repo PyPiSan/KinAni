@@ -276,6 +276,7 @@
                 android:visibility="gone"
                 />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/recentlyAired"
         android:layout_width="wrap_content"

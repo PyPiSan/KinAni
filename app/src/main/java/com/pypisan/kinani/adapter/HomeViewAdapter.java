@@ -59,7 +59,6 @@ public class HomeViewAdapter extends RecyclerView.Adapter<HomeViewAdapter.HomeVi
         animeName.setText(animeTitle);
 
         holder.cardView.setOnClickListener(view -> {
-//            Toast.makeText(view.getContext(), "Card is " + animeJtitle, Toast.LENGTH_SHORT).show();
             listener.onItemClicked(animeTitle,animeDetail, animeImage,showType);
         });
     }

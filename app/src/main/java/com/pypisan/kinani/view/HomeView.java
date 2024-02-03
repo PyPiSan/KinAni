@@ -2,6 +2,7 @@ package com.pypisan.kinani.view;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
+import com.pypisan.kinani.adapter.ContinueWatchingAdapter;
 import com.pypisan.kinani.adapter.HomeViewAdapter;
 import com.pypisan.kinani.adapter.RecentlyAiredAdapter;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
+import com.pypisan.kinani.model.ContinueWatchingModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.ScheduleModel;
 import com.pypisan.kinani.storage.AnimeManager;
@@ -45,7 +48,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
     // Add RecyclerView member
     private ArrayList<AnimeModel> animeRecentNum, animeTrendingList, animeTrendingListInc,
-            animeRecommendList, animeRecommendListInc, animeWatchList, animeContinueWatchList;
+            animeRecommendList, animeRecommendListInc, animeWatchList;
+    private ArrayList<ContinueWatchingModel> animeContinueWatchList;
 
     private RecyclerView recyclerView_trending, recyclerView_recommend, recyclerView_schedule,
             recyclerView_continue;
@@ -252,9 +256,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         recyclerView_continue.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         recyclerView_continue.setHasFixedSize(false);
-
-        RecyclerView.Adapter adapterContinue = new HomeViewAdapter(animeContinueWatchList,
-                getContext(), this);
+        RecyclerView.Adapter adapterContinue = new ContinueWatchingAdapter(animeContinueWatchList,
+                getContext(), this::onContinueWatchingClicked);
         containerContinueWatching.stopShimmer();
         containerContinueWatching.setVisibility(View.GONE);
         recyclerView_continue.setVisibility(View.VISIBLE);
@@ -293,11 +296,12 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         if (cursor.getCount() != 0){
             continueWatch.setVisibility(View.VISIBLE);
             continueWatchingRelative.setVisibility(View.VISIBLE);
-            AnimeModel model;
+            ContinueWatchingModel model;
             while (cursor.moveToNext()) {
-                model = new AnimeModel(cursor.getString(3),
-                        cursor.getString(1), cursor.getString(2), "",
-                        cursor.getString(4));
+                model = new ContinueWatchingModel(cursor.getString(2),
+                        cursor.getString(1), cursor.getString(3),
+                        cursor.getString(5),cursor.getString(4),
+                        cursor.getInt(6));
                 animeContinueWatchList.add(model);
             }
             animeManager.close();
@@ -362,6 +366,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         transaction.addToBackStack(null);
         transaction.commit();
 
+    }
+
+    public void onContinueWatchingClicked(String title, String detail, String image, String type,
+                                          String episode, Integer time){
+        Toast.makeText(getContext(),"Hi Clicked "+ episode, Toast.LENGTH_SHORT).show();
     }
 
 //    public int getSkeletonRowCount(Context context) {

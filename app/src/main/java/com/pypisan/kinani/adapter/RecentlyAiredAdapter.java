@@ -48,9 +48,6 @@ public class RecentlyAiredAdapter extends RecyclerView.Adapter<RecentlyAiredAdap
         TextView aireAt = holder.airedAt;
         CardView cardView = holder.cardView;
 
-        if (scheduleData.size() == 0) {
-//            Do Nothing
-        }
         String image = scheduleData.get(position).getImage();
         String name = scheduleData.get(position).getTitle();
         String episodeNum = scheduleData.get(position).getEpisode();

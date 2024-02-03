@@ -45,6 +45,9 @@ public class ContinueWatchingAdapter extends RecyclerView.Adapter<ContinueWatchi
                                  int position) {
         ImageView animeView = holder.animeView;
         CardView cardView = holder.cardView;
+        TextView animeName = holder.name;
+        TextView episodeView = holder.episodeNum;
+        TextView timeView = holder.timeView;
 
         String imageLink = continueWatchingData.get(position).getImage();
         String name = continueWatchingData.get(position).getTitle();
@@ -56,9 +59,11 @@ public class ContinueWatchingAdapter extends RecyclerView.Adapter<ContinueWatchi
         Glide.with(context)
                 .load(imageLink)
                 .into(animeView);
-
+        animeName.setText(name);
+        episodeView.setText(String.format("Episode: %s", episodeNum));
+        timeView.setText(formatSeconds(time/1000));
         holder.cardView.setOnClickListener(view -> {
-            listener.onItemClicked(name,detail,imageLink,showType,episodeNum,time);
+            listener.onItemClicked(name,detail,imageLink,showType,episodeNum,String.valueOf(time));
         });
 
     }
@@ -72,15 +77,42 @@ public class ContinueWatchingAdapter extends RecyclerView.Adapter<ContinueWatchi
 
         ImageView animeView;
         CardView cardView;
+        TextView name,episodeNum,timeView;
         public ContinueWatchingViewHolder(@NonNull View itemView) {
             super(itemView);
             this.animeView = itemView.findViewById(R.id.animePicture);
             this.cardView = itemView.findViewById(R.id.card_view_continue);
+            this.name = itemView.findViewById(R.id.animeName);
+            this.episodeNum = itemView.findViewById(R.id.episodeNum);
+            this.timeView = itemView.findViewById(R.id.time);
         }
     }
 
     public interface SelectListener {
         void onItemClicked(String title, String detail, String image, String showType,String episode,
-                           Integer time);
+                           String time);
+    }
+
+    public static String formatSeconds(int timeInSeconds)
+    {
+        int hours = timeInSeconds / 3600;
+        int secondsLeft = timeInSeconds - hours * 3600;
+        int minutes = secondsLeft / 60;
+        int seconds = secondsLeft - minutes * 60;
+
+        String formattedTime = "";
+        if (hours < 10)
+            formattedTime += "0";
+        formattedTime += hours + ":";
+
+        if (minutes < 10)
+            formattedTime += "0";
+        formattedTime += minutes + ":";
+
+        if (seconds < 10)
+            formattedTime += "0";
+        formattedTime += seconds ;
+
+        return formattedTime;
     }
 }

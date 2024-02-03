@@ -69,6 +69,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private String episode_num, type,title,summary,image;
     private String[] videoLink = new String[4];
 
+    private Long resumeTime =0L;
+
     private Dialog settingDialog;
 
     @SuppressLint("MissingInflatedId")
@@ -88,6 +90,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         episode_num = videoIntent.getStringExtra("episode_num");
         type = videoIntent.getStringExtra("type");
         image = videoIntent.getStringExtra("image");
+        String timeValue = videoIntent.getStringExtra("time");
+        if (timeValue!=null){
+            resumeTime = Long.parseLong(timeValue);
+        }
 
 
         animeTitleView = findViewById(R.id.animeTitleText);
@@ -308,6 +314,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             playerView.setPlayer(player);
             player.setMediaItem(MediaItem.fromUri(hlsUri));
             player.prepare();
+            if (resumeTime>0){
+                player.seekTo(resumeTime);
+            }
             player.play();
             playerState = true;
     }

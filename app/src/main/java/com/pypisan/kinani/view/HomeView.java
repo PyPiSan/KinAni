@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.ContinueWatchingModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.ScheduleModel;
+import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
@@ -369,8 +371,16 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     }
 
     public void onContinueWatchingClicked(String title, String detail, String image, String type,
-                                          String episode, Integer time){
-        Toast.makeText(getContext(),"Hi Clicked "+ episode, Toast.LENGTH_SHORT).show();
+                                          String episode, String time){
+        Intent i = new Intent(getContext(), VideoPlayer.class);
+        i.putExtra("episode_num", episode);
+        i.putExtra("title", title);
+        i.putExtra("summary", detail);
+        i.putExtra("server_name", "server1");
+        i.putExtra("type", type);
+        i.putExtra("image", image);
+        i.putExtra("time",time);
+        startActivity(i);
     }
 
 //    public int getSkeletonRowCount(Context context) {

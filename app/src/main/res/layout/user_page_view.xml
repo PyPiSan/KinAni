@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.UserPageView"
-    android:layout_marginBottom="30dp"
+    android:layout_marginBottom="20dp"
     android:background="@color/primaryColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/user_layout"
@@ -17,7 +21,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_arrow_back"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            android:contentDescription="@string/back" />
+
         <ImageView
             android:id="@+id/user_icon"
             android:layout_width="200dp"
@@ -116,6 +134,6 @@
             />
 
     </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

@@ -116,7 +116,22 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 //              Search view generate..
                 String searchString = String.valueOf(editText.getText());
                 if (!searchString.equals("")){
+                    if (v != null) {
+                        try {
+                        InputMethodManager imm = (InputMethodManager)getActivity()
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                        }catch (Exception ignored) {
+                            ;
+                        }
+                    }
                     if (!loaderState) {
+                        if (animeSearchList != null && animeSearchList.size()>0) {
+                            adapterSearch.notifyItemRangeRemoved(0, animeSearchList.size());
+                            recyclerView.setAdapter(null);
+                            bottomAppBar.setVisibility(View.GONE);
+                            loaderState = false;
+                        }
                         progressBar.setVisibility(View.VISIBLE);
                         loaderState = true;
                     }
@@ -169,9 +184,12 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
             @Override
             public void onClick(View v) {
                 editText.setText("");
-                adapterSearch.notifyItemRangeRemoved(0,animeSearchList.size());
-                recyclerView.setVisibility(View.GONE);
-                loaderState = false;
+                if (animeSearchList != null && animeSearchList.size()>0) {
+                    adapterSearch.notifyItemRangeRemoved(0, animeSearchList.size());
+                    recyclerView.setAdapter(null);
+                    bottomAppBar.setVisibility(View.GONE);
+                    loaderState = false;
+                }
             }
         });
 
@@ -215,11 +233,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     }
                     progressBar.setVisibility(View.GONE);
                     loaderState = false;
+                    if (animeSearchList.size()!=0){
                     recyclerView.setVisibility(View.VISIBLE);
                     adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), SearchListView.this::onItemClicked);
                     recyclerView.setAdapter(adapterSearch);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     bottomAppBar.setVisibility(View.VISIBLE);
+                    }else{
+                        Toast.makeText(getContext(), "Try with different name", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_SHORT).show();
@@ -228,7 +250,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
             @Override
             public void onFailure(Call<AnimeRecentModel> call, Throwable t) {
-                Toast.makeText(getContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         });

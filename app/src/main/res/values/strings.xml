@@ -58,4 +58,9 @@
     <string name="anonymous">Anonymous</string>
     <string name="back">back</string>
     <string name="voice_search">voice_search</string>
+    <string name="about_app">About</string>
+    <string name="log_out">Log Out</string>
+    <string name="change_icon">Change Icon</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="privacy">Privacy Policy</string>
 </resources>

@@ -8,4 +8,5 @@ public class Constant {
     public static Integer logo;
     public static Boolean loggedInStatus=false;
     public static String userName = "Anonymous";
+    public static String versionName = "1.0.0";
 }

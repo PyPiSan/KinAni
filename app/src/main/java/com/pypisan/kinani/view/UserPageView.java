@@ -43,8 +43,10 @@ public class UserPageView extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ImageView userIcon = view.findViewById(R.id.user_icon);
         TextView userName = view.findViewById(R.id.user_name);
+        TextView appName = view.findViewById(R.id.appAbout);
         userIcon.setImageResource(Constant.logo);
         userName.setText(String.format("Hi, %s",Constant.userName));
+        appName.setText(String.format("KinAni v%s",Constant.versionName));
     }
 
     @Override

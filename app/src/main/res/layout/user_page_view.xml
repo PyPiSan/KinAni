@@ -63,73 +63,97 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_layout"
         >
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/about_app"
             android:padding="10dp"
-            android:textAlignment="viewStart"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
             android:textColor="@color/primaryTextColor"
-            app:icon="@drawable/keyboard_arrow_right_24"
-            app:iconGravity="end"/>
-        <com.google.android.material.button.MaterialButton
+            app:drawableRightCompat="@drawable/keyboard_arrow_right_24" />
+
+        <TextView
+            android:id="@+id/notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/Notification"
+            android:padding="10dp"
+            android:textColor="@color/primaryTextColor"
+            app:drawableRightCompat="@drawable/notifications"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <TextView
             android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/log_out"
             android:padding="10dp"
-            android:textAlignment="viewStart"
             android:textColor="@color/primaryTextColor"
-            app:icon="@drawable/baseline_logout_24"
-            app:iconGravity="end"/>
-        <com.google.android.material.button.MaterialButton
+            app:drawableRightCompat="@drawable/baseline_logout_24"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"/>
+        <TextView
             android:id="@+id/change_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/change_icon"
             android:padding="10dp"
-            android:textAlignment="viewStart"
             android:textColor="@color/primaryTextColor"
-            app:icon="@drawable/insert_emoticon"
-            app:iconGravity="end"/>
-        <com.google.android.material.button.MaterialButton
+            app:drawableRightCompat="@drawable/insert_emoticon"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <TextView
             android:id="@+id/privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/privacy"
             android:padding="10dp"
-            android:textAlignment="viewStart"
             android:textColor="@color/primaryTextColor"
-            app:icon="@drawable/privacy_tip_24"
-            app:iconGravity="end"/>
-        <com.google.android.material.button.MaterialButton
+            app:drawableRightCompat="@drawable/privacy_tip_24"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <TextView
             android:id="@+id/delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/delete_account"
             android:padding="10dp"
-            android:textAlignment="viewStart"
             android:textColor="@color/primaryTextColor"
-            app:icon="@drawable/baseline_delete_24"
-            app:iconGravity="end"/>
+            app:drawableRightCompat="@drawable/baseline_delete_24"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
 
         <TextView
+            android:id="@+id/appAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBaseline_toBottomOf="@id/user_menu"
-            android:text="@string/app_name"
             android:textAlignment="center"
-            android:textSize="25sp"
-            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/primaryTextColor"
             />
 

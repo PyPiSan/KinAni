@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -108,6 +108,12 @@ public class HomeSplash extends AppCompatActivity {
                             Constant.loggedInStatus = true;
                             Constant.logo =resource.getIcon();
                             Constant.userName = resource.getUserData();
+                            try {
+                                PackageInfo pInfo = getApplicationContext().getPackageManager().
+                                        getPackageInfo(getApplicationContext().getPackageName(), 0);
+                                Constant.versionName = pInfo.versionName;
+                            } catch (PackageManager.NameNotFoundException ignored) {
+                            }
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),resource.getIcon());
                         }else{
                             Constant.loggedInStatus = false;

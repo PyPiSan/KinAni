@@ -63,4 +63,5 @@
     <string name="change_icon">Change Icon</string>
     <string name="delete_account">Delete Account</string>
     <string name="privacy">Privacy Policy</string>
+    <string name="Notification">Notification</string>
 </resources>

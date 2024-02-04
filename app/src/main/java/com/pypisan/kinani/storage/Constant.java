@@ -7,4 +7,5 @@ public class Constant {
     public static final String userUrl ="https://anime.pypisan.com/v1/";
     public static Integer logo;
     public static Boolean loggedInStatus=false;
+    public static String userName = "Anonymous";
 }

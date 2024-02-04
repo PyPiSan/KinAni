@@ -107,6 +107,7 @@ public class HomeSplash extends AppCompatActivity {
                         if (resource.getLogged()){
                             Constant.loggedInStatus = true;
                             Constant.logo =resource.getIcon();
+                            Constant.userName = resource.getUserData();
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),resource.getIcon());
                         }else{
                             Constant.loggedInStatus = false;

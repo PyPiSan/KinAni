@@ -21,6 +21,13 @@ public class UserModel {
     @SerializedName("icon")
     private Integer icon;
 
+    @SerializedName("user_name")
+    private String userData;
+
+    public String getUserData() {
+        return userData;
+    }
+
     public Integer getIcon() {
         return icon;
     }

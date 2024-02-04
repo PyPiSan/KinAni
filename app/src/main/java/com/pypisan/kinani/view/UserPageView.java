@@ -44,7 +44,7 @@ public class UserPageView extends Fragment {
         ImageView userIcon = view.findViewById(R.id.user_icon);
         TextView userName = view.findViewById(R.id.user_name);
         userIcon.setImageResource(Constant.logo);
-        userName.setText("Hi, Anonymous");
+        userName.setText(String.format("Hi, %s",Constant.userName));
     }
 
     @Override

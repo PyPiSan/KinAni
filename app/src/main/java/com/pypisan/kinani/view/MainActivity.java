@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                 loginBox.setVisibility(View.GONE);
                 loginLoader.setVisibility(View.VISIBLE);
-                String[] apiVal = new String[1];
                 Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                         .addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -175,11 +174,20 @@ public class MainActivity extends AppCompatActivity {
                             flag = resource.getUserStatus();
                         }
                         if (flag) {
-                            apiVal[0] = resource.getApikey();
+                            Constant.loggedInStatus = true;
+                            Constant.logo = resource.getIcon();
+                            if (Constant.logo == null){
+                                Constant.logo = randomUserIcon();
+                            }
+                            Constant.userName = user;
+                            AnimeManager animeManager = new AnimeManager(getApplicationContext());
+                            animeManager.open();
+                            animeManager.insertUser(uid,"",true,true,Constant.logo);
+                            animeManager.close();
+                            mMenuItem.getItem(1).setIcon(Constant.logo);
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             myDialog.cancel();
                         } else {
-                            apiVal[0] = "";
                             Toast.makeText(getApplicationContext(), "Login Failed, "+resource.getMessage(), Toast.LENGTH_SHORT).show();
                             loginLoader.setVisibility(View.GONE);
                             loginBox.setVisibility(View.VISIBLE);
@@ -279,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                             if (flag) {
                                 Constant.loggedInStatus = true;
+                                Constant.userName =userValue;
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
                                 animeManager.close();
@@ -369,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int randomUserIcon(){
         Random rand = new Random();
-        Integer[] image = {R.drawable.user_icon1, R.drawable.user_icon2,R.drawable.user_icon3,
+        Integer[] image = {R.drawable.user_icon3,
                 R.drawable.user_icon4,R.drawable.user_icon5,R.drawable.user_icon6,
                 R.drawable.user_icon7,R.drawable.user_icon8,R.drawable.user_icon9,R.drawable.user_icon10,
                 R.drawable.user_icon11,R.drawable.user_icon12,R.drawable.user_icon13,R.drawable.user_icon14,

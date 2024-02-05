@@ -9,4 +9,6 @@ public class Constant {
     public static Boolean loggedInStatus=false;
     public static String userName = "Anonymous";
     public static String versionName = "1.0.0";
+    public static String about;
+    public static String message;
 }

@@ -124,6 +124,8 @@ public class HomeSplash extends AppCompatActivity {
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
                         finish();
+                        getPushMessage();
+                        getAppAbout();
                     } else {
                         loader.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Failed, Try Again", Toast.LENGTH_LONG).show();
@@ -139,6 +141,46 @@ public class HomeSplash extends AppCompatActivity {
 //        }
 
 
+    }
+
+    private void getPushMessage(){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        RequestModule getAdminMessage = retrofit.create(RequestModule.class);
+        Call<UserModel> call = getAdminMessage.getMessage(Constant.key);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                boolean flag = false;
+                UserModel resource = response.body();
+                if (response.code() == 200) {
+                    Constant.message = resource.getMessage();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+            }
+        });
+    }
+
+    private void getAppAbout(){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        RequestModule getAbout = retrofit.create(RequestModule.class);
+        Call<UserModel> call = getAbout.getAppAbout(Constant.key);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                boolean flag = false;
+                UserModel resource = response.body();
+                if (response.code() == 200) {
+                    Constant.about = resource.getMessage();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+            }
+        });
     }
 
 }

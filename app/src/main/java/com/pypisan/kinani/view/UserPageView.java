@@ -50,6 +50,8 @@ public class UserPageView extends Fragment {
         TextView userName = view.findViewById(R.id.user_name);
         TextView appName = view.findViewById(R.id.appAbout);
         ImageButton backButton = view.findViewById(R.id.back_button);
+        TextView logOutButton = view.findViewById(R.id.logout);
+        TextView deleteButton = view.findViewById(R.id.delete);
         TextView about = view.findViewById(R.id.about);
         CardView aboutCard = view.findViewById(R.id.about_card);
         TextView aboutText = view.findViewById(R.id.about_text);
@@ -107,6 +109,22 @@ public class UserPageView extends Fragment {
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
+
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOutButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                updateUser("logout");
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+            }
+        });
+
     }
 
     @Override
@@ -118,5 +136,8 @@ public class UserPageView extends Fragment {
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+
+    private void updateUser(String flag){
     }
 }

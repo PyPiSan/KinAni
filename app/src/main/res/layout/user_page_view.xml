@@ -29,7 +29,7 @@
             android:layout_height="30dp"
             android:background="@drawable/ic_arrow_back"
             android:layout_gravity="start"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
@@ -69,13 +69,50 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/about_app"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:padding="10dp"
             android:clickable="true"
             android:focusable="true"
+            android:drawablePadding="10dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/keyboard_arrow_right_24" />
+            app:drawableLeftCompat="@drawable/info_24"
+            app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
+            />
+
+        <View
+            android:id="@+id/about_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
+            />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/about_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:cardBackgroundColor="@color/cardBackground"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/about_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textColor="@color/primaryTextColor"
+                android:paddingBottom="5dp"
+                />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/notification"
@@ -84,26 +121,47 @@
             android:textSize="20sp"
             android:text="@string/Notification"
             android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/notifications"
+            app:drawableLeftCompat="@drawable/notifications"
+            android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
+            app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
             />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/notifications_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:cardBackgroundColor="@color/cardBackground"
+            android:visibility="gone"
+            >
         <TextView
-            android:id="@+id/logout"
+            android:id="@+id/notification_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="@string/log_out"
             android:padding="10dp"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/baseline_logout_24"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:theme="@android:style/ThemeOverlay.Material.Dark"/>
+            android:paddingBottom="5dp"
+            />
+        </androidx.cardview.widget.CardView>
+        <View
+            android:id="@+id/notification_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
+            />
         <TextView
             android:id="@+id/change_icon"
             android:layout_width="match_parent"
@@ -111,12 +169,22 @@
             android:textSize="20sp"
             android:text="@string/change_icon"
             android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/insert_emoticon"
+            app:drawableLeftCompat="@drawable/insert_emoticon"
+            android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
             />
         <TextView
             android:id="@+id/privacy"
@@ -125,12 +193,45 @@
             android:textSize="20sp"
             android:text="@string/privacy"
             android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/privacy_tip_24"
+            app:drawableLeftCompat="@drawable/privacy_tip_24"
+            android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
+            />
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/log_out"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/primaryTextColor"
+            app:drawableLeftCompat="@drawable/baseline_logout_24"
+            android:drawablePadding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
             />
         <TextView
             android:id="@+id/delete"
@@ -139,12 +240,22 @@
             android:textSize="20sp"
             android:text="@string/delete_account"
             android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/primaryTextColor"
-            app:drawableRightCompat="@drawable/baseline_delete_24"
+            app:drawableLeftCompat="@drawable/baseline_delete_24"
+            android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primaryDarkColor"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="10dp"
             />
 
         <TextView
@@ -153,7 +264,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/primaryTextColor"
             />
 

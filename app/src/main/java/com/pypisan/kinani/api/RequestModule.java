@@ -64,5 +64,8 @@ public interface RequestModule {
     @GET("about")
     Call<UserModel> getAppAbout(@Header("x-api-key") String apikey);
 
+    @POST("users/update")
+    Call<UserModel> updateUser(@Header("x-api-key") String apikey, @Body UserUpdate body);
+
 }
 

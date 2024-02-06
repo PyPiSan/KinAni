@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         mMenuItem=menu;
         if (Constant.loggedInStatus){
             menu.getItem(1).setIcon(Constant.logo);
+        }else{
+            menu.getItem(1).setIcon(R.drawable.ic_outline_account);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -378,14 +380,8 @@ public class MainActivity extends AppCompatActivity {
 
     private int randomUserIcon(){
         Random rand = new Random();
-        Integer[] image = {R.drawable.user_icon3,
-                R.drawable.user_icon4,R.drawable.user_icon5,R.drawable.user_icon6,
-                R.drawable.user_icon7,R.drawable.user_icon8,R.drawable.user_icon9,R.drawable.user_icon10,
-                R.drawable.user_icon11,R.drawable.user_icon12,R.drawable.user_icon13,R.drawable.user_icon14,
-                R.drawable.user_icon15,R.drawable.user_icon16,R.drawable.user_icon17,R.drawable.user_icon18,
-                R.drawable.user_icon19};
-        int rand_int = rand.nextInt(image.length);
-        return image[rand_int];
+        int rand_int = rand.nextInt(Constant.userIconImage.length);
+        return Constant.userIconImage[rand_int];
     }
 
     private void openUserPage(){

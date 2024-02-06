@@ -1,12 +1,6 @@
 <resources>
     <string name="app_name">KinAni</string>
     <string name="app_title">KinAni</string>
-    <string name="app_label">Search KinAni</string>
-    <string name="search_hint">Anime..</string>
-    <string name="app_id">C0868879</string>
-    <string name="media_route_menu_title">Cast</string>
-    <string name="summary">Summary:</string>
-    <string name="intro">Watch Anime</string>
     <string name="recently_watched">Recently Watched</string>
     <string name="trending">Trending</string>
     <string name="recommendations">Recommendations</string>
@@ -22,7 +16,6 @@
     <string name="movies">Movies</string>
     <string name="about_anime">About</string>
     <string name="genre">Genre</string>
-    <string name="episode_select">SELECT AN EPISODE</string>
     <string name="anime_rating">Rating</string>
     <string name="status">Status</string>
     <string name="username">User</string>
@@ -65,4 +58,5 @@
     <string name="privacy">Privacy Policy</string>
     <string name="Notification">Notifications</string>
     <string name="issue">Report Issue</string>
+    <string name="select_an_icon">Select An Icon</string>
 </resources>

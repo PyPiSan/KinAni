@@ -65,6 +65,7 @@ public class HomeSplash extends AppCompatActivity {
 
         @SuppressLint("HardwareIds") String deviceUser = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+        Constant.uid = deviceUser;
         String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
 
 //        Cursor cursor = animeManager.findOneUser(deviceUser);

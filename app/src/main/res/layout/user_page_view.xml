@@ -78,7 +78,7 @@
             android:textColor="@color/primaryTextColor"
             app:drawableLeftCompat="@drawable/info_outline_24"
             app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
 
         <androidx.cardview.widget.CardView
@@ -97,7 +97,7 @@
                 android:id="@+id/about_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:padding="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:paddingBottom="5dp"
@@ -121,7 +121,7 @@
             android:clickable="true"
             android:focusable="true"
             app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/notifications_card"
@@ -160,7 +160,7 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
         <TextView
             android:id="@+id/privacy"
@@ -177,7 +177,7 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
         <TextView
             android:id="@+id/issue"
@@ -194,7 +194,7 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
         <TextView
             android:id="@+id/logout"
@@ -211,7 +211,7 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout"/>
+            android:background="@drawable/round_layout_user"/>
         <TextView
             android:id="@+id/delete"
             android:layout_width="match_parent"
@@ -227,7 +227,7 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout"
+            android:background="@drawable/round_layout_user"
             />
 <!--        <View-->
 <!--            android:layout_width="match_parent"-->

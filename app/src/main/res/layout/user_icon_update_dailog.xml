@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/updateLoader"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+    <LinearLayout
+        android:id="@+id/grid_linear_layout"
+        android:layout_width="350dp"
+        android:layout_height="620dp"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/select_an_icon"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="22sp" />
+    <GridView
+        android:id="@+id/grid_icon_view"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"
+        />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelUserIconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:elevation="6dp"
+            android:textAllCaps="false"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/cancel"
+            android:textSize="20sp"
+            android:focusable="true"
+            android:clickable="true"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,5 +1,9 @@
 package com.pypisan.kinani.view;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,20 +12,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pypisan.kinani.R;
+import com.pypisan.kinani.api.RequestModule;
+import com.pypisan.kinani.api.UserUpdate;
+import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.Constant;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPageView extends Fragment {
 
     private Boolean aboutClick = false;
     private Boolean notificationClick = false;
+
+    private ImageView userIcon;
+    private Dialog myDialog;
+    private TextView changeIcon;
+    private ProgressBar loader;
 
     public UserPageView() {
         // Required empty public constructor
@@ -46,12 +72,14 @@ public class UserPageView extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView userIcon = view.findViewById(R.id.user_icon);
+        userIcon = view.findViewById(R.id.user_icon);
         TextView userName = view.findViewById(R.id.user_name);
         TextView appName = view.findViewById(R.id.appAbout);
         ImageButton backButton = view.findViewById(R.id.back_button);
         TextView logOutButton = view.findViewById(R.id.logout);
         TextView deleteButton = view.findViewById(R.id.delete);
+        changeIcon = view.findViewById(R.id.change_icon);
+        TextView privacy = view.findViewById(R.id.privacy);
         TextView about = view.findViewById(R.id.about);
         CardView aboutCard = view.findViewById(R.id.about_card);
         TextView aboutText = view.findViewById(R.id.about_text);
@@ -61,6 +89,10 @@ public class UserPageView extends Fragment {
         userIcon.setImageResource(Constant.logo);
         userName.setText(String.format("Hi, %s",Constant.userName));
         appName.setText(String.format("KinAni v%s",Constant.versionName));
+        myDialog = new Dialog(view.getContext());
+        myDialog.setContentView(R.layout.user_icon_update_dailog);
+        myDialog.setCancelable(false);
+        loader = myDialog.findViewById(R.id.updateLoader);
 
         about.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +105,7 @@ public class UserPageView extends Fragment {
                 aboutClick = true;
                 }else{
                     about.setCompoundDrawablesWithIntrinsicBounds(R.drawable.info_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
-                    about.setBackground(getResources().getDrawable(R.drawable.round_layout));
+                    about.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                     aboutCard.setVisibility(View.GONE);
                     aboutClick = false;
                 }
@@ -92,7 +124,7 @@ public class UserPageView extends Fragment {
                     notificationClick = true;
                 }else{
                     notification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.notifications_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
-                    notification.setBackground(getResources().getDrawable(R.drawable.round_layout));
+                    notification.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                     notificationCard.setVisibility(View.GONE);
                     notificationClick = false;
                 }
@@ -102,11 +134,7 @@ public class UserPageView extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new HomeView();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentView, fragment)
-                        .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
+                returnToHome();
             }
         });
 
@@ -114,6 +142,8 @@ public class UserPageView extends Fragment {
             @Override
             public void onClick(View v) {
                 logOutButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                myDialog.show();
+                loader.setVisibility(View.VISIBLE);
                 updateUser("logout");
             }
         });
@@ -122,6 +152,31 @@ public class UserPageView extends Fragment {
             @Override
             public void onClick(View v) {
                 deleteButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                updateUser("delete");
+            }
+        });
+
+        changeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeIcon.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                showDialog(v);
+            }
+        });
+
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                privacy.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constant.privacyUrl));
+                    startActivity(browserIntent);
+                    privacy.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                }
+            }, 300);
+
             }
         });
 
@@ -137,7 +192,124 @@ public class UserPageView extends Fragment {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
 
     private void updateUser(String flag){
+        UserUpdate userUpdate;
+        if (flag.equals("logout")){
+            userUpdate = new UserUpdate(Constant.uid, 0,false);
+        }else if(flag.equals("icon")){
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true);
+        }
+        else{
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true);
+        }
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        RequestModule updateUserData = retrofit.create(RequestModule.class);
+        Call<UserModel> call = updateUserData.updateUser(Constant.key,userUpdate);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                boolean statusFlag = false;
+                UserModel resource = response.body();
+                if (response.code() == 200) {
+                    statusFlag = resource.getUserStatus();
+                }
+                if (statusFlag && flag.equals("logout")){
+                    Constant.loggedInStatus = false;
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    returnToHome();
+                    Toast.makeText(getContext(),"Log Out Successful ", Toast.LENGTH_LONG).show();
+                } else if (statusFlag && flag.equals("icon")) {
+                    userIcon.setImageResource(Constant.logo);
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),"Icon Changed Successful ", Toast.LENGTH_SHORT).show();
+                } else{
+                    Toast.makeText(getContext(),"Log Out Failed", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                Toast.makeText(getContext(),"Try Again", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void returnToHome(){
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void showDialog(View view){
+        GridView gridIconView = myDialog.findViewById(R.id.grid_icon_view);
+        LinearLayout gridIconLinearView = myDialog.findViewById(R.id.grid_linear_layout);
+        Button cancelButton = myDialog.findViewById(R.id.cancelUserIconButton);
+        gridIconView.setAdapter(new ImageAdapter(view.getContext()));
+        gridIconLinearView.setVisibility(View.VISIBLE);
+        myDialog.show();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                myDialog.cancel();
+                changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+            }
+        });
+
+        gridIconView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Constant.logo=Constant.userIconImage[position];
+                loader.setVisibility(View.VISIBLE);
+                gridIconLinearView.setVisibility(View.GONE);
+                updateUser("icon");
+            }
+        });
+    }
+    
+    private static class ImageAdapter extends BaseAdapter {
+        private Context mContext;
+        @Override
+        public int getCount() {
+            return Constant.userIconImage.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            if (convertView == null) {
+                imageView = new ImageView(mContext);
+                imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(5, 5, 5, 5);
+            }
+            else
+            {
+                imageView = (ImageView) convertView;
+            }
+            imageView.setImageResource(Constant.userIconImage[position]);
+            return imageView;
+        }
+
+        public ImageAdapter(Context c){
+            mContext = c;
+        }
     }
 }

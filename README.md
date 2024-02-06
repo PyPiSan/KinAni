@@ -9,9 +9,15 @@ KinAni is an **in progress** Android app where you can watch anime, K-drama and 
 
 ## Download
 App download Link
-<a href="https://github.com/PyPiSan/KinAni/releases/download/v1.0.1/KinAni.apk" target="_blank"><b>Download</b></a>
+<a href="https://github.com/PyPiSan/KinAni/releases/download/v4.10.1/KinAni.apk" target="_blank"><b>Download</b></a>
 
 You can also download the latest release version.
+
+## Installation
+Fresh Installs will not have any issue, if any send an email to kinani@pypisan.com
+Update the app when pop up appears if already using previous version.
+If app has been uninstalled previously without clearing cache, new installation might face an issue.
+Mail your issue at kinani@pypisan.com or create an issue here.
 
 ## Demo
 https://github.com/PyPiSan/KinAni/assets/75712540/f1478c44-f9de-4f76-9d47-216dbf766d5c

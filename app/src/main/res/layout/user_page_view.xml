@@ -139,7 +139,7 @@
             android:id="@+id/notification_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:padding="10dp"
             android:textColor="@color/primaryTextColor"
             android:paddingBottom="5dp"

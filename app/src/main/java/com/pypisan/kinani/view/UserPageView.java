@@ -3,6 +3,7 @@ package com.pypisan.kinani.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -46,7 +47,7 @@ public class UserPageView extends Fragment {
 
     private ImageView userIcon;
     private Dialog myDialog;
-    private TextView changeIcon;
+    private TextView changeIcon,logOutButton,deleteButton;
     private ProgressBar loader;
 
     public UserPageView() {
@@ -76,8 +77,8 @@ public class UserPageView extends Fragment {
         TextView userName = view.findViewById(R.id.user_name);
         TextView appName = view.findViewById(R.id.appAbout);
         ImageButton backButton = view.findViewById(R.id.back_button);
-        TextView logOutButton = view.findViewById(R.id.logout);
-        TextView deleteButton = view.findViewById(R.id.delete);
+        logOutButton = view.findViewById(R.id.logout);
+        deleteButton = view.findViewById(R.id.delete);
         changeIcon = view.findViewById(R.id.change_icon);
         TextView privacy = view.findViewById(R.id.privacy);
         TextView about = view.findViewById(R.id.about);
@@ -93,7 +94,6 @@ public class UserPageView extends Fragment {
         myDialog.setContentView(R.layout.user_icon_update_dailog);
         myDialog.setCancelable(false);
         loader = myDialog.findViewById(R.id.updateLoader);
-
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +112,6 @@ public class UserPageView extends Fragment {
 
             }
         });
-
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +151,8 @@ public class UserPageView extends Fragment {
             @Override
             public void onClick(View v) {
                 deleteButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                myDialog.show();
+                loader.setVisibility(View.VISIBLE);
                 updateUser("delete");
             }
         });
@@ -200,12 +201,14 @@ public class UserPageView extends Fragment {
     private void updateUser(String flag){
         UserUpdate userUpdate;
         if (flag.equals("logout")){
-            userUpdate = new UserUpdate(Constant.uid, 0,false);
+            userUpdate = new UserUpdate(Constant.uid, 0,false, false);
         }else if(flag.equals("icon")){
-            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true);
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false);
+        }else if(flag.equals("delete")){
+            userUpdate = new UserUpdate(Constant.uid, 0,true, true);
         }
         else{
-            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true);
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false);
         }
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                 .addConverterFactory(GsonConverterFactory.create()).build();
@@ -231,12 +234,37 @@ public class UserPageView extends Fragment {
                     myDialog.cancel();
                     changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                     Toast.makeText(getContext(),"Icon Changed Successful ", Toast.LENGTH_SHORT).show();
-                } else{
-                    Toast.makeText(getContext(),"Log Out Failed", Toast.LENGTH_LONG).show();
+                }else if (statusFlag && flag.equals("delete")) {
+                    Constant.loggedInStatus = false;
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    returnToHome();
+                    Toast.makeText(getContext(),"Account Deleted Successful ", Toast.LENGTH_SHORT).show();
+                }else if (!statusFlag && flag.equals("logout")){
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    logOutButton.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),"Log Out Failed", Toast.LENGTH_SHORT).show();
+                }else if (!statusFlag && flag.equals("icon")){
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),"Icon Change Failed", Toast.LENGTH_SHORT).show();
+                }else if (!statusFlag && flag.equals("delete")){
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    deleteButton.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),"Account Delete Failed", Toast.LENGTH_SHORT).show();
+                }else {
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    Toast.makeText(getContext(),"Update Failed", Toast.LENGTH_LONG).show();
                 }
             }
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
+                loader.setVisibility(View.GONE);
+                myDialog.cancel();
                 Toast.makeText(getContext(),"Try Again", Toast.LENGTH_LONG).show();
             }
         });

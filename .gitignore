@@ -16,3 +16,4 @@ local.properties
 .idea/vcs.xml
 /.idea/vcs.xml
 .idea
+/app/release/app-release.apk

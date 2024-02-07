@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,7 +42,8 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
     private RecyclerView recyclerView;
 
     private int pageNumber;
-    private boolean lastPage,loading = false;
+    private boolean loading = false;
+    private boolean lastPage = false;
     private int firstVisibleItem, totalItemCount;
 
     private RecentAdapter commonAdapter;
@@ -76,12 +78,6 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
         shimmerContainer = view.findViewById(R.id.shimmer_common_layout);
         shimmerContainer.startShimmer();
 
-// Data initialization
-        pageNumber = 1;
-        insertDataToCard(String.valueOf(pageNumber), tag);
-
-//      initialization recycler
-
         recyclerView = view.findViewById(R.id.common_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -99,11 +95,38 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
         });
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(false);
+        commonAdapter = new RecentAdapter(getContext(), animeList, this);
+// Data initialization
+        pageNumber = 1;
+        if (tag.equals("watchlist")){
+            animeManager = new AnimeManager(getContext());
+            animeManager.open();
+            Cursor cursor = animeManager.readAllDataLiked();
+            if (cursor.getCount() != 0){
+                AnimeModel model;
+                while (cursor.moveToNext()) {
+                    model = new AnimeModel(cursor.getString(3),
+                            cursor.getString(1), cursor.getString(2), "",
+                            cursor.getString(4));
+                    animeList.add(model);
+                }
+                loading=false;
+                shimmerContainer.stopShimmer();
+                shimmerContainer.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(commonAdapter);
+                animeManager.close();
+                lastPage = true;
+            }
+
+        }else{insertDataToCard(String.valueOf(pageNumber), tag);}
+
+//      initialization recycler
 
 //        Item Declaration
 
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true));
-        commonAdapter = new RecentAdapter(getContext(), animeList, this);
+//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(4), true))
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

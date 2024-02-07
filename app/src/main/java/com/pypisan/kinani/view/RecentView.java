@@ -46,7 +46,8 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
     private int pageNumber;
     private Parcelable recyclerViewState;
-    private boolean lastPage,loading = false;
+    private boolean loading = false;
+    private boolean lastPage = false;
     private int firstVisibleItem, totalItemCount;
 
 

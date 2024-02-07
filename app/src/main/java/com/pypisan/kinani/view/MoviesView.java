@@ -43,7 +43,8 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private RecentAdapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
     private int pageNumber;
-    private boolean lastPage, loading = false;
+    private boolean loading = false;
+    private boolean lastPage = false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
 

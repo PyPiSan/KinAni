@@ -285,7 +285,7 @@ public class UserPageView extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                gridIconLinearView.setVisibility(View.GONE);
                 myDialog.cancel();
                 changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
             }

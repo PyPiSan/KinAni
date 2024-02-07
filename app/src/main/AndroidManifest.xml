@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KinAni"
         tools:targetApi="31" >
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3251882712461623~8273196903"/>
         <activity
             android:name=".view.HomeSplash"
             android:exported="true" >

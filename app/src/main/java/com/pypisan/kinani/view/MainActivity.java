@@ -370,7 +370,8 @@ public class MainActivity extends AppCompatActivity {
     };
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount()==HomeIndex ) {
+        super.onBackPressed();
+        if (getSupportFragmentManager().getBackStackEntryCount() == HomeIndex) {
             moveTaskToBack(true);
         } else {
             // if there is only one entry in the backstack, show the home screen

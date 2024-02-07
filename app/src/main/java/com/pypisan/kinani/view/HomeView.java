@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.inmobi.ads.InMobiBanner;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.ContinueWatchingAdapter;
@@ -115,6 +117,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 //      Ads
         InMobiBanner bannerAdTop = (InMobiBanner) view.findViewById(R.id.banner);
         InMobiBanner bannerAdBottom = (InMobiBanner) view.findViewById(R.id.banner2);
+        AdView googleAdView = view.findViewById(R.id.gadView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        googleAdView.loadAd(adRequest);
 
 //      Starting Shimmer Effect
         containerRecent.startShimmer();

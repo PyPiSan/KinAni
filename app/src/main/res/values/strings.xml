@@ -59,4 +59,11 @@
     <string name="Notification">Notifications</string>
     <string name="issue">Report Issue</string>
     <string name="select_an_icon">Select An Icon</string>
+    <string name="subject">Subject</string>
+    <string name="enter_subject">topic of issue</string>
+    <string name="issue_title">content(anime/drama) title</string>
+    <string name="issue_name">Title</string>
+    <string name="issue_message">Message</string>
+    <string name="message_value">Type a message here..</string>
+    <string name="send">Send</string>
 </resources>

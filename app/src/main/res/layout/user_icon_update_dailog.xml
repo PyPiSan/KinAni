@@ -52,5 +52,121 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/issueBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="9dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/subject"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/et_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/enter_subject"
+            android:autofillHints="username"
+            android:singleLine="true"
+            android:inputType="textAutoComplete"
+            android:padding="8dp"
+            android:background="@drawable/round_layout_user"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="9dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/issue_name"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/issue_title"
+            android:autofillHints="name"
+            android:inputType="textAutoComplete"
+            android:singleLine="true"
+            android:padding="8dp"
+            android:background="@drawable/round_layout_user"/>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="9dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/issue_message"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/et_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/message_value"
+            android:autofillHints="name"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:minLines="3"
+            android:maxLines="5"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:gravity="start|top"
+            android:background="@drawable/round_layout_user"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sendButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/send"
+                android:focusable="true"
+                android:clickable="true"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelIssueButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="95dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/cancel"
+                android:focusable="true"
+                android:clickable="true"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 
 </LinearLayout>

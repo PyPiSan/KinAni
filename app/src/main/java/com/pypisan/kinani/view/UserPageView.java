@@ -3,7 +3,6 @@ package com.pypisan.kinani.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -47,7 +46,7 @@ public class UserPageView extends Fragment {
 
     private ImageView userIcon;
     private Dialog myDialog;
-    private TextView changeIcon,logOutButton,deleteButton;
+    private TextView changeIcon,logOutButton,deleteButton,reportIssue;
     private ProgressBar loader;
 
     public UserPageView() {
@@ -80,6 +79,7 @@ public class UserPageView extends Fragment {
         logOutButton = view.findViewById(R.id.logout);
         deleteButton = view.findViewById(R.id.delete);
         changeIcon = view.findViewById(R.id.change_icon);
+        reportIssue = view.findViewById(R.id.issue);
         TextView privacy = view.findViewById(R.id.privacy);
         TextView about = view.findViewById(R.id.about);
         CardView aboutCard = view.findViewById(R.id.about_card);
@@ -161,7 +161,7 @@ public class UserPageView extends Fragment {
             @Override
             public void onClick(View v) {
                 changeIcon.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
-                showDialog(v);
+                showDialog(v,"icon");
             }
         });
 
@@ -177,6 +177,14 @@ public class UserPageView extends Fragment {
                     privacy.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                 }
             }, 300);
+
+            }
+        });
+        reportIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportIssue.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
+                showDialog(v,"issue");
 
             }
         });
@@ -270,12 +278,17 @@ public class UserPageView extends Fragment {
         });
     }
 
+    private void sendReport(){
+
+    }
+
     private void returnToHome(){
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 
-    private void showDialog(View view){
+    private void showDialog(View view, String viewType){
+        if (viewType.equals("icon")){
         GridView gridIconView = myDialog.findViewById(R.id.grid_icon_view);
         LinearLayout gridIconLinearView = myDialog.findViewById(R.id.grid_linear_layout);
         Button cancelButton = myDialog.findViewById(R.id.cancelUserIconButton);
@@ -300,7 +313,33 @@ public class UserPageView extends Fragment {
                 updateUser("icon");
             }
         });
+        }else{
+            Button cancelIssueButton = myDialog.findViewById(R.id.cancelIssueButton);
+            LinearLayout issueBox = myDialog.findViewById(R.id.issueBox);
+            Button sendButton = myDialog.findViewById(R.id.sendButton);
+            issueBox.setVisibility(View.VISIBLE);
+            myDialog.show();
+            cancelIssueButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    issueBox.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                }
+            });
+
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loader.setVisibility(View.VISIBLE);
+                    issueBox.setVisibility(View.GONE);
+                    sendReport();
+                }
+            });
+        }
     }
+
+//    for Icon adapter
     
     private static class ImageAdapter extends BaseAdapter {
         private Context mContext;

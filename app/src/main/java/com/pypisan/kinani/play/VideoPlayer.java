@@ -181,7 +181,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPreviousClick(title);
+                if (!episode_num.equals("1")) {
+                    onPreviousClick(title);
+                }
             }
         });
 
@@ -352,16 +354,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         super.onBackPressed();
         changeOrientation(false);
         long time = 0;
+        long videoLength = 0;
         if(playerState) {
             time = player.getContentPosition();
+            videoLength = player.getContentDuration();
             player.stop();
             player.release();
         }
+        if (time<(videoLength-300000) && time>60000){
         AnimeManager animeManager= new AnimeManager(getApplicationContext());;
         animeManager.open();
         animeManager.insertContinueWatch(summary, title, image, type,episode_num,(int) time);
         animeManager.close();
-
+        }
     }
 
 //    @Override

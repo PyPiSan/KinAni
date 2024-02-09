@@ -42,12 +42,11 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
     private RecyclerView recyclerView;
     private RecentAdapter adapter;
     private ShimmerFrameLayout container;
-    private AnimeManager animeManager;
 
-    private int pageNumber;
+    private int pageNumber=1;
     private Parcelable recyclerViewState;
-    private boolean loading = false;
-    private boolean lastPage = false;
+    private boolean loading,lastPage = false;
+//    private boolean lastPage = false;
     private int firstVisibleItem, totalItemCount;
 
 
@@ -151,21 +150,24 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                         animeList.add(model);
 
                     }
+
+                    adapter.notifyItemInserted(resource.getResultSize());
+                    if (Integer.parseInt(pageNum) > 1) {
+                        adapter.removeNull((Integer.parseInt(pageNum) - 1) * 30);
+                    }
+                    if (resource.getResultSize() < 30) {
+                        lastPage = true;
+                    }
+                    loading = false;
+                    container.stopShimmer();
+                    container.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+                } else {
+//                    Toast.makeText(this, "Response not found", Toast.LENGTH_SHORT).show();
                 }
-                adapter.notifyItemInserted(resource.getResultSize());
-                if (Integer.parseInt(pageNum)>1) {
-                    adapter.removeNull((Integer.parseInt(pageNum)-1)*30);
-                }
-                if (resource.getResultSize()<30){
-                    lastPage = true;
-                }
-                loading=false;
-                container.stopShimmer();
-                container.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(adapter);
-                recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
             }
 
             @Override
@@ -175,15 +177,9 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
         });
     }
 
-    // convert dp to pixels
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
     @Override
     public void onItemClicked(String title, String detail, String image) {
-        animeManager = new AnimeManager(getContext());
+        AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
         animeManager.insertRecent(detail, title, image, "anime");
         animeManager.close();

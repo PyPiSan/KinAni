@@ -1,5 +1,7 @@
 package com.pypisan.kinani.view;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +15,11 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -28,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pypisan.kinani.R;
+import com.pypisan.kinani.api.ReportIssue;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserUpdate;
 import com.pypisan.kinani.model.UserModel;
@@ -278,7 +283,45 @@ public class UserPageView extends Fragment {
         });
     }
 
-    private void sendReport(){
+    private void sendReport(String subject, String title, String message){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        RequestModule reportData = retrofit.create(RequestModule.class);
+        Call<UserModel> call = reportData.reportIssue(Constant.key,
+                new ReportIssue(subject,title,message));
+
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                boolean statusFlag = false;
+                UserModel resource = response.body();
+                if (response.code() == 200) {
+                    statusFlag = resource.getUserStatus();
+                }
+                Log.d("hi","hi "+resource.getMessage());
+                if (statusFlag){
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),resource.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    loader.setVisibility(View.GONE);
+                    myDialog.cancel();
+                    reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    Toast.makeText(getContext(),"Error "+resource.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                loader.setVisibility(View.GONE);
+                myDialog.cancel();
+                reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                Toast.makeText(getContext(),"Try Again", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 
@@ -317,6 +360,9 @@ public class UserPageView extends Fragment {
             Button cancelIssueButton = myDialog.findViewById(R.id.cancelIssueButton);
             LinearLayout issueBox = myDialog.findViewById(R.id.issueBox);
             Button sendButton = myDialog.findViewById(R.id.sendButton);
+            TextView subject = myDialog.findViewById(R.id.et_subject);
+            TextView title = myDialog.findViewById(R.id.et_title);
+            TextView message = myDialog.findViewById(R.id.et_message);
             issueBox.setVisibility(View.VISIBLE);
             myDialog.show();
             cancelIssueButton.setOnClickListener(new View.OnClickListener() {
@@ -331,9 +377,28 @@ public class UserPageView extends Fragment {
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    loader.setVisibility(View.VISIBLE);
-                    issueBox.setVisibility(View.GONE);
-                    sendReport();
+                    if (v != null) {
+                        InputMethodManager imm = (InputMethodManager)getActivity().
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                    String subjectValue = String.valueOf(subject.getText());
+                    String titleValue = String.valueOf(title.getText());
+                    String messageValue = String.valueOf(message.getText());
+                    if (subjectValue.equals("")|| subjectValue.length()<10){
+                        Toast.makeText(getContext(),"Subject should not less than 10 char",
+                                Toast.LENGTH_LONG).show();
+                    } else if (messageValue.equals("")||messageValue.length()<15) {
+                        Toast.makeText(getContext(),"Message should not less than 15 char",
+                                Toast.LENGTH_LONG).show();
+                    }else {
+                        loader.setVisibility(View.VISIBLE);
+                        issueBox.setVisibility(View.GONE);
+                        sendReport(subjectValue, titleValue, messageValue);
+                    }
+                    subject.setText("");
+                    title.setText("");
+                    message.setText("");
                 }
             });
         }

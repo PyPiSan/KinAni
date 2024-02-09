@@ -54,17 +54,26 @@
 
     <LinearLayout
         android:id="@+id/issueBox"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="vertical"
         android:visibility="gone">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/contact_form"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="22sp" />
+
+        <TextView
             android:id="@+id/subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="9dp"
             android:gravity="center"
             android:textSize="18sp"

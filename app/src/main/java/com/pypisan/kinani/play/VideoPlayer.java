@@ -9,12 +9,15 @@ import androidx.mediarouter.app.MediaRouteButton;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
@@ -34,6 +38,7 @@ import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
 import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
 import com.google.android.exoplayer2.source.hls.DefaultHlsExtractorFactory;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.gms.cast.framework.CastButtonFactory;
@@ -210,7 +215,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 player.seekTo(currFor+10000);
             }
         });
+
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+//        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
     }
+
+
 
 
 //    Check Orientation
@@ -463,6 +473,53 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     onQualitySelected(3);
                 settingDialog.cancel();
                 break;
+        }
+    }
+
+
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        Toast.makeText(getApplicationContext(),"Touch clicked ", Toast.LENGTH_SHORT).show();
+//        new ScaleGestureDetector(this, new MySimpleOnScaleGestureListener(playerView,getApplicationContext()))
+//                .onTouchEvent(event);
+//        return true;
+//        //return super.onTouchEvent(event);
+//    }
+
+
+    private static class MySimpleOnScaleGestureListener
+            extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+
+        float scaleFactor = 0f;
+        StyledPlayerView playerMode;
+        Context v;
+
+        public MySimpleOnScaleGestureListener(StyledPlayerView playerMode, Context view) {
+            super();
+            this.playerMode = playerMode;
+            this.v = view;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor = detector.getScaleFactor();
+            return true;
+            //return super.onScale(detector);
+        }
+
+        @Override
+        public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
+            Toast.makeText(v,"scale factor is "+ scaleFactor, Toast.LENGTH_LONG).show();
+            if (scaleFactor > 1) {
+                playerMode.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+            } else {
+                playerMode.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+            }
         }
     }
 }

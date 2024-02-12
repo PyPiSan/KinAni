@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -21,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
@@ -32,6 +35,7 @@ import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -42,8 +46,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private int HomeIndex;
-    private Menu mMenuItem;
+    private Menu topMenuItem;
     private String uid="";
+    private String tag = null;
+    private ArrayList<String> tagList = new ArrayList<>();
+    private BottomNavigationItemView newRelease,homeIcon,dramaIcon,movieIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //
         BottomNavigationView bottomNav = findViewById(R.id.bottomAppBar);
-//        newView = findViewById(R.id.newRelease);
-//        movieView = findViewById(R.id.movies);
-//        dramaView = findViewById(R.id.drama);
-//        defaultView = findViewById(R.id.home);
-        bottomNav.setOnItemSelectedListener(navListner);
+        bottomNav.setOnItemSelectedListener(navListener);
+        newRelease = bottomNav.findViewById(R.id.newRelease);
+        homeIcon = bottomNav.findViewById(R.id.home);
+        dramaIcon = bottomNav.findViewById(R.id.drama);
+        movieIcon = bottomNav.findViewById(R.id.movies);
 
 //      Toolbar setting
         Toolbar myToolbar = findViewById(R.id.topNav);
@@ -67,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragmentView, fragment, "home_fragment")
                 .commit();
+        tagList.add("home_fragment");
 
 //        For Gradient Color
 //        ShapeDrawable.ShaderFactory shaderFactory = new ShapeDrawable.ShaderFactory() {
@@ -93,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-        mMenuItem=menu;
+        topMenuItem =menu;
         if (Constant.loggedInStatus){
             menu.getItem(1).setIcon(Constant.logo);
         }else{
@@ -186,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                             animeManager.open();
                             animeManager.insertUser(uid,"",true,true,Constant.logo);
                             animeManager.close();
-                            mMenuItem.getItem(1).setIcon(Constant.logo);
+                            topMenuItem.getItem(1).setIcon(Constant.logo);
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             myDialog.cancel();
                         } else {
@@ -293,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
                                 animeManager.close();
-                                mMenuItem.getItem(1).setIcon(Constant.logo);
+                                topMenuItem.getItem(1).setIcon(Constant.logo);
                                 myDialog.cancel();
                             } else {
                                 loginLoader.setVisibility(View.GONE);
@@ -332,11 +341,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //  Bottom Nav Listener
-    private final BottomNavigationView.OnItemSelectedListener navListner = new NavigationBarView.OnItemSelectedListener() {
+    private final BottomNavigationView.OnItemSelectedListener navListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
-            String tag = null;
+//            String tag = null;
 //          Fragment currentFrag = getSupportFragmentManager().findFragmentByTag("home_fragment");
             switch (item.getItemId()) {
                 case R.id.newRelease:
@@ -356,6 +365,8 @@ public class MainActivity extends AppCompatActivity {
                     tag = "home_fragment";
                     break;
             }
+            tagList.add(tag);
+            enableIcon(tag);
             if (tag.equals("home_fragment")){
                 HomeIndex = getSupportFragmentManager().getBackStackEntryCount() +1 ;
             }
@@ -375,6 +386,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // if there is only one entry in the backstack, show the home screen
             getSupportFragmentManager().popBackStack();
+            Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentView);
+            if (tagList.size()>1 && !(f instanceof SummaryView || f instanceof SearchListView)) {
+                disableIcon(tagList.remove(tagList.size() - 1));
+                enableIcon(tagList.get(tagList.size() - 1));
+            }
         }
     }
 
@@ -391,4 +407,49 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
+
+    private void disableIcon(@NonNull String fragmentTag){
+//        Toast.makeText(getApplicationContext(),fragmentTag, Toast.LENGTH_SHORT).show();
+        switch (fragmentTag){
+            case "recent_fragment":
+                newRelease.setIcon(getDrawable(R.drawable.ic_outline_new_releases));
+                break;
+            case "movies_fragment":
+                movieIcon.setIcon(
+                        getDrawable(R.drawable.ic_outline_movie_24));
+                break;
+            case "drama_fragment":
+                dramaIcon.setIcon(
+                        getDrawable(R.drawable.ic_outline_local_movies_24));
+                break;
+            case "home_fragment":
+                homeIcon.setIcon(
+                        getDrawable(R.drawable.ic_outline_home));
+                break;
+
+        }
+    }
+
+    private void enableIcon(@NonNull String fragmentTag){
+        switch (fragmentTag){
+            case "recent_fragment":
+                newRelease.setIcon(
+                        getDrawable(R.drawable.ic_new_releases));
+                break;
+            case "movies_fragment":
+                movieIcon.setIcon(
+                        getDrawable(R.drawable.ic_filled_movie_24));
+                break;
+            case "drama_fragment":
+                dramaIcon.setIcon(
+                        getDrawable(R.drawable.ic_filled_local_movies_24));
+                break;
+            case "home_fragment":
+                homeIcon.setIcon(
+                        getDrawable(R.drawable.ic_home));
+                break;
+        }
+    }
+
+
 }

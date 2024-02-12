@@ -196,11 +196,8 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new HomeView();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentView, fragment)
-                        .commit();
-                getActivity().getSupportFragmentManager().popBackStack();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }

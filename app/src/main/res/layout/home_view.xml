@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.inmobi.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".view.HomeView"
     android:background="@color/primaryColor"
     android:layout_marginBottom="10dp"
@@ -224,13 +224,16 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp">
-            <com.inmobi.ads.InMobiBanner
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:id="@+id/banner"
-                ads:placementId="plid-1688560554226"
-                ads:refreshInterval="60"
-                />
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3251882712461623/8452767094">
+        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
     <RelativeLayout
             android:id="@+id/continueWatching"
@@ -276,14 +279,187 @@
                 android:visibility="gone"
                 />
     </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/triviaRelative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/continueWatchingRelative"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="370dp"
+                card_view:cardCornerRadius="5dp"
+                card_view:cardElevation="7dp"
+                card_view:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/primaryColor">
+
+                <LinearLayout
+                    android:id="@+id/frontView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/cardBackground"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="What two colors are used in the Amestris flag in 'Fullmetal Alchemist'?"
+                        android:textSize="22sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="25dp"
+                        android:padding="5dp"
+                        android:textColor="@color/primaryTextColor"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginBottom="15dp"
+                        >
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/know_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="35dp"
+                            android:textColor="@color/primaryTextColor"
+                            android:text="@string/triviaKnow"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:textAllCaps="false"
+                            />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/unknown_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="75dp"
+                            android:textColor="@color/primaryTextColor"
+                            android:text="@string/trivia_unknown"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:textAllCaps="false"
+                            />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <com.google.android.ads.nativetemplates.TemplateView
+                        android:id="@+id/my_template_ad"
+                        app:gnt_template_type="@layout/gnt_small_template_view"
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/backView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/cardBackground"
+                    android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/animePhoto"
+                        android:layout_width="140dp"
+                        android:layout_height="160dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/logo3"
+                        android:scaleType="fitXY"/>
+
+                    <LinearLayout
+                        android:layout_width="220dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primaryTextColor"
+                            android:paddingBottom="5dp"
+                            android:text="Naruto"
+                            android:id="@+id/name"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="5dp"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryTextColor"
+                            android:id="@+id/episode"
+                            android:text="Episode : 5"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="5dp"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryTextColor"
+                            android:id="@+id/released"
+                            android:text="Released : 2024"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="5dp"
+                            android:textSize="18sp"
+                            android:textColor="@color/primaryTextColor"
+                            android:id="@+id/status"
+                            android:text="Status : Completed"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                    <TextView
+                        android:id="@+id/contentDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/primaryTextColor"
+                        android:text="Haste la Vista Baby"
+                        />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/gads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/continueWatchingRelative"
+            android:layout_below="@+id/triviaRelative"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="8dp">
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/gadView"
@@ -335,17 +511,19 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="10dp"
         android:visibility="gone"
-        android:layout_below="@+id/recentlyAired"/>
-
-    <com.inmobi.ads.InMobiBanner
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:id="@+id/banner2"
-        android:layout_below="@+id/home_recycler_view_recentlyAired"
-        ads:placementId="plid-1688005710256"
-        ads:refreshInterval="60"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/recentlyAired"
         />
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/banner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3251882712461623/6403535862"
+            android:layout_below="@+id/home_recycler_view_recentlyAired"
+            />
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

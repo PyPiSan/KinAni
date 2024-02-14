@@ -15,24 +15,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.inmobi.sdk.InMobiSdk;
-import com.inmobi.sdk.SdkInitializationListener;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserInit;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,26 +40,6 @@ public class HomeSplash extends AppCompatActivity {
         ProgressBar loader = findViewById(R.id.loader);
         AnimeManager animeManager = new AnimeManager(getApplicationContext());
         JSONObject consentObject = new JSONObject();
-        try {
-            // Provide correct consent value to sdk which is obtained by User
-            consentObject.put(InMobiSdk.IM_GDPR_CONSENT_AVAILABLE, true);
-            // Provide 0 if GDPR is not applicable and 1 if applicable
-            consentObject.put("gdpr", "0");
-            // Provide user consent in IAB format
-            consentObject.put(InMobiSdk.IM_GDPR_CONSENT_IAB, true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        InMobiSdk.init(this, "b048bb9ebf634fb78efeb09f053ac225", consentObject, new SdkInitializationListener() {
-            @Override
-            public void onInitializationComplete(@Nullable Error error) {
-                if (null != error) {
-                    Log.e("InMobi", "InMobi Init failed -" + error.getMessage());
-                } else {
-                    Log.d("InMobi", "InMobi Init Successful");
-                }
-            }
-        });
 
 //        Google Ads
 

@@ -1,12 +1,19 @@
 package com.pypisan.kinani.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,9 +29,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.inmobi.ads.InMobiBanner;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.nativead.NativeAd;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.ContinueWatchingAdapter;
 import com.pypisan.kinani.adapter.HomeViewAdapter;
@@ -114,12 +125,57 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         ImageView trendingMore = view.findViewById(R.id.trending_more);
         ImageView recommendationMore = view.findViewById(R.id.recommended_more);
 
+//      Activating Animation
+        LinearLayout frontCard = view.findViewById(R.id.frontView);
+        LinearLayout backCard = view.findViewById(R.id.backView);
+        Button seeAnswer = view.findViewById(R.id.unknown_button);
+
+        seeAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ObjectAnimator oa1 = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0f);
+                final ObjectAnimator oa2 = ObjectAnimator.ofFloat(backCard, "scaleX", 0f, 1f);
+                oa1.setInterpolator(new DecelerateInterpolator());
+                oa2.setInterpolator(new AccelerateDecelerateInterpolator());
+                oa1.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        backCard.setVisibility(View.VISIBLE);
+                        oa2.start();
+                    }
+                });
+                oa1.start();
+                oa1.setDuration(300);
+                oa2.setDuration(300);
+            }
+        });
+
 //      Ads
-        InMobiBanner bannerAdTop = (InMobiBanner) view.findViewById(R.id.banner);
-        InMobiBanner bannerAdBottom = (InMobiBanner) view.findViewById(R.id.banner2);
+        AdView bannerAdTop =  view.findViewById(R.id.banner);
+        AdView bannerAdBottom = view.findViewById(R.id.banner2);
         AdView googleAdView = view.findViewById(R.id.gadView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        googleAdView.loadAd(adRequest);
+        googleAdView.loadAd(new AdRequest.Builder().build());
+        bannerAdBottom.loadAd(new AdRequest.Builder().build());
+        bannerAdTop.loadAd(new AdRequest.Builder().build());
+
+//        Native Ad
+        MobileAds.initialize(getContext());
+        AdLoader adLoader = new AdLoader.Builder(getContext(), "ca-app-pub-3251882712461623/7937761777")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd nativeAd) {
+                        ColorDrawable background = ((ColorDrawable)frontCard.getBackground());
+                        NativeTemplateStyle styles = new
+                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
+                        TemplateView template = view.findViewById(R.id.my_template_ad);
+                        template.setStyles(styles);
+                        template.setNativeAd(nativeAd);
+                    }
+                })
+                .build();
+
+        adLoader.loadAd(new AdRequest.Builder().build());
 
 //      Starting Shimmer Effect
         containerRecent.startShimmer();
@@ -255,8 +311,6 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      Setting Data
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);
-        bannerAdTop.load();
-        bannerAdBottom.load();
 
 //      Continue Watching Recycler
         recyclerView_continue = view.findViewById(R.id.home_recycler_view_continue_watching);

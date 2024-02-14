@@ -68,4 +68,6 @@
     <string name="send">Send</string>
     <string name="contact_form">Report</string>
     <string name="reload">Reload</string>
+    <string name="triviaKnow">I Know</string>
+    <string name="trivia_unknown">See Answer</string>
 </resources>

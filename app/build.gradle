@@ -68,7 +68,7 @@ dependencies {
 
 //    for ad
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
-    implementation 'com.inmobi.monetization:inmobi-ads:10.1.3'
+    implementation project(':nativetemplates')
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'com.google.android.gms:play-services-location:21.1.0'
     //optional dependency for better targeting

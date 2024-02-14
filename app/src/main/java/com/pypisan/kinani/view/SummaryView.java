@@ -26,7 +26,8 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.inmobi.ads.InMobiBanner;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
@@ -57,7 +58,7 @@ public class SummaryView extends Fragment{
     private String animeTitle, animeDetailLink, animeLink,showType;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
 //    private Animation animationImage;
-    private InMobiBanner bannerAd;
+    private AdView bannerAd;
     private CardView cardImageTitle, cardHeadImage;
 
     private AppCompatSpinner episodeSpinner;
@@ -118,10 +119,10 @@ public class SummaryView extends Fragment{
         });
 
 //        Ads
-        bannerAd = (InMobiBanner)view.findViewById(R.id.banner);
+        bannerAd = view.findViewById(R.id.banner);
 //        Fetching Anime Detail Summary
         getAnimeSummary(view, animeName, showType);
-        bannerAd.load();
+        bannerAd.loadAd(new AdRequest.Builder().build());
 
 //        For animation
         Animation animationImage = AnimationUtils.loadAnimation(getContext(), R.anim.summary_image);

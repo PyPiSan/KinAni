@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.ads.nativetemplates.NativeTemplateStyle;
 import com.google.android.ads.nativetemplates.TemplateView;
@@ -46,6 +47,7 @@ import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.ContinueWatchingModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.ScheduleModel;
+import com.pypisan.kinani.model.TriviaModel;
 import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
@@ -66,19 +68,23 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             animeRecommendList, animeRecommendListInc, animeWatchList;
     private ArrayList<ContinueWatchingModel> animeContinueWatchList;
 
-    private RecyclerView recyclerView_trending, recyclerView_recommend, recyclerView_schedule,
-            recyclerView_continue;
+    private RecyclerView recyclerView_trending;
+    private RecyclerView recyclerView_recommend;
+    private RecyclerView recyclerView_schedule;
 
     private RecyclerView.Adapter adapterTrending, scheduleAdapter,adapterRecommend;
     private AnimeManager animeManager;
 
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
     private ShimmerFrameLayout containerTrending,containerSchedule,containerRecommend;
-    private TextView recentTextHeader;
+    private TextView recentTextHeader,triviaAnimeName,triviaAnimeEpisode,triviaAnimeReleased,
+                        triviaAnimeStatus,triviaAnimeContentDetail,triviaQuestion;
+    private ImageView triviaAnimePic;
     private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
     private Boolean moreRecommendedVisible = false;
     private Boolean moreTrendingVisible = false;
     private Boolean moreWatchListVisible = false;
+    private String triviaAnimeTitle,triviaAnimeDetail,triviaAnimeImage;
 
     public HomeView() {
         // Required empty public constructor
@@ -120,6 +126,16 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         continueWatch = view.findViewById(R.id.continueWatching);
         continueWatchingRelative = view.findViewById(R.id.continueWatchingRelative);
 
+
+//      For Anime Trivia
+        triviaQuestion = view.findViewById(R.id.triviaQuestion);
+        triviaAnimeName = view.findViewById(R.id.triviaAnimeName);
+        triviaAnimeEpisode = view.findViewById(R.id.triviaAnimeEpisode);
+        triviaAnimeReleased = view.findViewById(R.id.triviaAnimeReleased);
+        triviaAnimeStatus = view.findViewById(R.id.triviaAnimeStatus);
+        triviaAnimeContentDetail = view.findViewById(R.id.triviaAnimeContentDetail);
+        triviaAnimePic = view.findViewById(R.id.triviaAnimePhoto);
+
 //      For More Arrow
         ImageView watchListMore = view.findViewById(R.id.watchlist_more);
         ImageView trendingMore = view.findViewById(R.id.trending_more);
@@ -129,6 +145,8 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         LinearLayout frontCard = view.findViewById(R.id.frontView);
         LinearLayout backCard = view.findViewById(R.id.backView);
         Button seeAnswer = view.findViewById(R.id.unknown_button);
+        Button watchNow = view.findViewById(R.id.watch_button);
+        Button iKnow = view.findViewById(R.id.know_button);
 
         seeAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +160,20 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         backCard.setVisibility(View.VISIBLE);
+                        frontCard.setVisibility(View.GONE);
                         oa2.start();
                     }
                 });
                 oa1.start();
                 oa1.setDuration(300);
                 oa2.setDuration(300);
+            }
+        });
+
+        watchNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClicked(triviaAnimeTitle,triviaAnimeDetail,triviaAnimeImage,"anime");
             }
         });
 
@@ -191,6 +217,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         getTrendingList();
         recommendFetcher();
         watchList();
+        getTriviaAnime();
 
 //      1st initialization recycler recent
         RecyclerView recyclerView_recent = view.findViewById(R.id.home_recycler_view_recent);
@@ -313,7 +340,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         scheduleAdapter = new RecentlyAiredAdapter(animeScheduleListInc, getContext(), this::onItemClicked);
 
 //      Continue Watching Recycler
-        recyclerView_continue = view.findViewById(R.id.home_recycler_view_continue_watching);
+        RecyclerView recyclerView_continue = view.findViewById(R.id.home_recycler_view_continue_watching);
         recyclerView_continue.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         recyclerView_continue.setHasFixedSize(false);
@@ -642,6 +669,44 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .replace(R.id.fragmentView, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void getTriviaAnime(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestModule animeTrivia = retrofit.create(RequestModule.class);
+        Call<TriviaModel> call = animeTrivia.getTrivia(Constant.key);
+        call.enqueue(new Callback<TriviaModel>() {
+            @Override
+            public void onResponse(Call<TriviaModel> call, Response<TriviaModel> response) {
+                TriviaModel resource = response.body();
+                boolean status = resource.getSuccess();
+                if (status) {
+                    TriviaModel.datum triviaData = resource.getData();
+                    triviaAnimeImage = triviaData.getImageLink();
+                    triviaAnimeTitle = triviaData.getTitle();
+                    triviaAnimeDetail = triviaData.getSummary();
+                    Glide.with(getContext())
+                            .load(triviaAnimeImage)
+                            .into(triviaAnimePic);
+                    triviaQuestion.setText(triviaData.getQuestion());
+                    triviaAnimeName.setText(triviaAnimeTitle);
+                    triviaAnimeContentDetail.setText(triviaAnimeDetail);
+                    triviaAnimeStatus.setText(String.format("Status: "+triviaData.getStatus()));
+                    triviaAnimeEpisode.setText(String.format("Episodes: "+ triviaData.getEpisode_num()));
+                    triviaAnimeReleased.setText(String.format("Released: "+triviaData.getReleased()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<TriviaModel> call, Throwable t) {
+
+            }
+        });
     }
 
 }

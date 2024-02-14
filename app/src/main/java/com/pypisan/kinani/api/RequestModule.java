@@ -5,6 +5,7 @@ import com.pypisan.kinani.model.AnimeRecentModel;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.SignUpModel;
+import com.pypisan.kinani.model.TriviaModel;
 import com.pypisan.kinani.model.UserModel;
 
 import retrofit2.Call;
@@ -69,6 +70,9 @@ public interface RequestModule {
 
     @POST("report")
     Call<UserModel> reportIssue(@Header("x-api-key") String apikey, @Body ReportIssue body);
+
+    @GET("trivia")
+    Call<TriviaModel> getTrivia(@Header("x-api-key") String apikey);
 
 }
 

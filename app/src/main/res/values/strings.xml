@@ -70,4 +70,6 @@
     <string name="reload">Reload</string>
     <string name="triviaKnow">I Know</string>
     <string name="trivia_unknown">See Answer</string>
+    <string name="do_you_know">Do you know?</string>
+    <string name="watch_now">Watch Now</string>
 </resources>

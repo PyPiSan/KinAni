@@ -2,12 +2,9 @@ package com.pypisan.kinani.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AnimeEpisodeListModel {
+public class TriviaModel {
     @SerializedName("data")
-    private final AnimeEpisodeListModel.datum data = null;
+    private final TriviaModel.datum data = null;
     @SerializedName("success")
     private Boolean success;
 
@@ -15,7 +12,7 @@ public class AnimeEpisodeListModel {
         return success;
     }
 
-    public AnimeEpisodeListModel.datum getData() {
+    public TriviaModel.datum getData() {
         return data;
     }
 
@@ -36,6 +33,8 @@ public class AnimeEpisodeListModel {
         private String status;
         @SerializedName("released")
         private String released;
+        @SerializedName("question")
+        private String question;
         @SerializedName("genres")
         private String[] genres;
 
@@ -62,6 +61,8 @@ public class AnimeEpisodeListModel {
         public String getStatus() { return status; }
 
         public String getReleased() { return released; }
+
+        public String getQuestion() { return question; }
 
         public String[] getGenres(){ return genres;}
     }

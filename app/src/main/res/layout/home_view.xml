@@ -205,7 +205,8 @@
         android:layout_height="wrap_content"
         app:shimmer_direction="left_to_right"
         >
-        <include layout="@layout/skeleton_layout"/>
+
+        <include layout="@layout/skeleton_layout" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -292,11 +293,12 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="wrap_content"
                 card_view:cardCornerRadius="5dp"
                 card_view:cardElevation="7dp"
                 card_view:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/primaryColor">
+                app:cardBackgroundColor="@color/primaryColor"
+                >
 
                 <LinearLayout
                     android:id="@+id/frontView"
@@ -305,15 +307,25 @@
                     android:orientation="vertical"
                     android:background="@color/cardBackground"
                     >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/do_you_know"
+                        android:layout_marginStart="110dp"
+                        android:textColor="@color/primaryTextColor"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        />
 
                     <TextView
+                        android:id="@+id/triviaQuestion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="What two colors are used in the Amestris flag in 'Fullmetal Alchemist'?"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="15dp"
                         android:padding="5dp"
                         android:textColor="@color/primaryTextColor"/>
 
@@ -321,8 +333,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="35dp"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="25dp"
                         >
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/know_button"
@@ -335,6 +346,7 @@
                             android:focusable="true"
                             android:clickable="true"
                             android:textAllCaps="false"
+                            android:padding="5dp"
                             />
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/unknown_button"
@@ -347,15 +359,19 @@
                             android:focusable="true"
                             android:clickable="true"
                             android:textAllCaps="false"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
                             />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <com.google.android.ads.nativetemplates.TemplateView
                         android:id="@+id/my_template_ad"
                         app:gnt_template_type="@layout/gnt_small_template_view"
-                        android:layout_margin="10dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="130dp"
                         />
 
                 </LinearLayout>
@@ -373,32 +389,40 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        android:layout_margin="10dp"
+                        android:elevation="10dp">
                     <ImageView
-                        android:id="@+id/animePhoto"
+                        android:id="@+id/triviaAnimePhoto"
                         android:layout_width="140dp"
-                        android:layout_height="160dp"
+                        android:layout_height="190dp"
                         android:layout_weight="1"
-                        android:src="@drawable/logo3"
-                        android:scaleType="fitXY"/>
+                        android:scaleType="fitXY"
+                        />
+                    </androidx.cardview.widget.CardView>
 
                     <LinearLayout
-                        android:layout_width="220dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="15dp">
+                        android:layout_marginTop="9dp">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="22sp"
+                            android:textSize="20sp"
                             android:paddingStart="5dp"
                             android:paddingEnd="5dp"
                             android:textStyle="bold"
+                            android:singleLine="false"
+                            android:ellipsize="end"
+                            android:maxLines="4"
                             android:textColor="@color/primaryTextColor"
                             android:paddingBottom="5dp"
-                            android:text="Naruto"
-                            android:id="@+id/name"
+                            android:id="@+id/triviaAnimeName"
                             />
                         <TextView
                             android:layout_width="match_parent"
@@ -408,8 +432,7 @@
                             android:paddingBottom="5dp"
                             android:textSize="18sp"
                             android:textColor="@color/primaryTextColor"
-                            android:id="@+id/episode"
-                            android:text="Episode : 5"
+                            android:id="@+id/triviaAnimeEpisode"
                             />
                         <TextView
                             android:layout_width="match_parent"
@@ -419,8 +442,7 @@
                             android:paddingBottom="5dp"
                             android:textSize="18sp"
                             android:textColor="@color/primaryTextColor"
-                            android:id="@+id/released"
-                            android:text="Released : 2024"
+                            android:id="@+id/triviaAnimeReleased"
                             />
                         <TextView
                             android:layout_width="match_parent"
@@ -430,21 +452,35 @@
                             android:paddingBottom="5dp"
                             android:textSize="18sp"
                             android:textColor="@color/primaryTextColor"
-                            android:id="@+id/status"
-                            android:text="Status : Completed"
+                            android:id="@+id/triviaAnimeStatus"
                             />
                     </LinearLayout>
                 </LinearLayout>
                     <TextView
-                        android:id="@+id/contentDetail"
+                        android:id="@+id/triviaAnimeContentDetail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:textSize="18sp"
-                        android:layout_marginTop="10dp"
+                        android:singleLine="false"
+                        android:ellipsize="end"
+                        android:maxLines="4"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/primaryTextColor"
-                        android:text="Haste la Vista Baby"
+                        />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/watch_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:layout_margin="10dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/primaryTextColor"
+                        android:text="@string/watch_now"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:textAllCaps="false"
                         />
                 </LinearLayout>
 

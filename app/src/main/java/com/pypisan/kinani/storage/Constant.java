@@ -3,7 +3,7 @@ package com.pypisan.kinani.storage;
 import com.pypisan.kinani.R;
 
 public class Constant {
-    public static String key = null;
+    public static String key;
     public static String uid;
     public static final String baseUrl="https://anime.pypisan.com/v1/anime/";
     public static final String baseDramaUrl="https://drama.pypisan.com/v1/drama/";
@@ -12,6 +12,7 @@ public class Constant {
     public static Integer logo;
     public static Boolean loggedInStatus=false;
     public static Boolean isFree=true;
+    public static Boolean isMessage=false;
     public static String userName = "Anonymous";
     public static String versionName = "1.0.0";
     public static String about;

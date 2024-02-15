@@ -12,6 +12,7 @@
         android:id="@+id/account"
         android:title="@string/profile"
         android:icon="@drawable/ic_outline_account"
-        app:showAsAction="ifRoom"/>
+        app:actionLayout="@layout/notification_layout"
+        app:showAsAction="always"/>
 
 </menu>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    style="?attr/actionButtonStyle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/customIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/profile"
+        />
+
+    <TextView
+        android:id="@+id/badge"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="end|top"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/notification_badge"
+        android:gravity="center"
+        />
+
+</FrameLayout>

@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -32,14 +33,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeSplash extends AppCompatActivity {
+    private  AnimeManager animeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_splash);
         ProgressBar loader = findViewById(R.id.loader);
-        AnimeManager animeManager = new AnimeManager(getApplicationContext());
-        JSONObject consentObject = new JSONObject();
+        animeManager = new AnimeManager(getApplicationContext());
+//        JSONObject consentObject = new JSONObject();
 
 //        Google Ads
 
@@ -95,7 +97,7 @@ public class HomeSplash extends AppCompatActivity {
                             Constant.loggedInStatus = true;
                             Constant.logo =resource.getIcon();
                             Constant.userName = resource.getUserData();
-                            Constant.isFree = resource.getAds();
+                            if (resource.getAds() !=null){Constant.isFree = resource.getAds();}
                             try {
                                 PackageInfo pInfo = getApplicationContext().getPackageManager().
                                         getPackageInfo(getApplicationContext().getPackageName(), 0);
@@ -111,8 +113,8 @@ public class HomeSplash extends AppCompatActivity {
                         loader.setVisibility(View.GONE);
                         Intent intent = new Intent(HomeSplash.this, MainActivity.class);
                         startActivity(intent);
-                        finish();
                         getPushMessage();
+                        finish();
                         getAppAbout();
                     } else {
                         loader.setVisibility(View.GONE);
@@ -142,7 +144,22 @@ public class HomeSplash extends AppCompatActivity {
                 boolean flag = false;
                 UserModel resource = response.body();
                 if (response.code() == 200) {
+                    flag = resource.getUserStatus();
+                }
+                if (flag) {
                     Constant.message = resource.getMessage();
+                    animeManager.open();
+                    Cursor cursor = animeManager.findOneUser(Constant.uid);
+                    if (cursor != null && cursor.getCount() != 0){
+                    while (cursor.moveToNext()) {
+                            if (!cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","").equals
+                                    (resource.getMessage().replaceAll("[\n\r\t,.'@/ ]","")))
+                            {
+                                Constant.isMessage = true;
+                                    }
+                            }
+                    }
+                    animeManager.close();
                 }
             }
             @Override

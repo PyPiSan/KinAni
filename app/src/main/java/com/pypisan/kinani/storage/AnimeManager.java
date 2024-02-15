@@ -30,31 +30,6 @@ public class AnimeManager {
         animeBase.close();
     }
 
-    public void insert(String jtitle, String title, String animeLink){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(AnimeBase.DETAIL, jtitle);
-        contentValues.put(AnimeBase.TITLE, title);
-        contentValues.put(AnimeBase.IMAGE, animeLink);
-        database.insert(AnimeBase.TABLE_NAME, null, contentValues);
-    }
-
-    public Cursor fetch(){
-        String[] columns = new String[] {_ID, AnimeBase.DETAIL, AnimeBase.TITLE,
-        AnimeBase.IMAGE};
-
-        Cursor cursor = database.query(AnimeBase.TABLE_NAME,
-                columns,
-                null,
-                null,
-                null,
-                null,
-                null);
-
-        if (cursor != null){
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
     public void deleteLiked(String title){
         database = animeBase.getWritableDatabase();
         database.delete(AnimeBase.TABLE_NAME, "title=?", new String[]{title});
@@ -131,7 +106,7 @@ public class AnimeManager {
 //    Insert User credentials
     public void insertUser(String user, String apikey, Boolean ads, Boolean loggedIn, Integer logo){
     Cursor cursor;
-    long result = 0;
+//    long result = 0;
     cursor = database.rawQuery("SELECT user FROM UserData WHERE user=?", new String[]{user});
     if (cursor.getCount() == 0){
         ContentValues contentValues = new ContentValues();
@@ -140,18 +115,17 @@ public class AnimeManager {
         contentValues.put(AnimeBase.ADSTATUS, ads);
         contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
         contentValues.put(AnimeBase.LOGO, logo);
-        result = database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);
+        database.insert(AnimeBase.TABLE_NAME_3, null, contentValues);
     }else if (cursor.getCount()==1){
-        Log.d("Hi", "Find one user");
         ContentValues contentValues = new ContentValues();
         contentValues.put(AnimeBase.ADSTATUS, ads);
         contentValues.put(AnimeBase.LOGINSTATUS, loggedIn);
         contentValues.put(AnimeBase.LOGO, logo);
-        result = database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
+        database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
         }
-    if (result==-1){
-        Log.d("Hi", "Not inserted");
-        }
+//    if (result==-1){
+//        Log.d("Hi", "Not inserted");
+//        }
     }
 
     public Cursor findOneUser(String user){
@@ -175,5 +149,15 @@ public class AnimeManager {
             cursor = database.rawQuery(query, null);
         }
         return cursor;
+    }
+
+    public void updateMessage(String user, String message){
+        Cursor cursor;
+        cursor = database.rawQuery("SELECT * FROM UserData WHERE user=?",new String[]{user});
+        if (cursor.getCount() == 1){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(AnimeBase.MESSAGE, message);
+            database.update(AnimeBase.TABLE_NAME_3,contentValues,"user=?",new String[]{user});
+        }
     }
 }

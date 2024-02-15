@@ -36,6 +36,7 @@ import com.pypisan.kinani.api.ReportIssue;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserUpdate;
 import com.pypisan.kinani.model.UserModel;
+import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
 import retrofit2.Call;
@@ -48,7 +49,6 @@ public class UserPageView extends Fragment {
 
     private Boolean aboutClick = false;
     private Boolean notificationClick = false;
-
     private ImageView userIcon;
     private Dialog myDialog;
     private TextView changeIcon,logOutButton,deleteButton,reportIssue;
@@ -99,15 +99,24 @@ public class UserPageView extends Fragment {
         myDialog.setContentView(R.layout.user_icon_update_dailog);
         myDialog.setCancelable(false);
         loader = myDialog.findViewById(R.id.updateLoader);
+        if (Constant.isMessage){
+            notification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.notifications_outline_24, 0, R.drawable.new_msg, 0);
+        }
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!aboutClick){
+                AnimeManager animeManager = new AnimeManager(getContext());
                 about.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
                 about.setCompoundDrawablesWithIntrinsicBounds(R.drawable.info_24, 0, R.drawable.keyboard_arrow_down_24, 0);
                 aboutText.setText(Constant.about);
                 aboutCard.setVisibility(View.VISIBLE);
                 aboutClick = true;
+                    if (Constant.isMessage){
+                        animeManager.open();
+                        animeManager.updateMessage(Constant.uid,Constant.message);
+                        animeManager.close();
+                    }
                 }else{
                     about.setCompoundDrawablesWithIntrinsicBounds(R.drawable.info_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
                     about.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
@@ -126,6 +135,7 @@ public class UserPageView extends Fragment {
                     notificationText.setText(Constant.message);
                     notificationCard.setVisibility(View.VISIBLE);
                     notificationClick = true;
+                    Constant.isMessage = false;
                 }else{
                     notification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.notifications_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
                     notification.setBackground(getResources().getDrawable(R.drawable.round_layout_user));

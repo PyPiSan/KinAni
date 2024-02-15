@@ -54,6 +54,7 @@ import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -79,7 +80,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ArrayList<ScheduleModel> animeScheduleList, animeScheduleListInc;
     private ShimmerFrameLayout containerTrending,containerSchedule,containerRecommend;
     private TextView recentTextHeader,triviaAnimeName,triviaAnimeEpisode,triviaAnimeReleased,
-                        triviaAnimeStatus,triviaAnimeContentDetail,triviaQuestion;
+                        triviaAnimeStatus,triviaAnimeContentDetail,triviaQuestion, triviaAnimeGenre;
     private ImageView triviaAnimePic;
     private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
     private LinearLayoutCompat triviaButtonLayout;
@@ -138,6 +139,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         triviaAnimeContentDetail = view.findViewById(R.id.triviaAnimeContentDetail);
         triviaAnimePic = view.findViewById(R.id.triviaAnimePhoto);
         triviaButtonLayout = view.findViewById(R.id.triviaButtonLayout);
+        triviaAnimeGenre = view.findViewById(R.id.triviaAnimeGenre);
 
 //      For More Arrow
         ImageView watchListMore = view.findViewById(R.id.watchlist_more);
@@ -716,13 +718,18 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     triviaButtonLayout.setVisibility(View.VISIBLE);
                     triviaAnimeName.setText(triviaAnimeTitle);
                     triviaAnimeContentDetail.setText(triviaAnimeDetail);
-                    triviaAnimeStatus.setText(String.format("Status: "+triviaData.getStatus()));
-                    triviaAnimeEpisode.setText(String.format("Episodes: "+ triviaData.getEpisode_num()));
-                    triviaAnimeReleased.setText(String.format("Released: "+triviaData.getReleased()));
+                    triviaAnimeStatus.setText(String.format("Status : "+triviaData.getStatus()));
+                    triviaAnimeEpisode.setText(String.format("Episodes : "+ triviaData.getEpisode_num()));
+                    triviaAnimeReleased.setText(String.format("Released : "+triviaData.getReleased()));
+                    String[] genres = triviaData.getGenres();
+                    String formattedString = Arrays.toString(genres)
+                            .replace("[", "")  //remove the right bracket
+                            .replace("]", "")  //remove the left bracket
+                            .trim();
+                    triviaAnimeGenre.setText(String.format("Genre : "+formattedString));
                 }
 
             }
-
             @Override
             public void onFailure(Call<TriviaModel> call, Throwable t) {
 

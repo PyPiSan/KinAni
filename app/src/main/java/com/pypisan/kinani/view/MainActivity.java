@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -46,11 +47,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private int HomeIndex;
-    private Menu topMenuItem;
     private String uid="";
     private String tag = null;
     private ArrayList<String> tagList = new ArrayList<>();
     private BottomNavigationItemView newRelease,homeIcon,dramaIcon,movieIcon;
+    private ImageView imageUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +103,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.top_menu, menu);
-        topMenuItem =menu;
+        View actionView = menu.getItem(1).getActionView();
+        imageUser = actionView.findViewById(R.id.customIcon);
+        TextView badge = actionView.findViewById(R.id.badge);
+        badge.setVisibility(View.GONE);
         if (Constant.loggedInStatus){
-            menu.getItem(1).setIcon(Constant.logo);
-        }else{
-            menu.getItem(1).setIcon(R.drawable.ic_outline_account);
+//            menu.getItem(1).setIcon(Constant.logo);
+            imageUser.setImageResource(Constant.logo);
+            if (Constant.isMessage){
+                badge.setVisibility(View.VISIBLE);
+            }
         }
+        else{
+            imageUser.setImageResource(R.drawable.ic_outline_account);
+        }
+        imageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!Constant.loggedInStatus){
+                    callLoginDialog();
+                }else{
+                    openUserPage();
+                }
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -195,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                             animeManager.open();
                             animeManager.insertUser(uid,"",true,true,Constant.logo);
                             animeManager.close();
-                            topMenuItem.getItem(1).setIcon(Constant.logo);
+                            imageUser.setImageResource(Constant.logo);
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             myDialog.cancel();
                         } else {
@@ -302,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
                                 animeManager.open();
                                 animeManager.insertUser(uid,"",true,true,Constant.logo);
                                 animeManager.close();
-                                topMenuItem.getItem(1).setIcon(Constant.logo);
+                                imageUser.setImageResource(Constant.logo);
                                 myDialog.cancel();
                             } else {
                                 loginLoader.setVisibility(View.GONE);

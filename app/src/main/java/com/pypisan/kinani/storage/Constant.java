@@ -11,6 +11,7 @@ public class Constant {
     public static String privacyUrl ="https://pypisan.com/privacy";
     public static Integer logo;
     public static Boolean loggedInStatus=false;
+    public static Boolean isFree=true;
     public static String userName = "Anonymous";
     public static String versionName = "1.0.0";
     public static String about;

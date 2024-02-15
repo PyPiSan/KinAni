@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.RecentAdapter;
 import com.pypisan.kinani.api.RequestModule;
@@ -50,6 +52,7 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
     private Parcelable recyclerViewState;
     private AnimeManager animeManager;
     private String tag;
+    private AdView bannerAdTop;
 
     public CommonGridView() {
         // Required empty public constructor
@@ -75,6 +78,7 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
         super.onViewCreated(view, savedInstanceState);
         animeList = new ArrayList<>();
         tag = getArguments().getString("view");
+        bannerAdTop =  view.findViewById(R.id.banner);
         shimmerContainer = view.findViewById(R.id.shimmer_common_layout);
         shimmerContainer.startShimmer();
 
@@ -118,6 +122,9 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
                 recyclerView.setAdapter(commonAdapter);
                 animeManager.close();
                 lastPage = true;
+                if (Constant.isFree){
+                bannerAdTop.loadAd(new AdRequest.Builder().build());
+                }
             }
 
         }else{insertDataToCard(String.valueOf(pageNumber), tag);}
@@ -144,7 +151,6 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
                 }
             }
         });
-
     }
 
     @Override
@@ -215,6 +221,9 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(commonAdapter);
                 recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+                if (Constant.isFree){
+                    bannerAdTop.loadAd(new AdRequest.Builder().build());
+                }
             }
 
             @Override

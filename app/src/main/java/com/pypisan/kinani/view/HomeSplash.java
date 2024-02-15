@@ -95,6 +95,7 @@ public class HomeSplash extends AppCompatActivity {
                             Constant.loggedInStatus = true;
                             Constant.logo =resource.getIcon();
                             Constant.userName = resource.getUserData();
+                            Constant.isFree = resource.getAds();
                             try {
                                 PackageInfo pInfo = getApplicationContext().getPackageManager().
                                         getPackageInfo(getApplicationContext().getPackageName(), 0);

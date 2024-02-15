@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -81,6 +82,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                         triviaAnimeStatus,triviaAnimeContentDetail,triviaQuestion;
     private ImageView triviaAnimePic;
     private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
+    private LinearLayoutCompat triviaButtonLayout;
     private Boolean moreRecommendedVisible = false;
     private Boolean moreTrendingVisible = false;
     private Boolean moreWatchListVisible = false;
@@ -135,6 +137,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         triviaAnimeStatus = view.findViewById(R.id.triviaAnimeStatus);
         triviaAnimeContentDetail = view.findViewById(R.id.triviaAnimeContentDetail);
         triviaAnimePic = view.findViewById(R.id.triviaAnimePhoto);
+        triviaButtonLayout = view.findViewById(R.id.triviaButtonLayout);
 
 //      For More Arrow
         ImageView watchListMore = view.findViewById(R.id.watchlist_more);
@@ -178,22 +181,17 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         });
 
 //      Ads
-        AdView bannerAdTop =  view.findViewById(R.id.banner);
         AdView bannerAdBottom = view.findViewById(R.id.banner2);
         AdView googleAdView = view.findViewById(R.id.gadView);
-        googleAdView.loadAd(new AdRequest.Builder().build());
-        bannerAdBottom.loadAd(new AdRequest.Builder().build());
-        bannerAdTop.loadAd(new AdRequest.Builder().build());
 
 //        Native Ad
         MobileAds.initialize(getContext());
-        AdLoader adLoader = new AdLoader.Builder(getContext(), "ca-app-pub-3251882712461623/7937761777")
+        AdLoader cardAdLoader = new AdLoader.Builder(getContext(), "ca-app-pub-3251882712461623/7937761777")
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(NativeAd nativeAd) {
-                        ColorDrawable background = ((ColorDrawable)frontCard.getBackground());
                         NativeTemplateStyle styles = new
-                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
+                                NativeTemplateStyle.Builder().build();
                         TemplateView template = view.findViewById(R.id.my_template_ad);
                         template.setStyles(styles);
                         template.setNativeAd(nativeAd);
@@ -201,7 +199,29 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 })
                 .build();
 
-        adLoader.loadAd(new AdRequest.Builder().build());
+        AdLoader fullAdLoader = new AdLoader.Builder(getContext(), "ca-app-pub-3251882712461623/4084262778")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd nativeAd) {
+                        ColorDrawable background = ((ColorDrawable)frontCard.getBackground());
+                        NativeTemplateStyle styles = new
+                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
+                        TemplateView template = view.findViewById(R.id.full_ad);
+                        template.setStyles(styles);
+                        template.setNativeAd(nativeAd);
+//                        if (isDestroyed()) {
+//                            nativeAd.destroy();
+//                            return;
+//                        }
+                    }
+                })
+                .build();
+        if(Constant.isFree) {
+            cardAdLoader.loadAd(new AdRequest.Builder().build());
+            fullAdLoader.loadAds(new AdRequest.Builder().build(), 3);
+            googleAdView.loadAd(new AdRequest.Builder().build());
+            bannerAdBottom.loadAd(new AdRequest.Builder().build());
+        }
 
 //      Starting Shimmer Effect
         containerRecent.startShimmer();
@@ -693,6 +713,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                             .load(triviaAnimeImage)
                             .into(triviaAnimePic);
                     triviaQuestion.setText(triviaData.getQuestion());
+                    triviaButtonLayout.setVisibility(View.VISIBLE);
                     triviaAnimeName.setText(triviaAnimeTitle);
                     triviaAnimeContentDetail.setText(triviaAnimeDetail);
                     triviaAnimeStatus.setText(String.format("Status: "+triviaData.getStatus()));

@@ -217,6 +217,8 @@
         android:visibility="gone"
         />
     </RelativeLayout>
+
+
     <RelativeLayout
             android:id="@+id/ads"
             android:layout_width="match_parent"
@@ -225,17 +227,25 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="5dp">
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/banner"
-            android:layout_width="wrap_content"
+<!--        <com.google.android.gms.ads.AdView-->
+<!--            xmlns:ads="http://schemas.android.com/apk/res-auto"-->
+<!--            android:id="@+id/banner"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            ads:adSize="BANNER"-->
+<!--            ads:adUnitId="ca-app-pub-3251882712461623/8452767094">-->
+<!--    </com.google.android.gms.ads.AdView>-->
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/full_ad"
+            app:gnt_template_type="@layout/gnt_small_template_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3251882712461623/8452767094">
-        </com.google.android.gms.ads.AdView>
+            />
     </RelativeLayout>
+
+
     <RelativeLayout
             android:id="@+id/continueWatching"
             android:layout_width="match_parent"
@@ -330,10 +340,12 @@
                         android:textColor="@color/primaryTextColor"/>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/triviaButtonLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="25dp"
+                        android:visibility="gone"
                         >
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/know_button"
@@ -346,7 +358,7 @@
                             android:focusable="true"
                             android:clickable="true"
                             android:textAllCaps="false"
-                            android:padding="5dp"
+                            android:padding="10dp"
                             />
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/unknown_button"
@@ -369,7 +381,7 @@
                         app:gnt_template_type="@layout/gnt_small_template_view"
                         android:layout_marginTop="30dp"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="130dp"
                         />
@@ -419,7 +431,7 @@
                             android:textStyle="bold"
                             android:singleLine="false"
                             android:ellipsize="end"
-                            android:maxLines="4"
+                            android:maxLines="2"
                             android:textColor="@color/primaryTextColor"
                             android:paddingBottom="5dp"
                             android:id="@+id/triviaAnimeName"
@@ -430,7 +442,7 @@
                             android:paddingStart="5dp"
                             android:paddingEnd="5dp"
                             android:paddingBottom="5dp"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textColor="@color/primaryTextColor"
                             android:id="@+id/triviaAnimeEpisode"
                             />
@@ -440,7 +452,7 @@
                             android:paddingStart="5dp"
                             android:paddingEnd="5dp"
                             android:paddingBottom="5dp"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textColor="@color/primaryTextColor"
                             android:id="@+id/triviaAnimeReleased"
                             />
@@ -450,9 +462,19 @@
                             android:paddingStart="5dp"
                             android:paddingEnd="5dp"
                             android:paddingBottom="5dp"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textColor="@color/primaryTextColor"
                             android:id="@+id/triviaAnimeStatus"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:paddingBottom="5dp"
+                            android:textSize="15sp"
+                            android:textColor="@color/primaryTextColor"
+                            android:id="@+id/triviaAnimeGenre"
                             />
                     </LinearLayout>
                 </LinearLayout>

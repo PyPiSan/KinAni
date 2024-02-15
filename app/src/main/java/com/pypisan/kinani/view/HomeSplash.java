@@ -110,12 +110,50 @@ public class HomeSplash extends AppCompatActivity {
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),0);
                         }
                         animeManager.close();
-                        loader.setVisibility(View.GONE);
-                        Intent intent = new Intent(HomeSplash.this, MainActivity.class);
-                        startActivity(intent);
-                        getPushMessage();
-                        finish();
-                        getAppAbout();
+
+//                      Message Call
+                            Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                                    .addConverterFactory(GsonConverterFactory.create()).build();
+                            RequestModule getAdminMessage = retrofit.create(RequestModule.class);
+                            Call<UserModel> callMessage = getAdminMessage.getMessage(Constant.key);
+                            callMessage.enqueue(new Callback<UserModel>() {
+                                @Override
+                                public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                                    boolean flag = false;
+                                    UserModel resource = response.body();
+                                    if (response.code() == 200) {
+                                        flag = resource.getUserStatus();
+                                    }
+                                    if (flag) {
+                                        Constant.message = resource.getMessage();
+                                        animeManager.open();
+                                        Cursor cursor = animeManager.findOneUser(Constant.uid);
+                                        if (cursor != null && cursor.getCount() != 0){
+                                            while (cursor.moveToNext()) {
+                                                if (cursor.getString(6) != null){
+                                                    if (!Constant.message.replaceAll("[\n\r\t,.'@/ ]","").equals
+                                                            (cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","")))
+                                                    {
+                                                        Constant.isMessage = true;
+                                                    }
+                                                }else{
+                                                    Constant.isMessage = true;
+                                                }
+                                            }
+                                        }
+                                        animeManager.close();
+                                        loader.setVisibility(View.GONE);
+                                        Intent intent = new Intent(HomeSplash.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                        getAppAbout();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<UserModel> call, Throwable t) {
+                                }
+                            });
+//                      Message Call end
                     } else {
                         loader.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Failed, Try Again", Toast.LENGTH_LONG).show();
@@ -152,12 +190,16 @@ public class HomeSplash extends AppCompatActivity {
                     Cursor cursor = animeManager.findOneUser(Constant.uid);
                     if (cursor != null && cursor.getCount() != 0){
                     while (cursor.moveToNext()) {
-                            if (!cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","").equals
-                                    (resource.getMessage().replaceAll("[\n\r\t,.'@/ ]","")))
+                        if (cursor.getString(6) != null){
+                            if (!Constant.message.replaceAll("[\n\r\t,.'@/ ]","").equals
+                                    (cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","")))
                             {
                                 Constant.isMessage = true;
                                     }
+                            }else{
+                                Constant.isMessage = true;
                             }
+                        }
                     }
                     animeManager.close();
                 }

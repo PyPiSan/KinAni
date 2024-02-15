@@ -720,7 +720,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     triviaAnimeContentDetail.setText(triviaAnimeDetail);
                     triviaAnimeStatus.setText(String.format("Status : "+triviaData.getStatus()));
                     triviaAnimeEpisode.setText(String.format("Episodes : "+ triviaData.getEpisode_num()));
-                    triviaAnimeReleased.setText(String.format("Released : "+triviaData.getReleased()));
+                    triviaAnimeReleased.setText(String.format("Release : "+triviaData.getReleased()));
                     String[] genres = triviaData.getGenres();
                     String formattedString = Arrays.toString(genres)
                             .replace("[", "")  //remove the right bracket

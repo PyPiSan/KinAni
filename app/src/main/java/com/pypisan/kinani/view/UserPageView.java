@@ -106,17 +106,11 @@ public class UserPageView extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!aboutClick){
-                AnimeManager animeManager = new AnimeManager(getContext());
                 about.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
                 about.setCompoundDrawablesWithIntrinsicBounds(R.drawable.info_24, 0, R.drawable.keyboard_arrow_down_24, 0);
                 aboutText.setText(Constant.about);
                 aboutCard.setVisibility(View.VISIBLE);
                 aboutClick = true;
-                    if (Constant.isMessage){
-                        animeManager.open();
-                        animeManager.updateMessage(Constant.uid,Constant.message);
-                        animeManager.close();
-                    }
                 }else{
                     about.setCompoundDrawablesWithIntrinsicBounds(R.drawable.info_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
                     about.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
@@ -135,7 +129,13 @@ public class UserPageView extends Fragment {
                     notificationText.setText(Constant.message);
                     notificationCard.setVisibility(View.VISIBLE);
                     notificationClick = true;
-                    Constant.isMessage = false;
+                    if (Constant.isMessage){
+                        AnimeManager animeManager = new AnimeManager(getContext());
+                        animeManager.open();
+                        animeManager.updateMessage(Constant.uid,Constant.message);
+                        animeManager.close();
+                        Constant.isMessage = false;
+                    }
                 }else{
                     notification.setCompoundDrawablesWithIntrinsicBounds(R.drawable.notifications_outline_24, 0, R.drawable.keyboard_arrow_right_24, 0);
                     notification.setBackground(getResources().getDrawable(R.drawable.round_layout_user));

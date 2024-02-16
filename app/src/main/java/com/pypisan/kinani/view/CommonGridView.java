@@ -44,8 +44,8 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
     private RecyclerView recyclerView;
 
     private int pageNumber;
-    private boolean loading = false;
-    private boolean lastPage = false;
+    private boolean loading;
+    private boolean lastPage;
     private int firstVisibleItem, totalItemCount;
 
     private RecentAdapter commonAdapter;
@@ -81,6 +81,8 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
         bannerAdTop =  view.findViewById(R.id.banner);
         shimmerContainer = view.findViewById(R.id.shimmer_common_layout);
         shimmerContainer.startShimmer();
+        lastPage=false;
+        loading = false;
 
         recyclerView = view.findViewById(R.id.common_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);

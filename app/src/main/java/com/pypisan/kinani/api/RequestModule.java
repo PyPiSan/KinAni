@@ -59,9 +59,6 @@ public interface RequestModule {
     @POST("signup")
     Call<SignUpModel> signUp(@Header("x-api-key") String apikey, @Body SignUpRequest body);
 
-    @GET("message")
-    Call<UserModel> getMessage(@Header("x-api-key") String apikey);
-
     @GET("about")
     Call<UserModel> getAppAbout(@Header("x-api-key") String apikey);
 

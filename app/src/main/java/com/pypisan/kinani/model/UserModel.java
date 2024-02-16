@@ -24,6 +24,13 @@ public class UserModel {
     @SerializedName("user_name")
     private String userData;
 
+    @SerializedName("notification")
+    private String notification;
+
+    public String getNotification() {
+        return notification;
+    }
+
     public String getUserData() {
         return userData;
     }

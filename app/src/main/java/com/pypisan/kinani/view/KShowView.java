@@ -47,8 +47,8 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     private ShimmerFrameLayout containerDrama;
     private int pageNumber;
     private String viewType = "kShows";
-    private boolean lastPage, loading = false;
-    private boolean showViewVisible= false;
+    private boolean lastPage, loading;
+    private boolean showViewVisible;
     private boolean clickedViewVisible= false;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
@@ -74,7 +74,10 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+//        viewType = "kShows";
+        lastPage=false;
+        loading = false;
+        showViewVisible= false;
         dramaList = new ArrayList<>();
         containerDrama = view.findViewById(R.id.shimmer_drama_layout);
         containerDrama.startShimmer();
@@ -87,77 +90,95 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
         ImageView clearView = view.findViewById(R.id.clear_selection);
         pageNumber = 1;
         insertDataToCard(String.valueOf(pageNumber), viewType);
+        if (clickedViewVisible){
+            viewSelected.setVisibility(View.VISIBLE);
+            if (viewType.equals("trending")){
+                selectedDramaButton.setText(R.string.trending);
+            } else if (viewType.equals("movies")) {
+                selectedDramaButton.setText(R.string.movies);
+            } else if (viewType.equals("top")) {
+                selectedDramaButton.setText(R.string.top_shows);
+            }
+        }
 //        viewSelector.setVisibility(View.VISIBLE);
         trendingDramaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewType = "trending";
-                clickedViewVisible = true;
-                containerDrama.setVisibility(View.VISIBLE);
-                containerDrama.startShimmer();
-                dramaList.clear();
-                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
-                recyclerView.setAdapter(null);
-                pageNumber = 1;
-                insertDataToCard(String.valueOf(pageNumber), viewType);
-                viewSelector.setVisibility(View.GONE);
-                selectedDramaButton.setText(R.string.trending);
-                viewSelected.setVisibility(View.VISIBLE);
+                if (!loading) {
+                    viewType = "trending";
+                    clickedViewVisible = true;
+                    containerDrama.setVisibility(View.VISIBLE);
+                    containerDrama.startShimmer();
+                    dramaList.clear();
+                    adapterDrama.notifyItemRangeRemoved(0, (pageNumber) * 30);
+                    recyclerView.setAdapter(null);
+                    pageNumber = 1;
+                    insertDataToCard(String.valueOf(pageNumber), viewType);
+                    viewSelector.setVisibility(View.GONE);
+                    selectedDramaButton.setText(R.string.trending);
+                    viewSelected.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         moviesDramaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewType = "movies";
-                clickedViewVisible = true;
-                containerDrama.setVisibility(View.VISIBLE);
-                containerDrama.startShimmer();
-                dramaList.clear();
-                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
-                recyclerView.setAdapter(null);
-                pageNumber = 1;
-                insertDataToCard(String.valueOf(pageNumber), viewType);
-                viewSelector.setVisibility(View.GONE);
-                selectedDramaButton.setText(R.string.movies);
-                viewSelected.setVisibility(View.VISIBLE);
+                if (!loading) {
+                    viewType = "movies";
+                    clickedViewVisible = true;
+                    containerDrama.setVisibility(View.VISIBLE);
+                    containerDrama.startShimmer();
+                    dramaList.clear();
+                    adapterDrama.notifyItemRangeRemoved(0, (pageNumber) * 30);
+                    recyclerView.setAdapter(null);
+                    pageNumber = 1;
+                    insertDataToCard(String.valueOf(pageNumber), viewType);
+                    viewSelector.setVisibility(View.GONE);
+                    selectedDramaButton.setText(R.string.movies);
+                    viewSelected.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         topDramaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewType = "top";
-                clickedViewVisible = true;
-                containerDrama.setVisibility(View.VISIBLE);
-                containerDrama.startShimmer();
-                dramaList.clear();
-                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
-                recyclerView.setAdapter(null);
-                pageNumber = 1;
-                insertDataToCard(String.valueOf(pageNumber), viewType);
-                viewSelector.setVisibility(View.GONE);
-                selectedDramaButton.setText(R.string.top_shows);
-                viewSelected.setVisibility(View.VISIBLE);
+                if (!loading) {
+                    viewType = "top";
+                    clickedViewVisible = true;
+                    containerDrama.setVisibility(View.VISIBLE);
+                    containerDrama.startShimmer();
+                    dramaList.clear();
+                    adapterDrama.notifyItemRangeRemoved(0, (pageNumber) * 30);
+                    recyclerView.setAdapter(null);
+                    pageNumber = 1;
+                    insertDataToCard(String.valueOf(pageNumber), viewType);
+                    viewSelector.setVisibility(View.GONE);
+                    selectedDramaButton.setText(R.string.top_shows);
+                    viewSelected.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         clearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewType = "kShows";
-                clickedViewVisible = false;
-                containerDrama.setVisibility(View.VISIBLE);
-                containerDrama.startShimmer();
-                dramaList.clear();
-                adapterDrama.notifyItemRangeRemoved(0,(pageNumber)*30);
-                recyclerView.setAdapter(null);
-                lastPage = false;
-                loading = false;
-                pageNumber = 1;
-                insertDataToCard(String.valueOf(pageNumber), viewType);
-                viewSelected.setVisibility(View.GONE);
-                viewSelector.setVisibility(View.VISIBLE);
+                if (!loading) {
+                    viewType = "kShows";
+                    clickedViewVisible = false;
+                    containerDrama.setVisibility(View.VISIBLE);
+                    containerDrama.startShimmer();
+                    dramaList.clear();
+                    adapterDrama.notifyItemRangeRemoved(0, (pageNumber) * 30);
+                    recyclerView.setAdapter(null);
+                    lastPage = false;
+                    loading = false;
+                    pageNumber = 1;
+                    insertDataToCard(String.valueOf(pageNumber), viewType);
+                    viewSelected.setVisibility(View.GONE);
+                    viewSelector.setVisibility(View.VISIBLE);
+                }
             }
         });
 

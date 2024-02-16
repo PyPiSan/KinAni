@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,8 +46,8 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
     private int pageNumber=1;
     private Parcelable recyclerViewState;
-    private boolean loading,lastPage = false;
-//    private boolean lastPage = false;
+    private boolean loading;
+    private boolean lastPage;
     private int firstVisibleItem, totalItemCount;
 
 
@@ -76,6 +77,8 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
 
 // Data initialization
         pageNumber = 1;
+        lastPage=false;
+        loading = false;
         insertDataToCard(String.valueOf(pageNumber));
 
 //      initialization recycler

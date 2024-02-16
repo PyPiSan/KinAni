@@ -43,8 +43,8 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
     private RecentAdapter adapterMovies;
     private ShimmerFrameLayout containerMovies;
     private int pageNumber;
-    private boolean loading = false;
-    private boolean lastPage = false;
+    private boolean loading;
+    private boolean lastPage;
     private int firstVisibleItem, totalItemCount;
     private Parcelable recyclerViewState;
 
@@ -70,6 +70,8 @@ public class MoviesView extends Fragment implements RecentAdapter.SelectListener
         containerMovies = view.findViewById(R.id.shimmer_movies_layout);
         containerMovies.startShimmer();
         pageNumber = 1;
+        lastPage=false;
+        loading = false;
         insertDataToCard(String.valueOf(pageNumber));
 
         //      initialization recycler

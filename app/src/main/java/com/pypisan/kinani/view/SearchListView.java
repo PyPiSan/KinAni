@@ -67,7 +67,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     private ImageView ivClearText;
     private ImageButton voice_search_button;
 
-    private boolean loaderState = false;
+    private boolean loaderState;
     private ProgressBar progressBar;
     private static final int REQ_CODE_SPEECH_INPUT = 0;
 
@@ -94,7 +94,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        loaderState = false;
         bottomAppBar = getActivity().findViewById(R.id.bottomAppBar);
         bottomAppBar.setVisibility(View.GONE);
         voice_search_button = view.findViewById(R.id.search_bar_voice_icon);

@@ -205,9 +205,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(NativeAd nativeAd) {
-                        ColorDrawable background = ((ColorDrawable)frontCard.getBackground());
+//                        ColorDrawable background = ((ColorDrawable)frontCard.getBackground());
                         NativeTemplateStyle styles = new
-                                NativeTemplateStyle.Builder().withMainBackgroundColor(background).build();
+                                NativeTemplateStyle.Builder().build();
                         TemplateView template = view.findViewById(R.id.full_ad);
                         template.setStyles(styles);
                         template.setNativeAd(nativeAd);

@@ -97,6 +97,7 @@ public class HomeSplash extends AppCompatActivity {
                             Constant.loggedInStatus = true;
                             Constant.logo =resource.getIcon();
                             Constant.userName = resource.getUserData();
+                            Constant.message = resource.getNotification();
                             if (resource.getAds() !=null){Constant.isFree = resource.getAds();}
                             try {
                                 PackageInfo pInfo = getApplicationContext().getPackageManager().
@@ -105,54 +106,31 @@ public class HomeSplash extends AppCompatActivity {
                             } catch (PackageManager.NameNotFoundException ignored) {
                             }
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),resource.getIcon());
+                            Cursor newCursor = animeManager.findOneUser(deviceUser);
+                            if (newCursor != null && newCursor.getCount() != 0){
+                                while (newCursor.moveToNext()) {
+                                    if (newCursor.getString(6) != null){
+                                        if (!Constant.message.replaceAll("[\n\r\t,.'@/ ]","").equals
+                                                (newCursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","")))
+                                        {
+                                            Constant.isMessage = true;
+                                        }
+                                    }else{
+                                        Constant.isMessage = true;
+                                    }
+                                }
+                            }
+
                         }else{
                             Constant.loggedInStatus = false;
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),0);
                         }
                         animeManager.close();
-
-//                      Message Call
-                            Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
-                                    .addConverterFactory(GsonConverterFactory.create()).build();
-                            RequestModule getAdminMessage = retrofit.create(RequestModule.class);
-                            Call<UserModel> callMessage = getAdminMessage.getMessage(Constant.key);
-                            callMessage.enqueue(new Callback<UserModel>() {
-                                @Override
-                                public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                                    boolean flag = false;
-                                    UserModel resource = response.body();
-                                    if (response.code() == 200) {
-                                        flag = resource.getUserStatus();
-                                    }
-                                    if (flag) {
-                                        Constant.message = resource.getMessage();
-                                        animeManager.open();
-                                        Cursor cursor = animeManager.findOneUser(Constant.uid);
-                                        if (cursor != null && cursor.getCount() != 0){
-                                            while (cursor.moveToNext()) {
-                                                if (cursor.getString(6) != null){
-                                                    if (!Constant.message.replaceAll("[\n\r\t,.'@/ ]","").equals
-                                                            (cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","")))
-                                                    {
-                                                        Constant.isMessage = true;
-                                                    }
-                                                }else{
-                                                    Constant.isMessage = true;
-                                                }
-                                            }
-                                        }
-                                        animeManager.close();
-                                        loader.setVisibility(View.GONE);
-                                        Intent intent = new Intent(HomeSplash.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                        getAppAbout();
-                                    }
-                                }
-                                @Override
-                                public void onFailure(Call<UserModel> call, Throwable t) {
-                                }
-                            });
+                        loader.setVisibility(View.GONE);
+                        Intent intent = new Intent(HomeSplash.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        getAppAbout();
 //                      Message Call end
                     } else {
                         loader.setVisibility(View.GONE);
@@ -169,45 +147,6 @@ public class HomeSplash extends AppCompatActivity {
 //        }
 
 
-    }
-
-    private void getPushMessage(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        RequestModule getAdminMessage = retrofit.create(RequestModule.class);
-        Call<UserModel> call = getAdminMessage.getMessage(Constant.key);
-        call.enqueue(new Callback<UserModel>() {
-            @Override
-            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
-                boolean flag = false;
-                UserModel resource = response.body();
-                if (response.code() == 200) {
-                    flag = resource.getUserStatus();
-                }
-                if (flag) {
-                    Constant.message = resource.getMessage();
-                    animeManager.open();
-                    Cursor cursor = animeManager.findOneUser(Constant.uid);
-                    if (cursor != null && cursor.getCount() != 0){
-                    while (cursor.moveToNext()) {
-                        if (cursor.getString(6) != null){
-                            if (!Constant.message.replaceAll("[\n\r\t,.'@/ ]","").equals
-                                    (cursor.getString(6).replaceAll("[\n\r\t,.'@/ ]","")))
-                            {
-                                Constant.isMessage = true;
-                                    }
-                            }else{
-                                Constant.isMessage = true;
-                            }
-                        }
-                    }
-                    animeManager.close();
-                }
-            }
-            @Override
-            public void onFailure(Call<UserModel> call, Throwable t) {
-            }
-        });
     }
 
     private void getAppAbout(){

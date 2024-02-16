@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class HomeSplash extends AppCompatActivity {
 
         @SuppressLint("HardwareIds") String deviceUser = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+        String myVersion = "Android "+Build.VERSION.RELEASE;
         Constant.uid = deviceUser;
         String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
 
@@ -81,7 +83,7 @@ public class HomeSplash extends AppCompatActivity {
             Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
-            Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin));
+            Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin,myVersion));
             call.enqueue(new Callback<UserModel>() {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {

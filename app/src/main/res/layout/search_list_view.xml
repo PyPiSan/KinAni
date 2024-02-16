@@ -25,7 +25,8 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="@string/back" />
+            android:contentDescription="@string/back"
+            android:foreground="@drawable/click_effect" />
 
         <EditText
             android:id="@+id/search_bar_edit_text"

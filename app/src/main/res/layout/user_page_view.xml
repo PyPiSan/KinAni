@@ -32,7 +32,7 @@
             android:layout_marginStart="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:foreground="@drawable/click_effect"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
             android:contentDescription="@string/back" />
 
@@ -51,7 +51,7 @@
             android:textAlignment="center"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/primaryTextColor"/>
+            android:textColor="@color/primaryTextColor" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,6 +79,7 @@
             app:drawableLeftCompat="@drawable/info_outline_24"
             app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
 
         <androidx.cardview.widget.CardView
@@ -122,6 +123,7 @@
             android:focusable="true"
             app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/notifications_card"
@@ -161,6 +163,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
         <TextView
             android:id="@+id/privacy"
@@ -178,6 +181,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
         <TextView
             android:id="@+id/issue"
@@ -195,6 +199,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
         <TextView
             android:id="@+id/logout"
@@ -211,7 +216,8 @@
             android:drawablePadding="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/round_layout_user"/>
+            android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"/>
         <TextView
             android:id="@+id/delete"
             android:layout_width="match_parent"
@@ -228,6 +234,7 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
             />
 <!--        <View-->
 <!--            android:layout_width="match_parent"-->

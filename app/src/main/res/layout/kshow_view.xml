@@ -57,7 +57,7 @@
             android:focusable="true"
             android:textAlignment="center"
             android:layout_marginStart="5dp"
-            android:background="?android:selectableItemBackground"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:textStyle="bold"/>
         <View
             android:layout_width="2dp"
@@ -76,7 +76,7 @@
             android:clickable="true"
             android:focusable="true"
             android:textAlignment="center"
-            android:background="?android:selectableItemBackground"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:textStyle="bold"/>
         <View
             android:layout_width="2dp"
@@ -97,7 +97,7 @@
             android:textStyle="bold"
             android:clickable="true"
             android:focusable="true"
-            android:background="?android:selectableItemBackground"/>
+            android:background="?android:selectableItemBackgroundBorderless"/>
 
     </LinearLayout>
     <LinearLayout
@@ -138,7 +138,8 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_close"
-            android:contentDescription="@string/clear" />
+            android:contentDescription="@string/clear"
+            android:foreground="@drawable/click_effect"/>
 
     </LinearLayout>
 </RelativeLayout>

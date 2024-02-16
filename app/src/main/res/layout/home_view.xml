@@ -485,7 +485,7 @@
                         android:id="@+id/watch_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
+                        android:padding="7dp"
                         android:layout_margin="10dp"
                         android:layout_gravity="center"
                         android:textColor="@color/primaryTextColor"

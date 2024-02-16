@@ -15,15 +15,16 @@
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="@string/profile"
+        android:foreground="@drawable/click_effect"
         />
 
     <TextView
         android:id="@+id/badge"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_gravity="end|top"
-        android:layout_marginEnd="-5dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/notification_badge"
         android:gravity="center"
         />

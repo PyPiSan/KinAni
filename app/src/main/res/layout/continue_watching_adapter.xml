@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
@@ -12,6 +13,13 @@
         app:cardElevation="@dimen/card_elevation"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         >
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,7 +31,8 @@
                 android:layout_height="90dp"
                 android:layout_weight="1"
                 android:scaleType="fitXY"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:alpha="0.5"/>
             <TextView
                 android:id="@+id/animeName"
                 android:layout_width="165dp"
@@ -63,6 +72,13 @@
                     />
             </LinearLayout>
         </LinearLayout>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/play_continue"
+        />
 
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

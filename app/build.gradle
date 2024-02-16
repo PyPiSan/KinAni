@@ -4,7 +4,8 @@ plugins {
 
 def versionMajor = 4
 def versionMinor = 10
-def versionPatch = 5
+def versionPatch = 6
+def buildType="stable"
 
 android {
     namespace 'com.pypisan.kinani'
@@ -17,7 +18,7 @@ android {
         versionCode versionMajor * 10000
         + versionMinor * 100
         + versionPatch
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}-${buildType}"
         multiDexEnabled true // add this to enable multi-dex
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -77,6 +78,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-appset:16.0.2' //optional dependency for better targeting
     implementation 'com.google.android.gms:play-services-tasks:18.1.0' //optional dependency for better targeting
     implementation 'androidx.multidex:multidex:2.0.1'
-//    for notification
-    implementation 'com.nex3z:notification-badge:1.0.4'
 }

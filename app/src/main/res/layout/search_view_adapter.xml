@@ -12,6 +12,9 @@
         app:cardElevation="@dimen/card_elevation"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         >
         <LinearLayout
             android:layout_width="wrap_content"

@@ -79,7 +79,8 @@
             android:contentDescription="@string/more"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:foreground="@drawable/click_effect"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -133,7 +134,8 @@
             android:contentDescription="@string/more"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:foreground="@drawable/click_effect"/>
     </RelativeLayout>
 
 
@@ -188,7 +190,8 @@
             android:contentDescription="@string/more"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:foreground="@drawable/click_effect"/>
     </RelativeLayout>
 
     <RelativeLayout

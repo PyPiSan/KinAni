@@ -84,9 +84,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ImageView triviaAnimePic;
     private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
     private LinearLayoutCompat triviaButtonLayout;
-    private Boolean moreRecommendedVisible = false;
-    private Boolean moreTrendingVisible = false;
-    private Boolean moreWatchListVisible = false;
+    private Boolean moreRecommendedVisible;
+    private Boolean moreTrendingVisible;
+    private Boolean moreWatchListVisible;
     private String triviaAnimeTitle,triviaAnimeDetail,triviaAnimeImage;
 
     public HomeView() {
@@ -112,6 +112,9 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        moreRecommendedVisible = false;
+        moreTrendingVisible = false;
+        moreWatchListVisible = false;
         animeTrendingListInc = new ArrayList<>();
         animeScheduleListInc = new ArrayList<>();
         animeRecommendListInc = new ArrayList<>();
@@ -156,22 +159,22 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         seeAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ObjectAnimator oa1 = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0f);
-                final ObjectAnimator oa2 = ObjectAnimator.ofFloat(backCard, "scaleX", 0f, 1f);
-                oa1.setInterpolator(new DecelerateInterpolator());
-                oa2.setInterpolator(new AccelerateDecelerateInterpolator());
-                oa1.addListener(new AnimatorListenerAdapter() {
+                final ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0f);
+                final ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(backCard, "scaleX", 0f, 1f);
+                objectAnimator1.setInterpolator(new DecelerateInterpolator());
+                objectAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
+                objectAnimator1.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         backCard.setVisibility(View.VISIBLE);
                         frontCard.setVisibility(View.GONE);
-                        oa2.start();
+                        objectAnimator2.start();
                     }
                 });
-                oa1.start();
-                oa1.setDuration(300);
-                oa2.setDuration(300);
+                objectAnimator1.start();
+                objectAnimator1.setDuration(300);
+                objectAnimator2.setDuration(300);
             }
         });
 

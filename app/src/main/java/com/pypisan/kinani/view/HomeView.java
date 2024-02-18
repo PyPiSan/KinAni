@@ -84,9 +84,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
     private ImageView triviaAnimePic;
     private RelativeLayout watchList, fourthRelative,continueWatch,continueWatchingRelative;
     private LinearLayoutCompat triviaButtonLayout;
-    private Boolean moreRecommendedVisible;
-    private Boolean moreTrendingVisible;
-    private Boolean moreWatchListVisible;
+    private Boolean moreRecommendedVisible, moreTrendingVisible, moreWatchListVisible;
     private String triviaAnimeTitle,triviaAnimeDetail,triviaAnimeImage;
 
     public HomeView() {
@@ -159,22 +157,22 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         seeAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0f);
-                final ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(backCard, "scaleX", 0f, 1f);
-                objectAnimator1.setInterpolator(new DecelerateInterpolator());
-                objectAnimator2.setInterpolator(new AccelerateDecelerateInterpolator());
-                objectAnimator1.addListener(new AnimatorListenerAdapter() {
+                final ObjectAnimator oa1 = ObjectAnimator.ofFloat(frontCard, "scaleX", 1f, 0f);
+                final ObjectAnimator oa2 = ObjectAnimator.ofFloat(backCard, "scaleX", 0f, 1f);
+                oa1.setInterpolator(new DecelerateInterpolator());
+                oa2.setInterpolator(new AccelerateDecelerateInterpolator());
+                oa1.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         backCard.setVisibility(View.VISIBLE);
                         frontCard.setVisibility(View.GONE);
-                        objectAnimator2.start();
+                        oa2.start();
                     }
                 });
-                objectAnimator1.start();
-                objectAnimator1.setDuration(300);
-                objectAnimator2.setDuration(300);
+                oa1.start();
+                oa1.setDuration(300);
+                oa2.setDuration(300);
             }
         });
 

@@ -72,4 +72,5 @@
     <string name="trivia_unknown">See Answer</string>
     <string name="do_you_know">Do you know?</string>
     <string name="watch_now">Watch Now</string>
+    <string name="alreadyKnow">Excellent, keep surfing !!</string>
 </resources>

@@ -340,6 +340,19 @@
                         android:layout_marginTop="25dp"
                         android:visibility="gone"
                         >
+                        <TextView
+                            android:id="@+id/alreadyKnowText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:textSize="20sp"
+                            android:singleLine="false"
+                            android:padding="5dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/primaryTextColor"
+                            android:text="@string/alreadyKnow"/>
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/know_button"
                             android:layout_width="wrap_content"

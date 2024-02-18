@@ -152,6 +152,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
         Button seeAnswer = view.findViewById(R.id.unknown_button);
         Button watchNow = view.findViewById(R.id.watch_button);
         Button iKnow = view.findViewById(R.id.know_button);
+        TextView alreadyKnow = view.findViewById(R.id.alreadyKnowText);
 
         seeAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +180,15 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             @Override
             public void onClick(View v) {
                 onItemClicked(triviaAnimeTitle,triviaAnimeDetail,triviaAnimeImage,"anime");
+            }
+        });
+
+        iKnow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alreadyKnow.setVisibility(View.VISIBLE);
+                iKnow.setVisibility(View.GONE);
+                seeAnswer.setVisibility(View.GONE);
             }
         });
 

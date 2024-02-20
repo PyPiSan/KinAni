@@ -21,16 +21,12 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
@@ -71,7 +67,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private FrameLayout loader, textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
-    private String episode_num, type,title,summary,image;
+    private String episode_num, type,title,summary,image,totalEpisode;
     private String[] videoLink = new String[4];
 
     private Long resumeTime =0L;
@@ -93,6 +89,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         title = videoIntent.getStringExtra("title");
         summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
+        totalEpisode = videoIntent.getStringExtra("total_episode");
         type = videoIntent.getStringExtra("type");
         image = videoIntent.getStringExtra("image");
         String timeValue = videoIntent.getStringExtra("time");
@@ -178,7 +175,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onNextClick(title);
+                if(!episode_num.equals(totalEpisode)){
+                    resumeTime =0L;
+                    onNextClick(title);
+                }else{
+                    Toast.makeText(getApplicationContext(), "No next episode", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -187,7 +189,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             @Override
             public void onClick(View v) {
                 if (!episode_num.equals("1")) {
+                    resumeTime =0L;
                     onPreviousClick(title);
+                }else{
+                    Toast.makeText(getApplicationContext(), "No previous episode", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -302,9 +307,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         playerView.setVisibility(View.VISIBLE);
         Toast.makeText(getApplicationContext(), "Playing, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
         Uri hlsUri = Uri.parse(link);
-        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
-                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
-            DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
+//        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
+//                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
+//            DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
 
 //        New Implementation
             DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();

@@ -55,7 +55,7 @@ public class SummaryView extends Fragment{
     private ArrayAdapter<String> episodeAdapter;
     private AnimeEpisodeListModel.datum animeDetail;
     private AnimeManager animeManager;
-    private String animeTitle, animeDetailLink, animeLink,showType;
+    private String animeTitle, animeDetailLink, animeLink, showType;
     private ShimmerFrameLayout containerImg, containerSummaryText, containerImgHead;
 //    private Animation animationImage;
     private AdView bannerAd;
@@ -298,6 +298,7 @@ public class SummaryView extends Fragment{
                                 i.putExtra("server_name", "server1");
                                 i.putExtra("type", type);
                                 i.putExtra("image", animeLink);
+                                i.putExtra("total_episode", episodeNum);
                                 startActivity(i);
                             }
                         }

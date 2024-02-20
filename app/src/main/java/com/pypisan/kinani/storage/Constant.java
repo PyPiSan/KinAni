@@ -18,8 +18,8 @@ public class Constant {
     public static String about;
     public static String message;
 
-    public static final Integer[] userIconImage = {R.drawable.user_icon3,
-            R.drawable.user_icon4,R.drawable.user_icon5,R.drawable.user_icon6,
+    public static final Integer[] userIconImage = {R.drawable.user_icon1,R.drawable.user_icon2,
+            R.drawable.user_icon3, R.drawable.user_icon4,R.drawable.user_icon5,R.drawable.user_icon6,
             R.drawable.user_icon7,R.drawable.user_icon8,R.drawable.user_icon9,R.drawable.user_icon10,
             R.drawable.user_icon11,R.drawable.user_icon12,R.drawable.user_icon13,R.drawable.user_icon14,
             R.drawable.user_icon15,R.drawable.user_icon16,R.drawable.user_icon17,R.drawable.user_icon18,

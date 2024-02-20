@@ -482,6 +482,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
 
+
+
 //    @Override
 //    public boolean onTouchEvent(MotionEvent event) {
 //        Toast.makeText(getApplicationContext(),"Touch clicked ", Toast.LENGTH_SHORT).show();

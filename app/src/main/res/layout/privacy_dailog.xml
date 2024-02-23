@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor">
+
+    <TextView
+        android:layout_width="330dp"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/privacy_policy"
+        android:textStyle="bold"
+        />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="start|center_horizontal"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/termsAndConditions"
+            />
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/agreeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/agree"
+                android:focusable="true"
+                android:clickable="true"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/disagreeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="75dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/cancel"
+                android:focusable="true"
+                android:clickable="true"
+                />
+        </LinearLayout>
+
+</LinearLayout>

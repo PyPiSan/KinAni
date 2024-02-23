@@ -27,6 +27,13 @@ public class UserModel {
     @SerializedName("notification")
     private String notification;
 
+    @SerializedName("terms")
+    private Boolean terms;
+
+    public Boolean getTerms() {
+        return terms;
+    }
+
     public String getNotification() {
         return notification;
     }

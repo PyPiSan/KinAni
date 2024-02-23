@@ -1,18 +1,20 @@
 package com.pypisan.kinani.view;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,11 +24,10 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserInit;
+import com.pypisan.kinani.api.UserUpdate;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,8 +43,6 @@ public class HomeSplash extends AppCompatActivity {
         setContentView(R.layout.activity_home_splash);
         ProgressBar loader = findViewById(R.id.loader);
         animeManager = new AnimeManager(getApplicationContext());
-//        JSONObject consentObject = new JSONObject();
-
 //        Google Ads
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -58,18 +57,6 @@ public class HomeSplash extends AppCompatActivity {
         Constant.uid = deviceUser;
         String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
 
-//        Cursor cursor = animeManager.findOneUser(deviceUser);
-//        if (cursor != null && cursor.getCount() != 0){
-//            while (cursor.moveToNext()) {
-//                Constant.key=cursor.getString(2);
-//                Constant.logo =cursor.getInt(5);
-//                if (cursor.getInt(4) > 0){
-//                    Constant.loggedInStatus = true;
-//                }else{
-//                    Constant.loggedInStatus = false;
-//                }
-//            }
-//            animeManager.close();
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
@@ -78,8 +65,7 @@ public class HomeSplash extends AppCompatActivity {
 //                    finish();
 //                }
 //            }, 1000);
-//
-//        }else {
+
             Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
@@ -129,26 +115,84 @@ public class HomeSplash extends AppCompatActivity {
                         }
                         animeManager.close();
                         loader.setVisibility(View.GONE);
-                        Intent intent = new Intent(HomeSplash.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        getAppAbout();
-//                      Message Call end
+                        boolean terms = false;
+                        boolean isAgree = false;
+                        if (resource.getTerms() != null) {
+                            terms = resource.getTerms();
+                        }
+                        if (!terms) {
+                            showTerms();
+                            }
+                        else{
+                            Intent intent = new Intent(HomeSplash.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            getAppAbout();
+                        }
                     } else {
                         loader.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Failed, Try Again", Toast.LENGTH_LONG).show();
-                    }
+                        new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {finish();}}, 1000);
+                        }
                 }
 
                 @Override
                 public void onFailure(Call<UserModel> call, Throwable t) {
                     loader.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Server Down", Toast.LENGTH_LONG).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {finish();}}, 1000);
                 }
             });
 //        }
 
 
+    }
+
+    private void showTerms(){
+        Dialog myDialog = new Dialog(HomeSplash.this);
+        myDialog.setContentView(R.layout.privacy_dailog);
+        myDialog.setCancelable(false);
+        myDialog.show();
+        Button agreeButton = myDialog.findViewById(R.id.agreeButton);
+        Button disagreeButton = myDialog.findViewById(R.id.disagreeButton);
+        agreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                termAgreed();
+                Intent intent = new Intent(HomeSplash.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                getAppAbout();
+            }
+        });
+
+        disagreeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+                finish();
+            }
+        });
+    }
+
+    private void termAgreed(){
+        UserUpdate userUpdate = new UserUpdate(Constant.uid, Constant.logo, Constant.loggedInStatus, false, true);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        RequestModule updateUserData = retrofit.create(RequestModule.class);
+        Call<UserModel> call = updateUserData.updateUser(Constant.key,userUpdate);
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+            }
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+            }
+        });
     }
 
     private void getAppAbout(){

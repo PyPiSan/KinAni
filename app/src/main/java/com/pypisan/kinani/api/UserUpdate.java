@@ -7,10 +7,13 @@ public class UserUpdate {
     final Boolean is_logged;
     final Boolean is_delete;
 
-    public UserUpdate(String uid, Integer icon, Boolean is_logged, Boolean isDelete) {
+    final Boolean terms;
+
+    public UserUpdate(String uid, Integer icon, Boolean is_logged, Boolean isDelete, Boolean terms) {
         this.uid = uid;
         this.icon = icon;
         this.is_logged = is_logged;
         this.is_delete = isDelete;
+        this.terms = terms;
     }
 }

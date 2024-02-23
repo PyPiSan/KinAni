@@ -224,14 +224,14 @@ public class UserPageView extends Fragment {
     private void updateUser(String flag){
         UserUpdate userUpdate;
         if (flag.equals("logout")){
-            userUpdate = new UserUpdate(Constant.uid, 0,false, false);
+            userUpdate = new UserUpdate(Constant.uid, 0,false, false,true);
         }else if(flag.equals("icon")){
-            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false);
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false, true);
         }else if(flag.equals("delete")){
-            userUpdate = new UserUpdate(Constant.uid, 0,true, true);
+            userUpdate = new UserUpdate(Constant.uid, 0,true, true, true);
         }
         else{
-            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false);
+            userUpdate = new UserUpdate(Constant.uid, Constant.logo,true, false, true);
         }
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                 .addConverterFactory(GsonConverterFactory.create()).build();

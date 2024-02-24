@@ -23,10 +23,15 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
@@ -37,6 +42,11 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
@@ -64,7 +74,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private MediaRouteButton mMediaRouteButton;
     private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
                         skipBack, skipForward;
-    private FrameLayout loader, textFrame;
+    private FrameLayout loader;
+    private RelativeLayout textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
     private String episode_num, type,title,summary,image,totalEpisode;
@@ -113,6 +124,26 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         settingDialog.setContentView(R.layout.video_quality_dailog);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
+
+//        for ad
+        MobileAds.initialize(getApplicationContext());
+
+        AdLoader videoAdView = new AdLoader.Builder(getApplicationContext(), "ca-app-pub-3251882712461623/8996342944")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd nativeAd) {
+                        NativeTemplateStyle styles = new
+                                NativeTemplateStyle.Builder().build();
+                        TemplateView template = findViewById(R.id.video_template_ad);
+                        template.setVisibility(View.VISIBLE);
+                        template.setStyles(styles);
+                        template.setNativeAd(nativeAd);
+                    }
+                })
+                .build();
+        if(Constant.isFree) {
+            videoAdView.loadAds(new AdRequest.Builder().build(), 3);
+        }
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

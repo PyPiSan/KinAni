@@ -42,21 +42,23 @@
             app:controller_layout_id="@layout/exo_player_video_layout" />
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/textFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="270dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
     <TextView
         android:id="@+id/animeTitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"
@@ -65,11 +67,24 @@
         android:textColor="@color/primaryTextColor"
         />
 
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/video_template_ad"
+            app:gnt_template_type="@layout/gnt_medium_template_view"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/animeTitleText"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            />
+
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="455dp"
-        android:layout_marginTop="35dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/video_template_ad"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
         android:scrollbars="none"
@@ -84,5 +99,5 @@
             android:textColor="@color/primaryTextColor"
             android:singleLine="false" />
     </ScrollView>
-    </FrameLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

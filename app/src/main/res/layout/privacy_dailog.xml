@@ -41,21 +41,28 @@
                 android:id="@+id/agreeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/agree"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
+                android:textAllCaps="false"
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/disagreeButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="75dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
+                android:textAllCaps="false"
                 />
         </LinearLayout>
 

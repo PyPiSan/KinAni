@@ -163,19 +163,74 @@
                 android:text="@string/send"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancelIssueButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="95dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/confirm_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_confirmation"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="21sp"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/yesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/yes"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cardBackground"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/noButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/no"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cardBackground"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
+
 
 </LinearLayout>

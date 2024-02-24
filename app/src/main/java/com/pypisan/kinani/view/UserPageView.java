@@ -167,8 +167,26 @@ public class UserPageView extends Fragment {
             public void onClick(View v) {
                 deleteButton.setBackground(getResources().getDrawable(R.drawable.round_fill_layout));
                 myDialog.show();
-                loader.setVisibility(View.VISIBLE);
-                updateUser("delete");
+                LinearLayout confirmation = myDialog.findViewById(R.id.confirm_layout);
+                Button yes = myDialog.findViewById(R.id.yesButton);
+                Button no = myDialog.findViewById(R.id.noButton);
+                confirmation.setVisibility(View.VISIBLE);
+                no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        confirmation.setVisibility(View.GONE);
+                        myDialog.cancel();
+                        deleteButton.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
+                    }
+                });
+                yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        confirmation.setVisibility(View.GONE);
+                        loader.setVisibility(View.VISIBLE);
+                        updateUser("delete");
+                    }
+                });
             }
         });
 

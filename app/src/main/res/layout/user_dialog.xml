@@ -116,17 +116,22 @@
             android:text="@string/login"
             android:focusable="true"
             android:clickable="true"
+            android:layout_weight="1"
+            android:backgroundTint="@color/cardBackground"
             />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_gravity="center"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
                 android:focusable="true"
                 android:clickable="true"
+                android:backgroundTint="@color/cardBackground"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>
@@ -266,17 +271,22 @@
                 android:text="@string/hopin"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancelButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/primaryTextColor"
                 android:text="@string/cancel"
                 android:focusable="true"
                 android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

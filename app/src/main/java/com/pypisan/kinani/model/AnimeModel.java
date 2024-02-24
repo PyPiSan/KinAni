@@ -2,14 +2,19 @@ package com.pypisan.kinani.model;
 
 public class AnimeModel {
 
-    private String image, animeDetailLink, title, released, showType;
+    private String image, animeDetailLink, title, released, showType, releaseStatus;
 
-    public AnimeModel(String image, String animeDetailLink, String title, String released, String showType) {
+    public String getReleaseStatus() {
+        return releaseStatus;
+    }
+
+    public AnimeModel(String image, String animeDetailLink, String title, String released, String showType, String releaseStatus) {
         this.image = image;
         this.animeDetailLink = animeDetailLink;
         this.title = title;
         this.released = released;
         this.showType = showType;
+        this.releaseStatus = releaseStatus;
     }
 
     public AnimeModel(){

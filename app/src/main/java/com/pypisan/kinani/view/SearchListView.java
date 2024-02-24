@@ -23,6 +23,7 @@ import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,23 +111,25 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         recyclerView.setHasFixedSize(false);
 
 //      adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
-        editText.setOnClickListener(new View.OnClickListener() {
+        editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View v) {
-//              Search view generate..
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
                 String searchString = String.valueOf(editText.getText());
-                if (!searchString.equals("")){
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                if (!searchString.equals("")) {
                     if (v != null) {
                         try {
-                        InputMethodManager imm = (InputMethodManager)getActivity()
-                                .getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        }catch (Exception ignored) {
+                            InputMethodManager imm = (InputMethodManager) getActivity()
+                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                        } catch (Exception ignored) {
                             ;
                         }
                     }
                     if (!loaderState) {
-                        if (animeSearchList != null && animeSearchList.size()>0) {
+                        if (animeSearchList != null && animeSearchList.size() > 0) {
                             adapterSearch.notifyItemRangeRemoved(0, animeSearchList.size());
                             recyclerView.setAdapter(null);
                             bottomAppBar.setVisibility(View.GONE);
@@ -136,15 +139,18 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                         loaderState = true;
                     }
                     insertDataToCard(searchString);
-                }else{
+                } else {
                     Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
                 }
             }
-        });
+        );
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
             }
         });
 
@@ -224,7 +230,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased(), "anime");
+                                animes.getTitle(), animes.getReleased(), "anime", animes.getReleaseStatus());
                         animeSearchList.add(model);
 
                     }
@@ -237,11 +243,11 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     bottomAppBar.setVisibility(View.VISIBLE);
                     }else{
-                        Toast.makeText(getContext(), "Try with different name", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Try with different name", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
                 }
             }
 

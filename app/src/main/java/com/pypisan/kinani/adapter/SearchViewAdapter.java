@@ -46,6 +46,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
         ImageView animeView = holder.animeView;
         TextView animeName = holder.animeName;
         TextView releaseDate = holder.releasedYear;
+        TextView releasedStatus = holder.releasedStatus;
         String animeTitle = dataSearch.get(position).getTitle();
         String animeImage = dataSearch.get(position).getImage();
 
@@ -55,6 +56,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
 
         animeName.setText(animeTitle);
         releaseDate.setText(dataSearch.get(position).getReleased());
+        releasedStatus.setText(dataSearch.get(position).getReleaseStatus());
 
         holder.cardView.setOnClickListener(view -> {
             listener.onItemClicked(animeTitle, "", animeImage);
@@ -72,7 +74,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {
         ImageView animeView;
-        TextView animeName, releasedYear;
+        TextView animeName, releasedYear, releasedStatus;
         CardView cardView;
 
         public SearchViewHolder(@NonNull View itemView) {
@@ -81,6 +83,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
             this.animeName = itemView.findViewById(R.id.animeNameSearch);
             this.cardView = itemView.findViewById(R.id.searchCard);
             this.releasedYear = itemView.findViewById(R.id.releaseYear);
+            this.releasedStatus = itemView.findViewById(R.id.releaseStatus);
         }
     }
 }

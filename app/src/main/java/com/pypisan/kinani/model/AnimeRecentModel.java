@@ -35,6 +35,13 @@ public class AnimeRecentModel {
         @SerializedName("released")
         private String released;
 
+        @SerializedName("status")
+        private String status;
+
+        public String getReleaseStatus() {
+            return status;
+        }
+
         public String getImageLink() {
             return imageLink;
         }

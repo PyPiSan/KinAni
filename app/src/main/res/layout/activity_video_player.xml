@@ -31,7 +31,8 @@
             android:src="@drawable/replay48"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:contentDescription="@string/reload" />
+            android:contentDescription="@string/reload"
+            android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/video_view"

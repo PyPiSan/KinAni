@@ -1,14 +1,11 @@
 package com.pypisan.kinani.view;
 
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -149,7 +146,7 @@ public class RecentView extends Fragment implements RecentAdapter.SelectListener
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased(), "anime");
+                                animes.getTitle(), animes.getReleased(), "anime","");
                         animeList.add(model);
 
                     }

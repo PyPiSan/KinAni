@@ -278,7 +278,7 @@ public class KShowView extends Fragment implements RecentAdapter.SelectListener 
                         model = new AnimeModel(drama.getImageLink(),
                                 drama.getAnimeDetailLink(),
                                 drama.getTitle(),
-                                drama.getReleased(),"drama");
+                                drama.getReleased(),"drama","");
                         dramaList.add(model);
                     }
                     adapterDrama.notifyItemInserted(resource.getResultSize());

@@ -439,7 +439,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             int i = 1;
             while (cursor.moveToNext()) {
                 model = new AnimeModel(cursor.getString(3), cursor.getString(1),
-                        cursor.getString(2), null, cursor.getString(4));
+                        cursor.getString(2), null, cursor.getString(4),"");
                 animeRecentNum.add(model);
                 i++;
                 if (i == 15) {
@@ -462,7 +462,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
             while (cursor.moveToNext()) {
                 model = new AnimeModel(cursor.getString(3),
                         cursor.getString(1), cursor.getString(2), "",
-                        cursor.getString(4));
+                        cursor.getString(4),"");
                 animeWatchList.add(model);
             }
             animeManager.close();
@@ -536,7 +536,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(),
-                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime");
+                                animes.getAnimeDetailLink(), animes.getTitle(), animes.getReleased(),"anime","");
                         animeTrendingList.add(model);
                     }
                     onTrendingDataLoad(0);
@@ -595,7 +595,7 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
                     for (AnimeRecentModel.datum animes : data) {
                         modelRecommend = new AnimeModel(animes.getImageLink(),
                                 animes.getAnimeDetailLink(), animes.getTitle(),
-                                animes.getReleased(),"anime");
+                                animes.getReleased(),"anime","");
                         animeRecommendList.add(modelRecommend);
                     }
                     onRecommendDataLoad(0);

@@ -1,7 +1,5 @@
 package com.pypisan.kinani.view;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,7 +100,7 @@ public class TrendingView extends Fragment implements RecentAdapter.SelectListen
                 AnimeModel model;
                 for (AnimeRecentModel.datum animes : data) {
                     model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                            animes.getTitle(), animes.getReleased(),"anime");
+                            animes.getTitle(), animes.getReleased(),"anime","");
                     animeList.add(model);
                     adapter.notifyDataSetChanged();
 

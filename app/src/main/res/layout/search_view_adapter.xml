@@ -19,7 +19,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/cardBackground">
 
             <ImageView
                 android:id="@+id/animeImage"
@@ -32,7 +33,6 @@
             <LinearLayout
                 android:layout_width="236dp"
                 android:layout_height="match_parent"
-                android:background="@color/cardBackground"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -52,7 +52,6 @@
                     android:paddingEnd="5dp"
                     android:paddingBottom="5dp"
                     android:textSize="15sp"
-                    android:text="Completed"
                     android:textColor="@color/primaryTextColor"
                     android:id="@+id/releaseStatus"
                     />

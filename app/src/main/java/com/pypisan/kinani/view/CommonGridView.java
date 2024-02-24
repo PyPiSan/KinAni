@@ -113,7 +113,7 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
                 while (cursor.moveToNext()) {
                     model = new AnimeModel(cursor.getString(3),
                             cursor.getString(1), cursor.getString(2), "",
-                            cursor.getString(4));
+                            cursor.getString(4),"");
                     animeList.add(model);
                 }
                 loading=false;
@@ -204,7 +204,7 @@ public class CommonGridView extends Fragment implements RecentAdapter.SelectList
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased(),"anime");
+                                animes.getTitle(), animes.getReleased(),"anime","");
                         animeList.add(model);
 
                     }

@@ -27,12 +27,12 @@
             android:id="@+id/back_button"
             android:layout_width="35dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_arrow_back"
+            android:src="@drawable/ic_arrow_back"
             android:layout_gravity="start"
             android:layout_marginStart="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/click_effect"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:theme="@android:style/ThemeOverlay.Material.Dark"
             android:contentDescription="@string/back" />
 

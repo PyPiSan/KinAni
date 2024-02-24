@@ -21,12 +21,12 @@
             android:layout_width="35dp"
             android:layout_height="30dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_arrow_back"
+            android:src="@drawable/ic_arrow_back"
             android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="@string/back"
-            android:foreground="@drawable/click_effect" />
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <EditText
             android:id="@+id/search_bar_edit_text"
@@ -54,14 +54,16 @@
             android:visibility="gone"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_close"/>
+            android:src="@drawable/ic_close"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
         <ImageButton
             android:id="@+id/search_bar_voice_icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/ic_mic"
-            android:contentDescription="@string/voice_search" />
+            android:src="@drawable/ic_mic"
+            android:contentDescription="@string/voice_search"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

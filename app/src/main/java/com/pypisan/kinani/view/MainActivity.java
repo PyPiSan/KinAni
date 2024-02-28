@@ -156,12 +156,16 @@ public class MainActivity extends AppCompatActivity {
         myDialog.setCancelable(false);
         LinearLayout loginBox = myDialog.findViewById(R.id.loginBox);
         LinearLayout signUpBox = myDialog.findViewById(R.id.signUpBox);
+        LinearLayout forgotBox = myDialog.findViewById(R.id.forgetBox);
+
         Button login = myDialog.findViewById(R.id.loginButton);
         TextView signUp = myDialog.findViewById(R.id.lbl_signup);
         TextView forgotPass = myDialog.findViewById(R.id.lbl_forgot);
         Button cancel = myDialog.findViewById(R.id.cancelButton);
         Button cancel2 = myDialog.findViewById(R.id.cancelButton2);
+        Button cancel3 = myDialog.findViewById(R.id.cancelPassButton);
         Button hopIn = myDialog.findViewById(R.id.signUpButton);
+        Button getPassword = myDialog.findViewById(R.id.getPasswordButton);
 //      Login Fields
         EditText username = myDialog.findViewById(R.id.et_username);
         EditText password = myDialog.findViewById(R.id.et_password);
@@ -174,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
         EditText age = myDialog.findViewById(R.id.et_age);
         RadioGroup radioGroup = myDialog.findViewById(R.id.gender);
         myDialog.show();
+
+//        Forgot Pass Fields
+        EditText forgotAlias = myDialog.findViewById(R.id.et_userEnterName);
 
         login.setOnClickListener(new View.OnClickListener()
         {
@@ -241,6 +248,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         cancel2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+            }
+        });
+
+        cancel3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myDialog.cancel();
@@ -346,7 +360,27 @@ public class MainActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loginBox.setVisibility(View.GONE);
+                loginBox.setVisibility(View.GONE);
+                forgotBox.setVisibility(View.VISIBLE);
+            }
+        });
+
+        getPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                String userName = String.valueOf(forgotAlias.getText());
+                if (userName.equals("") || userName.length()<8){
+                    Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
+                            Toast.LENGTH_LONG).show();
+                }else
+                {
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
+                            .addConverterFactory(GsonConverterFactory.create()).build();
+                }
             }
         });
     }

@@ -292,4 +292,76 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/forgetBox"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/lbl_userEnterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="9dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:text="@string/username"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:id="@+id/et_userEnterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/enter_username"
+            android:autofillHints="username"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            >
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/getPasswordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/getPassword"
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cardBackground"
+                android:textAllCaps="false"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancelPassButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/primaryTextColor"
+                android:text="@string/cancel"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/cardBackground"
+                android:textAllCaps="false"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+
 </LinearLayout>

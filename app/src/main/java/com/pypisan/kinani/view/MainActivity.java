@@ -28,9 +28,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.pypisan.kinani.R;
+import com.pypisan.kinani.api.ForgotPassword;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.UserRequest;
 import com.pypisan.kinani.api.SignUpRequest;
+import com.pypisan.kinani.model.CommonModel;
 import com.pypisan.kinani.model.SignUpModel;
 import com.pypisan.kinani.model.UserModel;
 import com.pypisan.kinani.storage.AnimeManager;
@@ -181,6 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
 //        Forgot Pass Fields
         EditText forgotAlias = myDialog.findViewById(R.id.et_userEnterName);
+        TextView passView = myDialog.findViewById(R.id.passView);
+        TextView lbl_userEnterName = myDialog.findViewById(R.id.lbl_userEnterName);
 
         login.setOnClickListener(new View.OnClickListener()
         {
@@ -372,14 +376,53 @@ public class MainActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-                String userName = String.valueOf(forgotAlias.getText());
-                if (userName.equals("") || userName.length()<8){
+                String userEnteredName = String.valueOf(forgotAlias.getText());
+                if (userEnteredName.equals("") || userEnteredName.length()<8){
                     Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
                             Toast.LENGTH_LONG).show();
                 }else
                 {
+                    forgotBox.setVisibility(View.GONE);
+                    loginLoader.setVisibility(View.VISIBLE);
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                             .addConverterFactory(GsonConverterFactory.create()).build();
+
+                    RequestModule forgotPassword = retrofit.create(RequestModule.class);
+                    Call<CommonModel> call = forgotPassword.getPassword(Constant.key,
+                            new ForgotPassword(userEnteredName,uid));
+                    call.enqueue(new Callback<CommonModel>() {
+                        @Override
+                        public void onResponse(Call<CommonModel> call, Response<CommonModel> response) {
+                            boolean flag = false;
+                            CommonModel resource = response.body();
+                            if (response.code() == 200) {
+                                flag = resource.getStatus();
+                            }
+                            if (flag) {
+                                Toast.makeText(getApplicationContext(), "Secure your password",
+                                        Toast.LENGTH_LONG).show();
+                                loginLoader.setVisibility(View.GONE);
+                                forgotBox.setVisibility(View.VISIBLE);
+                                getPassword.setVisibility(View.GONE);
+                                forgotAlias.setVisibility(View.GONE);
+                                lbl_userEnterName.setVisibility(View.GONE);
+                                passView.setText(resource.getPassword());
+                                passView.setVisibility(View.VISIBLE);
+                            } else {
+                                loginLoader.setVisibility(View.GONE);
+                                forgotBox.setVisibility(View.VISIBLE);
+                                Toast.makeText(getApplicationContext(), "Incorrect Username ",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CommonModel> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_LONG).show();
+                            loginLoader.setVisibility(View.GONE);
+                            forgotBox.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
             }
         });

@@ -78,6 +78,6 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="delete_confirmation">Are you sure to delete your account ?</string>
+    <string name="delete_confirmation">Are you sure want to delete your account ?</string>
     <string name="getPassword">Get Password</string>
 </resources>

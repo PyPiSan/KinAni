@@ -324,6 +324,17 @@
             android:singleLine="true"
             android:inputType="textEmailAddress"
             />
+        <TextView
+            android:id="@+id/passView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="9dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/primaryTextColor"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

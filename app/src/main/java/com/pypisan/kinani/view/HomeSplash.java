@@ -56,6 +56,12 @@ public class HomeSplash extends AppCompatActivity {
         String myVersion = "Android "+Build.VERSION.RELEASE;
         Constant.uid = deviceUser;
         String origin = getApplicationContext().getResources().getConfiguration().locale.getCountry();
+        try {
+            PackageInfo pInfo = getApplicationContext().getPackageManager().
+                    getPackageInfo(getApplicationContext().getPackageName(), 0);
+            Constant.versionName = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
 
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
@@ -69,7 +75,7 @@ public class HomeSplash extends AppCompatActivity {
             Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
             RequestModule getID = retrofit.create(RequestModule.class);
-            Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin,myVersion));
+            Call<UserModel> call = getID.getUser(new UserInit(deviceUser, origin,myVersion,Constant.versionName));
             call.enqueue(new Callback<UserModel>() {
                 @Override
                 public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -87,12 +93,6 @@ public class HomeSplash extends AppCompatActivity {
                             Constant.userName = resource.getUserData();
                             Constant.message = resource.getNotification();
                             if (resource.getAds() !=null){Constant.isFree = resource.getAds();}
-                            try {
-                                PackageInfo pInfo = getApplicationContext().getPackageManager().
-                                        getPackageInfo(getApplicationContext().getPackageName(), 0);
-                                Constant.versionName = pInfo.versionName;
-                            } catch (PackageManager.NameNotFoundException ignored) {
-                            }
                             animeManager.insertUser(deviceUser, Constant.key, true,resource.getLogged(),resource.getIcon());
                             Cursor newCursor = animeManager.findOneUser(deviceUser);
                             if (newCursor != null && newCursor.getCount() != 0){

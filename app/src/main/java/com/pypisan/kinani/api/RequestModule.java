@@ -2,6 +2,7 @@ package com.pypisan.kinani.api;
 
 import com.pypisan.kinani.model.AnimeEpisodeListModel;
 import com.pypisan.kinani.model.AnimeRecentModel;
+import com.pypisan.kinani.model.CommonModel;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.model.RecentlyAiredModel;
 import com.pypisan.kinani.model.SignUpModel;
@@ -70,6 +71,9 @@ public interface RequestModule {
 
     @GET("trivia")
     Call<TriviaModel> getTrivia(@Header("x-api-key") String apikey);
+
+    @POST("password")
+    Call<CommonModel> getPassword(@Header("x-api-key") String apikey, @Body ForgotPassword body);
 
 }
 

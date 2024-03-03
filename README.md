@@ -12,7 +12,7 @@ You can also download the latest release version.
 Release lower than 4.10.6 will not work.
 Minimum Supported SDK is 26, tested on Android 13 and 14.
 
-## Star the repository for the future updates
+**Star the repository for the future updates**
 
 ## Installation
 If app has been uninstalled previously without clearing cache, new installation might face an issue.

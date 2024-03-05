@@ -6,7 +6,7 @@ An Android app where you can watch Anime and K-drama. KinAni is an **in progress
 
 ## Download
 App download Link
-<a href="https://github.com/PyPiSan/KinAni/releases/download/v4.10.6-stable/KinAni.apk" target="_blank"><b>Download</b></a>
+<a href="https://github.com/PyPiSan/KinAni/releases/download/v4.10.7-stable/KinAni.apk" target="_blank"><b>Download</b></a>
 
 You can also download the latest release version.
 Release lower than 4.10.6 will not work.
@@ -49,7 +49,7 @@ For non-developers, if you find an error in the app, please raise an issue.
 ```
 MIT License
 
-Copyright (c) [2023] [KinAni][@pypisan]
+Copyright (c) [2024] [KinAni][@pypisan]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

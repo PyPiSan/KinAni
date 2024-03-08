@@ -1,7 +1,8 @@
 # KinAni
-An Android app where you can watch Anime and K-drama. KinAni is an **in progress** Android app where you can watch anime, K-drama and movies.
-
-![KinAni](https://github.com/PyPiSan/KinAni/assets/75712540/ec22aeeb-0085-488b-b0cf-03a2dceb5eef)
+An Android app where you can watch Anime and K-drama. KinAni is an Android app where you can watch anime, K-drama as well as Asian dramas and movies.
+<p align="center">
+<img src="https://github.com/PyPiSan/KinAni/assets/75712540/ec22aeeb-0085-488b-b0cf-03a2dceb5eef" alt="KinAni">
+</p>
 
 
 ## Download

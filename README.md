@@ -17,8 +17,8 @@ Minimum Supported SDK is 26, tested on Android 13 and 14.
 **Please do not Spam, either you will be blocked.**
 
 ## Installation
-If app has been uninstalled previously without clearing cache, new installation might face an issue.
-Mail your issue at kinani@pypisan.com or create an issue here.
+If app has been uninstalled previously without clearing cache, new installation might face an issue.\
+Mail your issue at kinani@pypisan.com or create a github issue here.
 
 ## Demo
 https://github.com/PyPiSan/KinAni/assets/75712540/f1478c44-f9de-4f76-9d47-216dbf766d5c

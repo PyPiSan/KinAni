@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -95,6 +96,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         ivClearText = view.findViewById(R.id.iv_clear_text);
         ImageButton backButton = view.findViewById(R.id.back_button);
         progressBar = view.findViewById(R.id.loadSearch);
+        Button dramaButton = view.findViewById(R.id.drama_button);
 
 //      initialization recycler
 
@@ -103,6 +105,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         recyclerView.setHasFixedSize(false);
 
 //      adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
+
+        dramaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showType= "drama";
+                dramaButton.setVisibility(View.GONE);
+                editText.setHint(R.string.search_drama);
+            }
+        });
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -116,6 +127,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                             InputMethodManager imm = (InputMethodManager) getActivity()
                                     .getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                            dramaButton.setVisibility(View.GONE);
                         } catch (Exception ignored) {
                         }
                     }

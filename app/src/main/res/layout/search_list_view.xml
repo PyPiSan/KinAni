@@ -67,6 +67,23 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/drama_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/search_drama"
+        android:layout_marginStart="130dp"
+        android:layout_marginEnd="130dp"
+        android:textColor="@color/primaryTextColor"
+        android:textAllCaps="false"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_below="@+id/search_layout"
+        android:backgroundTint="@color/cardBackground"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -4,8 +4,8 @@ plugins {
 
 def versionMajor = 4
 def versionMinor = 10
-def versionPatch = 7
-def buildType="stable"
+def versionPatch = 8
+def buildType="beta"
 
 android {
     namespace 'com.pypisan.kinani'

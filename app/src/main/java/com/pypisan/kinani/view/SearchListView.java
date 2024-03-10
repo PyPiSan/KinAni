@@ -1,20 +1,14 @@
 package com.pypisan.kinani.view;
 
 import static android.app.appsearch.AppSearchResult.RESULT_OK;
-
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,10 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.datepicker.MaterialCalendar;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SearchViewAdapter;
 import com.pypisan.kinani.api.RequestModule;
@@ -71,7 +62,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     private boolean loaderState;
     private ProgressBar progressBar;
     private static final int REQ_CODE_SPEECH_INPUT = 0;
-
+    private String showType;
     public SearchListView() {
         // Required empty public constructor
     }
@@ -96,6 +87,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loaderState = false;
+        showType= "anime";
         bottomAppBar = getActivity().findViewById(R.id.bottomAppBar);
         bottomAppBar.setVisibility(View.GONE);
         voice_search_button = view.findViewById(R.id.search_bar_voice_icon);
@@ -125,7 +117,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                                     .getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                         } catch (Exception ignored) {
-                            ;
                         }
                     }
                     if (!loaderState) {
@@ -138,7 +129,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                         progressBar.setVisibility(View.VISIBLE);
                         loaderState = true;
                     }
-                    insertDataToCard(searchString);
+                    insertDataToCard(searchString, showType);
                 } else {
                     Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
                     }
@@ -209,12 +200,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     }
 
 //  Insert data to card
-    private void insertDataToCard(String searchString) {
+    private void insertDataToCard(String searchString, String searchDb) {
 //      Add the cards data and display them
-
+        String url = Constant.baseUrl;
+        if (searchDb.equals("drama")){
+            url = Constant.baseDramaUrl;
+        }
         animeSearchList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.baseUrl)
+                .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
@@ -230,7 +224,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased(), "anime", animes.getReleaseStatus());
+                                animes.getTitle(), animes.getReleased(), showType, animes.getReleaseStatus());
                         animeSearchList.add(model);
 
                     }
@@ -247,7 +241,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Anime Not Found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Content Not Found", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -263,11 +257,12 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     public void onItemClicked(String title, String detail, String image) {
         AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image,"anime");
+        animeManager.insertRecent(detail, title, image, showType);
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("image", image);
+        bundle.putString("type",showType);
         Fragment fragment = new SummaryView();
         fragment.setArguments(bundle);
         getActivity().getSupportFragmentManager()

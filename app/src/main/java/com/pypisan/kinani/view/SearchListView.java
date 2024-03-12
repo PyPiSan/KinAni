@@ -63,7 +63,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     private boolean loaderState;
     private ProgressBar progressBar;
     private static final int REQ_CODE_SPEECH_INPUT = 0;
-    private String showType;
     public SearchListView() {
         // Required empty public constructor
     }
@@ -88,7 +87,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loaderState = false;
-        showType= "anime";
         bottomAppBar = getActivity().findViewById(R.id.bottomAppBar);
         bottomAppBar.setVisibility(View.GONE);
         voice_search_button = view.findViewById(R.id.search_bar_voice_icon);
@@ -96,7 +94,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
         ivClearText = view.findViewById(R.id.iv_clear_text);
         ImageButton backButton = view.findViewById(R.id.back_button);
         progressBar = view.findViewById(R.id.loadSearch);
-        Button dramaButton = view.findViewById(R.id.drama_button);
 
 //      initialization recycler
 
@@ -106,14 +103,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
 
 //      adapterSearch = new SearchViewAdapter(animeSearchList, getContext(), new SearchListView()::onItemClicked);
 
-        dramaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showType= "drama";
-                dramaButton.setVisibility(View.GONE);
-                editText.setHint(R.string.search_drama);
-            }
-        });
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -127,7 +116,6 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                             InputMethodManager imm = (InputMethodManager) getActivity()
                                     .getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                            dramaButton.setVisibility(View.GONE);
                         } catch (Exception ignored) {
                         }
                     }
@@ -141,7 +129,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                         progressBar.setVisibility(View.VISIBLE);
                         loaderState = true;
                     }
-                    insertDataToCard(searchString, showType);
+                    insertDataToCard(searchString);
                 } else {
                     Toast.makeText(getContext(), "Please Enter the Title", Toast.LENGTH_SHORT).show();
                     }
@@ -212,19 +200,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     }
 
 //  Insert data to card
-    private void insertDataToCard(String searchString, String searchDb) {
+    private void insertDataToCard(String searchString) {
 //      Add the cards data and display them
-        String url = Constant.baseUrl;
-        if (searchDb.equals("drama")){
-            url = Constant.baseDramaUrl;
-        }
         animeSearchList = new ArrayList<>();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(Constant.userUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         RequestModule animeRecent = retrofit.create(RequestModule.class);
-        Call<AnimeRecentModel> call = animeRecent.searchAnime(Constant.key,searchString);
+        Call<AnimeRecentModel> call = animeRecent.searchContent(Constant.key,searchString);
 
         call.enqueue(new Callback<AnimeRecentModel>() {
             @Override
@@ -236,7 +220,7 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
                     AnimeModel model;
                     for (AnimeRecentModel.datum animes : data) {
                         model = new AnimeModel(animes.getImageLink(), animes.getAnimeDetailLink(),
-                                animes.getTitle(), animes.getReleased(), showType, animes.getReleaseStatus());
+                                animes.getTitle(), animes.getReleased(), animes.getType(), animes.getReleaseStatus());
                         animeSearchList.add(model);
 
                     }
@@ -266,15 +250,15 @@ public class SearchListView extends Fragment implements SearchViewAdapter.Select
     }
 
     @Override
-    public void onItemClicked(String title, String detail, String image) {
+    public void onItemClicked(String title, String detail, String image, String type) {
         AnimeManager animeManager = new AnimeManager(getContext());
         animeManager.open();
-        animeManager.insertRecent(detail, title, image, showType);
+        animeManager.insertRecent(detail, title, image, type);
         animeManager.close();
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("image", image);
-        bundle.putString("type",showType);
+        bundle.putString("type",type);
         Fragment fragment = new SummaryView();
         fragment.setArguments(bundle);
         getActivity().getSupportFragmentManager()

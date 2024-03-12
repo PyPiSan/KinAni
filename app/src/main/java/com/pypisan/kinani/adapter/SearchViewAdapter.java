@@ -59,7 +59,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
         releasedStatus.setText(dataSearch.get(position).getReleaseStatus());
 
         holder.cardView.setOnClickListener(view -> {
-            listener.onItemClicked(animeTitle, "", animeImage);
+            listener.onItemClicked(animeTitle, "", animeImage,dataSearch.get(position).getShowType());
         });
     }
 
@@ -69,7 +69,7 @@ public class SearchViewAdapter extends RecyclerView.Adapter<SearchViewAdapter.Se
     }
 
     public interface SelectListener {
-        void onItemClicked(String title,String detail, String image);
+        void onItemClicked(String title,String detail, String image, String type);
     }
 
     public class SearchViewHolder extends RecyclerView.ViewHolder {

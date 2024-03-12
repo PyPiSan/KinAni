@@ -38,6 +38,11 @@ public class AnimeRecentModel {
         @SerializedName("status")
         private String status;
 
+        @SerializedName("type")
+        private String type;
+
+        public String getType() {return type;}
+
         public String getReleaseStatus() {
             return status;
         }

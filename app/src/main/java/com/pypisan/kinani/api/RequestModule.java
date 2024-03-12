@@ -34,7 +34,7 @@ public interface RequestModule {
     Call<AnimeRecentModel> getRecommend(@Header("x-api-key") String apikey, @Query("page") String num);
 
     @GET("search/")
-    Call<AnimeRecentModel> searchAnime(@Header("x-api-key") String apikey, @Query("name") String one);
+    Call<AnimeRecentModel> searchContent(@Header("x-api-key") String apikey, @Query("name") String one);
 
 
     @GET("schedule/")

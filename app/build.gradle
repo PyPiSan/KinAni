@@ -5,7 +5,7 @@ plugins {
 def versionMajor = 4
 def versionMinor = 11
 def versionPatch = 1
-def buildType="beta"
+def buildType="stable"
 
 android {
     namespace 'com.pypisan.kinani'
@@ -47,7 +47,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.gms:play-services-cast-framework:21.4.0'
-    implementation 'androidx.mediarouter:mediarouter:1.6.0'
+    implementation 'androidx.mediarouter:mediarouter:1.7.0'
     implementation "com.google.android.exoplayer:extension-cast:2.19.1"
     implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.19.1'
@@ -68,12 +68,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 //    for ad
-    implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    implementation 'com.google.android.gms:play-services-ads:23.0.0'
     implementation project(':nativetemplates')
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-    implementation 'com.google.android.gms:play-services-location:21.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
     //optional dependency for better targeting
-    implementation 'androidx.browser:browser:1.7.0'
+    implementation 'androidx.browser:browser:1.8.0'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.google.android.gms:play-services-appset:16.0.2' //optional dependency for better targeting
     implementation 'com.google.android.gms:play-services-tasks:18.1.0' //optional dependency for better targeting

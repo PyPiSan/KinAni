@@ -92,7 +92,8 @@
             android:singleLine="true"
             android:inputType="textAutoComplete"
             android:padding="8dp"
-            android:background="@drawable/round_layout_user"/>
+            android:background="@drawable/round_layout_user"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <TextView
             android:id="@+id/title"
@@ -117,7 +118,8 @@
             android:inputType="textAutoComplete"
             android:singleLine="true"
             android:padding="8dp"
-            android:background="@drawable/round_layout_user"/>
+            android:background="@drawable/round_layout_user"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <TextView
             android:id="@+id/message"
@@ -146,7 +148,8 @@
             android:padding="8dp"
             android:scrollbars="vertical"
             android:gravity="start|top"
-            android:background="@drawable/round_layout_user"/>
+            android:background="@drawable/round_layout_user"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

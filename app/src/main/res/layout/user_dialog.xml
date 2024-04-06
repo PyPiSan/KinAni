@@ -41,7 +41,8 @@
             android:hint="@string/enter_username"
             android:autofillHints="username"
             android:singleLine="true"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
         <TextView
             android:id="@+id/lbl_password"
             android:layout_width="wrap_content"
@@ -63,7 +64,8 @@
             android:hint="@string/enter_password"
             android:autofillHints="password"
             android:inputType="textPassword"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -165,7 +167,8 @@
             android:hint="@string/enter_username"
             android:autofillHints="username"
             android:singleLine="true"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
         <TextView
             android:id="@+id/lbl_new_password"
             android:layout_width="wrap_content"
@@ -187,7 +190,8 @@
             android:hint="@string/enter_password"
             android:autofillHints="password"
             android:inputType="textPassword"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <TextView
             android:id="@+id/lbl_repeat_password"
@@ -210,7 +214,8 @@
             android:hint="@string/enter_password_again"
             android:autofillHints="password"
             android:inputType="textPassword"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <TextView
             android:id="@+id/lbl_age"
@@ -232,7 +237,8 @@
             android:layout_margin="2dp"
             android:inputType="number"
             android:singleLine="true"
-            android:autofillHints="18" />
+            android:autofillHints="18"
+            android:textColorHint="@drawable/edittext_hint_disappear"/>
 
         <RadioGroup
             android:id="@+id/gender"
@@ -323,6 +329,7 @@
             android:autofillHints="username"
             android:singleLine="true"
             android:inputType="textEmailAddress"
+            android:textColorHint="@drawable/edittext_hint_disappear"
             />
         <TextView
             android:id="@+id/passView"

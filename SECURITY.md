@@ -6,7 +6,7 @@ App version currently working
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 4.10.9   | :white_check_mark: |
+| 4.11.1   | :white_check_mark: |
 | < 4.10.6   | :x:                |
 
 ## Reporting a Vulnerability

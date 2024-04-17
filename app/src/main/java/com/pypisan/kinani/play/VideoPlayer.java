@@ -15,15 +15,12 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -36,15 +33,12 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
-import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
-import com.google.android.exoplayer2.source.hls.DefaultHlsExtractorFactory;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.cast.framework.CastButtonFactory;
@@ -313,12 +307,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     videoLink[2] = resource.getValue().getQuality3();
                     videoLink[3] = resource.getValue().getQuality4();
                 }
-                if (videoLink[2] == null || videoLink[2].equals("")) {
+                if (videoLink[3] != null && !videoLink[3].equals("")) {
+                    playerInit(videoLink[3]);
+                }else if (videoLink[2] != null && !videoLink[2].equals("")) {
+                    playerInit(videoLink[2]);
+                }else if (videoLink[1] != null && !videoLink[1].equals("")) {
+                    playerInit(videoLink[1]);
+                }else if (videoLink[0] != null && !videoLink[0].equals("")) {
+                    playerInit(videoLink[0]);
+                }
+                else{
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
-                }else{
-                    playerInit(videoLink[2]);
                 }
             }
 

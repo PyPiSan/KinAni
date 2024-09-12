@@ -60,17 +60,7 @@ public class HomeSplash extends AppCompatActivity {
             PackageInfo pInfo = getApplicationContext().getPackageManager().
                     getPackageInfo(getApplicationContext().getPackageName(), 0);
             Constant.versionName = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent intent = new Intent(HomeSplash.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            }, 1000);
+        } catch (PackageManager.NameNotFoundException ignored) {}
 
             Retrofit retrofit = new Retrofit.Builder().baseUrl(Constant.userUrl)
                     .addConverterFactory(GsonConverterFactory.create()).build();
@@ -213,6 +203,16 @@ public class HomeSplash extends AppCompatActivity {
             public void onFailure(Call<UserModel> call, Throwable t) {
             }
         });
+    }
+
+    // check version and update
+    private void askForUpdate(){
+        String currentVersion = Constant.versionName;
+//        new ForceUpdateAsync(currentVersion,BaseActivity.this).execute();
+    }
+
+    private void downloadUpdate(){
+
     }
 
 }

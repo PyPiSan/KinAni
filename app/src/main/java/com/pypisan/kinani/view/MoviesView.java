@@ -34,7 +34,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MoviesView extends Fragment implements RecentAdapter.SelectListener {
+public class  MoviesView extends Fragment implements RecentAdapter.SelectListener {
 
     private ArrayList<AnimeModel> animeList;
     private RecyclerView recyclerView;

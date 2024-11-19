@@ -12,7 +12,7 @@
     <FrameLayout
         android:id="@+id/loader"
         android:layout_width="match_parent"
-        android:layout_height="253dp"
+        android:layout_height="@dimen/video_width"
         android:background="@color/primaryDarkColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

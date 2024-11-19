@@ -15,6 +15,8 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +100,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         type = videoIntent.getStringExtra("type");
         image = videoIntent.getStringExtra("image");
         String timeValue = videoIntent.getStringExtra("time");
+
         if (timeValue!=null){
             resumeTime = Long.parseLong(timeValue);
         }
@@ -118,6 +121,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         settingDialog.setContentView(R.layout.video_quality_dailog);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
+
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        height = displayMetrics.heightPixels;
 
 //        for ad
         MobileAds.initialize(getApplicationContext());
@@ -390,7 +397,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = (int) 242*3;
+            layoutParams.height = (int) getResources().getDimension(R.dimen.video_width);
             loader.setLayoutParams(layoutParams);
         }
 

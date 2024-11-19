@@ -66,10 +66,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
-    private CastContext mCastContext;
-    private MediaRouteButton mMediaRouteButton;
+//    private CastContext mCastContext;
+//    private MediaRouteButton mMediaRouteButton;
     private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
-                        skipBack, skipForward;
+                        skipBack, skipForward, downloadButton, autoPlayButton;
     private FrameLayout loader;
     private RelativeLayout textFrame;
     private ProgressBar videoLoading;
@@ -116,6 +116,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         skipForward = findViewById(R.id.skipForward);
         skipBack = findViewById(R.id.skipBack);
         settingButton = findViewById(R.id.setting);
+        downloadButton = findViewById(R.id.download);
+        autoPlayButton = findViewById(R.id.autoplay);
 
         settingDialog = new Dialog(this);
         settingDialog.setContentView(R.layout.video_quality_dailog);
@@ -160,37 +162,37 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         getEpisodeLink(title, episode_num, type);
 
 //        for casting video
-        mCastContext = CastContext.getSharedInstance(this);
-        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.cast);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
+//        mCastContext = CastContext.getSharedInstance(this);
+//        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.cast);
+//        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
 
-        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
-            mMediaRouteButton.setVisibility(View.VISIBLE);
-
-        mCastContext.addCastStateListener(new CastStateListener() {
-            @Override
-            public void onCastStateChanged(int state) {
-                if (state == CastState.NO_DEVICES_AVAILABLE)
-                    mMediaRouteButton.setVisibility(View.GONE);
-                else {
-                    if (mMediaRouteButton.getVisibility() == View.GONE)
-                        mMediaRouteButton.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        final CastPlayer castPlayer = new CastPlayer(mCastContext);
-        castPlayer.setSessionAvailabilityListener(new SessionAvailabilityListener() {
-            @Override
-            public void onCastSessionAvailable() {
-
-            }
-
-            @Override
-            public void onCastSessionUnavailable() {
-
-            }
-        });
+//        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
+//            mMediaRouteButton.setVisibility(View.VISIBLE);
+//
+//        mCastContext.addCastStateListener(new CastStateListener() {
+//            @Override
+//            public void onCastStateChanged(int state) {
+//                if (state == CastState.NO_DEVICES_AVAILABLE)
+//                    mMediaRouteButton.setVisibility(View.GONE);
+//                else {
+//                    if (mMediaRouteButton.getVisibility() == View.GONE)
+//                        mMediaRouteButton.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+//
+//        final CastPlayer castPlayer = new CastPlayer(mCastContext);
+//        castPlayer.setSessionAvailabilityListener(new SessionAvailabilityListener() {
+//            @Override
+//            public void onCastSessionAvailable() {
+//
+//            }
+//
+//            @Override
+//            public void onCastSessionUnavailable() {
+//
+//            }
+//        });
 
 //        Reload Click Handler
         reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +252,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onClick(View v) {
                 long currFor = player.getContentPosition();
                 player.seekTo(currFor+10000);
+            }
+        });
+
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

@@ -140,14 +140,30 @@
             android:layout_gravity="center_vertical|end"
             android:layoutDirection="ltr">
 
-            <androidx.mediarouter.app.MediaRouteButton
-                android:id="@+id/cast"
+            <ImageButton
+                android:id="@+id/autoplay"
                 android:gravity = "center_horizontal"
                 android:layout_height = "@dimen/exo_small_icon_height"
                 android:layout_width ="@dimen/exo_small_icon_width"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_cast"
-                android:visibility="gone"/>
+                android:src = "@drawable/toggle_off_24"
+                android:layout_marginLeft = "@dimen/exo_small_icon_horizontal_margin"
+                android:layout_marginRight = "@dimen/exo_small_icon_horizontal_margin"
+                android:padding = "@dimen/exo_small_icon_padding_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:scaleType = "fitXY"/>
+
+            <ImageButton
+                android:id="@+id/download"
+                android:gravity = "center_horizontal"
+                android:layout_height = "@dimen/exo_small_icon_height"
+                android:layout_width ="@dimen/exo_small_icon_width"
+                android:src = "@drawable/baseline_download"
+                android:layout_marginLeft = "@dimen/exo_small_icon_horizontal_margin"
+                android:layout_marginRight = "@dimen/exo_small_icon_horizontal_margin"
+                android:padding = "@dimen/exo_small_icon_padding_vertical"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:scaleType = "fitXY"/>
+
 
             <ImageButton
                 android:id="@+id/setting"

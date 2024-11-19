@@ -262,6 +262,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
+        autoPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
 //        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
     }

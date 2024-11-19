@@ -81,4 +81,6 @@
     <string name="delete_confirmation">Are you sure want to delete your account ?</string>
     <string name="getPassword">Get Password</string>
     <string name="search_drama">Search Drama</string>
+    <string name="auto_play_on">Auto-play is on</string>
+    <string name="auto_play_off">Auto-play is off</string>
 </resources>

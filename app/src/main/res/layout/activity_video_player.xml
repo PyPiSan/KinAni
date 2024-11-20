@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -47,7 +47,7 @@
         android:id="@+id/textFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -71,7 +71,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="455dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/animeTitleText"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="10dp"
@@ -103,4 +103,13 @@
         </LinearLayout>
     </ScrollView>
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/bottom_sheet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_peekHeight="0dp"
+        android:elevation="8dp"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        layout="@layout/bottom_sheet_layout"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

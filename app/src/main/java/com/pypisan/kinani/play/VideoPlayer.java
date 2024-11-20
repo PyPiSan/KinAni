@@ -5,6 +5,7 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.mediarouter.app.MediaRouteButton;
 
 import android.annotation.SuppressLint;
@@ -47,6 +48,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.WatchRequest;
@@ -76,6 +78,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private Boolean playerState = false;
     private String episode_num, type,title,summary,image,totalEpisode;
     private String[] videoLink = new String[4];
+    private String[] videoDownloadLink = new String[4];
 
     private Long resumeTime =0L;
 
@@ -118,6 +121,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         settingButton = findViewById(R.id.setting);
         downloadButton = findViewById(R.id.download);
         autoPlayButton = findViewById(R.id.autoplay);
+        View bottomSheet = findViewById(R.id.bottom_sheet_layout);
 
         settingDialog = new Dialog(this);
         settingDialog.setContentView(R.layout.video_quality_dailog);
@@ -127,6 +131,24 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 //        height = displayMetrics.heightPixels;
+
+        // Initialize BottomSheetBehavior
+        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        // Set initial state (optional)
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
 
 //        for ad
         MobileAds.initialize(getApplicationContext());
@@ -258,7 +280,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // Expand the Bottom Sheet
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    // Collapse the Bottom Sheet
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
             }
         });
 
@@ -329,6 +357,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     videoLink[1] = resource.getValue().getQuality2();
                     videoLink[2] = resource.getValue().getQuality3();
                     videoLink[3] = resource.getValue().getQuality4();
+                    videoDownloadLink[0] = resource.getLink().dlLink1();
+                    videoDownloadLink[1] = resource.getLink().dlLink2();
+                    videoDownloadLink[2] = resource.getLink().dlLink3();
+                    videoDownloadLink[3] = resource.getLink().dlLink4();
+
                 }
                 if (videoLink[3] != null && !videoLink[3].equals("")) {
                     playerInit(videoLink[3]);
@@ -402,7 +435,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //            getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 //                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
             loader.setLayoutParams(layoutParams);
@@ -411,7 +444,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             getWindow().clearFlags(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 //            getWindow().clearFlags(View.KEEP_SCREEN_ON);
 
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) loader.getLayoutParams();
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) loader.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.height = (int) getResources().getDimension(R.dimen.video_width);
             loader.setLayoutParams(layoutParams);

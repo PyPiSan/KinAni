@@ -110,6 +110,8 @@
         app:behavior_peekHeight="0dp"
         android:elevation="8dp"
         app:behavior_hideable="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         layout="@layout/bottom_sheet_layout"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

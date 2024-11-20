@@ -14,10 +14,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,10 +71,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
-//    private CastContext mCastContext;
-//    private MediaRouteButton mMediaRouteButton;
+
     private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
-                        skipBack, skipForward, downloadButton, autoPlayButton;
+                        downloadButton, autoPlayButton;
     private FrameLayout loader;
     private RelativeLayout textFrame;
     private ProgressBar videoLoading;
@@ -83,6 +85,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private Long resumeTime =0L;
 
     private Dialog settingDialog;
+    private GestureDetector gestureDetector;
+
+    private View bottomSheet;
+    private BottomSheetBehavior<View> bottomSheetBehavior;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -116,12 +122,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         fullscreen = findViewById(R.id.fullScreen);
         nextButton = findViewById(R.id.nextButton);
         previousButton = findViewById(R.id.previousButton);
-        skipForward = findViewById(R.id.skipForward);
-        skipBack = findViewById(R.id.skipBack);
         settingButton = findViewById(R.id.setting);
         downloadButton = findViewById(R.id.download);
         autoPlayButton = findViewById(R.id.autoplay);
-        View bottomSheet = findViewById(R.id.bottom_sheet_layout);
+        bottomSheet = findViewById(R.id.bottom_sheet_layout);
 
         settingDialog = new Dialog(this);
         settingDialog.setContentView(R.layout.video_quality_dailog);
@@ -131,9 +135,30 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 //        height = displayMetrics.heightPixels;
+        
+        // Set up GestureDetector
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                float screenWidth = playerView.getWidth();
+                float touchX = e.getX();
+                if (touchX < screenWidth / 2) {
+                    // Rewind
+                    long currFor = player.getContentPosition();
+                    player.seekTo(currFor-10000);
+//                    showRewindIndicator();
+                } else {
+                    // Forward but do not exceed the video duration
+                    long currFor = player.getContentPosition();
+                    player.seekTo(currFor+10000);
+//                  showForwardIndicator();
+                }
+                return true;
+            }
+        });
 
         // Initialize BottomSheetBehavior
-        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         // Set initial state (optional)
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -145,7 +170,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
             }
         });
 
@@ -257,25 +281,32 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                settingDialog.show();
+//                settingDialog.show();
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // Expand the Bottom Sheet
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    // Collapse the Bottom Sheet
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
             }
         });
 
 //        Skip Forward and Back listener
-        skipBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long currBack = player.getContentPosition();
-                player.seekTo(currBack-10000);
-            }
-        });
-        skipForward.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                long currFor = player.getContentPosition();
-                player.seekTo(currFor+10000);
-            }
-        });
+//        skipBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                long currBack = player.getContentPosition();
+//                player.seekTo(currBack-10000);
+//            }
+//        });
+//        skipForward.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                long currFor = player.getContentPosition();
+//                player.seekTo(currFor+10000);
+//            }
+//        });
 
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -298,6 +329,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        // Attach GestureDetector to PlayerView
+        playerView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
 //        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
     }
 
@@ -450,6 +483,20 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             loader.setLayoutParams(layoutParams);
         }
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+                Rect outRect = new Rect();
+                bottomSheet.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

@@ -83,4 +83,8 @@
     <string name="search_drama">Search Drama</string>
     <string name="auto_play_on">Auto-play is on</string>
     <string name="auto_play_off">Auto-play is off</string>
+    <string name="quality">Quality</string>
+    <string name="download">Save Video</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="lock_screen">Lock screen</string>
 </resources>

@@ -4,9 +4,7 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.mediarouter.app.MediaRouteButton;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -17,8 +15,6 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -37,7 +33,6 @@ import com.google.android.ads.nativetemplates.NativeTemplateStyle;
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -47,10 +42,6 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.cast.framework.CastContext;
-import com.google.android.gms.cast.framework.CastState;
-import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
@@ -67,7 +58,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
-    private TextView animeTitleView, summaryTextView, videoHead;
+    private TextView animeTitleView, summaryTextView, videoHead, qualityButton, saveButton,
+            lockButton, playbackSpeedButton;
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
@@ -79,8 +71,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private ProgressBar videoLoading;
     private Boolean playerState = false;
     private String episode_num, type,title,summary,image,totalEpisode;
-    private String[] videoLink = new String[4];
-    private String[] videoDownloadLink = new String[4];
+    private final String[] videoLink = new String[4];
+    private final String[] videoDownloadLink = new String[4];
 
     private Long resumeTime =0L;
 
@@ -99,7 +91,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         reloadButton = findViewById(R.id.reloadVideo);
         videoLoading = findViewById(R.id.videoLoader);
         textFrame = findViewById(R.id.textFrame);
-//        for getting video summary params
+//      for getting video summary params
         Intent videoIntent = getIntent();
 
         title = videoIntent.getStringExtra("title");
@@ -126,9 +118,14 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         downloadButton = findViewById(R.id.download);
         autoPlayButton = findViewById(R.id.autoplay);
         bottomSheet = findViewById(R.id.bottom_sheet_layout);
+        qualityButton = findViewById(R.id.quality);
+        saveButton = findViewById(R.id.save_video);
+        lockButton = findViewById(R.id.lock_screen);
+        playbackSpeedButton = findViewById(R.id.playback_speed);
 
-        settingDialog = new Dialog(this);
-        settingDialog.setContentView(R.layout.video_quality_dailog);
+        View qualityView = findViewById(R.id.quality_view);
+        View dlView = findViewById(R.id.dl_video_view);
+        View bottomSetting = findViewById(R.id.bottom_setting);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
 
@@ -142,14 +139,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public boolean onDoubleTap(MotionEvent e) {
                 float screenWidth = playerView.getWidth();
                 float touchX = e.getX();
+                long currFor = player.getContentPosition();
                 if (touchX < screenWidth / 2) {
                     // Rewind
-                    long currFor = player.getContentPosition();
                     player.seekTo(currFor-10000);
 //                    showRewindIndicator();
                 } else {
                     // Forward but do not exceed the video duration
-                    long currFor = player.getContentPosition();
                     player.seekTo(currFor+10000);
 //                  showForwardIndicator();
                 }
@@ -170,6 +166,23 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
+
+        qualityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSetting.setVisibility(View.GONE);
+                qualityView.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSetting.setVisibility(View.GONE);
+                dlView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -203,55 +216,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         animeTitleView.setText(title);
         animeTitleView.setSelected(true);
         summaryTextView.setText(summary);
-        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setText(String.format("Episode %s", episode_num));
         videoHead.setSelected(true);
         getEpisodeLink(title, episode_num, type);
 
-//        for casting video
-//        mCastContext = CastContext.getSharedInstance(this);
-//        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.cast);
-//        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
-
-//        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
-//            mMediaRouteButton.setVisibility(View.VISIBLE);
-//
-//        mCastContext.addCastStateListener(new CastStateListener() {
-//            @Override
-//            public void onCastStateChanged(int state) {
-//                if (state == CastState.NO_DEVICES_AVAILABLE)
-//                    mMediaRouteButton.setVisibility(View.GONE);
-//                else {
-//                    if (mMediaRouteButton.getVisibility() == View.GONE)
-//                        mMediaRouteButton.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
-//
-//        final CastPlayer castPlayer = new CastPlayer(mCastContext);
-//        castPlayer.setSessionAvailabilityListener(new SessionAvailabilityListener() {
-//            @Override
-//            public void onCastSessionAvailable() {
-//
-//            }
-//
-//            @Override
-//            public void onCastSessionUnavailable() {
-//
-//            }
-//        });
-
-//        Reload Click Handler
+//      Reload Click Handler
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 reloadButton.setVisibility(View.GONE);
                 videoLoading.setVisibility(View.VISIBLE);
                 getEpisodeLink(title, episode_num, type);
             }
         });
 
-//        Next Button click handler
+//      Next Button click handler
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,7 +243,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-//        Previous Button Click handler
+//      Previous Button Click handler
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,22 +271,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-//        Skip Forward and Back listener
-//        skipBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                long currBack = player.getContentPosition();
-//                player.seekTo(currBack-10000);
-//            }
-//        });
-//        skipForward.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                long currFor = player.getContentPosition();
-//                player.seekTo(currFor+10000);
-//            }
-//        });
-
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -329,7 +292,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-        // Attach GestureDetector to PlayerView
+//      Attach GestureDetector to PlayerView
         playerView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
 //        player.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
     }
@@ -381,10 +344,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 boolean flag = false;
                 EpisodeVideoModel resource = response.body();
                 if (response.code() == 200) {
-                    boolean status = resource.getSuccess();
-                    flag = status;
+                    flag = resource.getSuccess();
                 }
-//                Log.d("video", "link is"+resource.getSuccess());
                 if (flag) {
                     videoLink[0] = resource.getValue().getQuality1();
                     videoLink[1] = resource.getValue().getQuality2();
@@ -537,7 +498,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         int num = Integer.parseInt(episode_num);
         episode_num = String.valueOf(num+1);
         playerView.setVisibility(View.GONE);
-        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setText(String.format("Episode %s", episode_num));
         videoHead.setSelected(true);
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);
@@ -557,7 +518,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             episode_num = String.valueOf(num-1);
         }
         playerView.setVisibility(View.GONE);
-        videoHead.setText(String.format("%s : Episode %s", title, episode_num));
+        videoHead.setText(String.format("Episode %s", episode_num));
         videoHead.setSelected(true);
         loader.setVisibility(View.VISIBLE);
         reloadButton.setVisibility(View.GONE);

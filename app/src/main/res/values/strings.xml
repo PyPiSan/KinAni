@@ -87,4 +87,9 @@
     <string name="download">Save Video</string>
     <string name="playback_speed">Playback Speed</string>
     <string name="lock_screen">Lock screen</string>
+    <string name="current_quality">"Quality for current video •"</string>
+    <string name="_1080">1080p</string>
+    <string name="_720">720p</string>
+    <string name="_480">480p</string>
+    <string name="_360">360p</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/bottom_Sheet"
-    android:background="@drawable/bottom_sheet_background"
+<LinearLayout
+    android:id="@+id/bottom_Sheet"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,58 +9,28 @@
     android:paddingTop="16dp"
     android:paddingBottom="20dp"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/bottom_sheet_background"
+    >
+    <include
+        android:id="@+id/bottom_setting"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/bottom_setting_view"
+        />
 
-    <TextView
-        android:id="@+id/quality"
+    <include
+        android:id="@+id/quality_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:drawableLeftCompat="@drawable/outline_tune"
-        app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
-        android:textColor="@color/primaryTextColor"
-        android:text="@string/quality"
-        android:padding="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:drawablePadding="10dp"
+        android:layout_height="match_parent"
+        layout="@layout/quality_view"
+        android:visibility="gone"
         />
-    <TextView
-        android:id="@+id/download"
+    <include
+        android:id="@+id/dl_video_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:drawableLeftCompat="@drawable/outline_download"
-        app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
-        android:textColor="@color/primaryTextColor"
-        android:text="@string/download"
-        android:padding="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:drawablePadding="10dp"
-        />
-    <TextView
-        android:id="@+id/lock_screen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:drawableLeftCompat="@drawable/sharp_lock"
-        android:textColor="@color/primaryTextColor"
-        android:text="@string/lock_screen"
-        android:padding="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:drawablePadding="10dp"
-        />
-    <TextView
-        android:id="@+id/playback_speed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:drawableLeftCompat="@drawable/sharp_slow_motion_video"
-        app:drawableRightCompat="@drawable/keyboard_arrow_right_24"
-        android:textColor="@color/primaryTextColor"
-        android:text="@string/playback_speed"
-        android:padding="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:drawablePadding="10dp"
+        android:layout_height="match_parent"
+        layout="@layout/save_video_view"
+        android:visibility="gone"
         />
 
 </LinearLayout>

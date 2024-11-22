@@ -112,7 +112,7 @@
         app:behavior_hideable="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="20dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         layout="@layout/bottom_sheet_layout"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

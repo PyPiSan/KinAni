@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/download"
+        android:padding="10dp"
+        />
+
+    <TextView
+        android:id="@+id/high_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/_1080"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="20dp"
+        app:drawableLeftCompat="@drawable/outline_download"
+        android:drawablePadding="10dp"
+        />
+    <TextView
+        android:id="@+id/medium_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/_720"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="20dp"
+        app:drawableLeftCompat="@drawable/outline_download"
+        android:drawablePadding="10dp"
+        />
+    <TextView
+        android:id="@+id/avg_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/_480"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="20dp"
+        app:drawableLeftCompat="@drawable/outline_download"
+        android:drawablePadding="10dp"
+        />
+    <TextView
+        android:id="@+id/low_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:text="@string/_360"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="20dp"
+        app:drawableLeftCompat="@drawable/outline_download"
+        android:drawablePadding="10dp"
+        />
+
+</LinearLayout>

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,6 +14,7 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,10 +22,12 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,11 +154,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 if (touchX < screenWidth / 2) {
                     // Rewind
                     player.seekTo(currFor-10000);
-//                    showRewindIndicator();
+                    simulateDoubleTapForward(findViewById(R.id.reverse_image));
                 } else {
                     // Forward but do not exceed the video duration
                     player.seekTo(currFor+10000);
 //                  showForwardIndicator();
+                    simulateDoubleTapForward(findViewById(R.id.forward_image));
                 }
                 return true;
             }
@@ -325,11 +328,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-        autoPlayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        autoPlayButton.setOnClickListener(v -> {
+//                add the function
         });
 
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
@@ -356,7 +356,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fullscreen.setImageResource(R.drawable.fullscreen_close);
             textFrame.setVisibility(View.GONE);
-//            Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
             showCustomToast("Landscape View");
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);
@@ -366,7 +365,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     }
 
     private void getEpisodeLink(String title, String episode_num, String type) {
-        //      fetching data
+//      fetching data
         String url;
         if ( type != null && type.equals("drama")){
             url = Constant.baseDramaUrl;
@@ -434,7 +433,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-//        Toast.makeText(getApplicationContext(), "Now Playing Episode: " +episode_num, Toast.LENGTH_SHORT).show();
         showCustomToast("Now Playing Episode: " +episode_num);
         Uri hlsUri = Uri.parse(link);
 //        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
@@ -452,7 +450,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //                        .setExtractorFactory(extractorFactory);
 
 
-            // Create a player instance.
+//          Create a player instance.
             player = new ExoPlayer.Builder(this)
                     .setMediaSourceFactory(hlsMediaSource)
                     .build();
@@ -526,10 +524,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             player.release();
         }
         if (time<(videoLength-300000) && time>60000){
-        AnimeManager animeManager= new AnimeManager(getApplicationContext());;
-        animeManager.open();
-        animeManager.insertContinueWatch(summary, title, image, type,episode_num,(int) time);
-        animeManager.close();
+            AnimeManager animeManager= new AnimeManager(getApplicationContext());;
+            animeManager.open();
+            animeManager.insertContinueWatch(summary, title, image, type,episode_num,(int) time);
+            animeManager.close();
         }
     }
 
@@ -662,5 +660,17 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         Toast toast = new Toast(getApplicationContext());
         toast.setView(layout);
         toast.show();
+    }
+
+    private void simulateDoubleTapForward(ImageView forwardImage) {
+        // Load the scale animation
+        Animation scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.fast_farward);
+
+        // Show the TextView and start the animation
+        forwardImage.setVisibility(View.VISIBLE);
+        forwardImage.startAnimation(scaleAnimation);
+
+        // Hide the TextView after the animation ends
+        new Handler().postDelayed(() -> forwardImage.setVisibility(View.GONE), 600);
     }
 }

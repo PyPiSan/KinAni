@@ -16,6 +16,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -191,6 +192,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
+            showCustomToast(currentSetQuality + " will apply to current video");
         });
         medium.setOnClickListener(v -> {
             onQualitySelected(2);
@@ -198,6 +200,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
+            showCustomToast(currentSetQuality + " will apply to current video");
         });
         avg.setOnClickListener(v -> {
             onQualitySelected(1);
@@ -205,6 +208,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
+            showCustomToast(currentSetQuality + " will apply to current video");
         });
         low.setOnClickListener(v -> {
             onQualitySelected(0);
@@ -212,6 +216,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
+            showCustomToast(currentSetQuality + " will apply to current video");
         });
 
 
@@ -222,7 +227,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         lockButton.setOnClickListener(v -> {
             isFullScreen = checkOrientation();
-            changeOrientation(isFullScreen);
+            if (isFullScreen){changeOrientation(true);}
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
         playbackSpeedButton.setOnClickListener(v -> {
@@ -249,12 +255,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         if(Constant.isFree) {
             videoAdView.loadAds(new AdRequest.Builder().build(), 3);
         }
-        fullscreen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isFullScreen = checkOrientation();
-                if (isFullScreen){changeOrientation(true);}
-            }
+        fullscreen.setOnClickListener(v -> {
+            isFullScreen = checkOrientation();
+            changeOrientation(isFullScreen);
         });
         animeTitleView.setText(title);
         animeTitleView.setSelected(true);
@@ -264,25 +267,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         getEpisodeLink(title, episode_num, type);
 
 //      Reload Click Handler
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reloadButton.setVisibility(View.GONE);
-                videoLoading.setVisibility(View.VISIBLE);
-                getEpisodeLink(title, episode_num, type);
-            }
+        reloadButton.setOnClickListener(v -> {
+            reloadButton.setVisibility(View.GONE);
+            videoLoading.setVisibility(View.VISIBLE);
+            getEpisodeLink(title, episode_num, type);
         });
 
 //      Next Button click handler
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!episode_num.equals(totalEpisode)){
-                    resumeTime =0L;
-                    onNextClick(title);
-                }else{
-                    Toast.makeText(getApplicationContext(), "No next episode", Toast.LENGTH_SHORT).show();
-                }
+        nextButton.setOnClickListener(v -> {
+            if(!episode_num.equals(totalEpisode)){
+                resumeTime =0L;
+                onNextClick(title);
+            }else{
+                showCustomToast("No next episode");
             }
         });
 
@@ -294,7 +291,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     resumeTime =0L;
                     onPreviousClick(title);
                 }else{
-                    Toast.makeText(getApplicationContext(), "No previous episode", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "No previous episode", Toast.LENGTH_SHORT).show();
+                    showCustomToast("No previous episode");
                 }
             }
         });
@@ -358,7 +356,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fullscreen.setImageResource(R.drawable.fullscreen_close);
             textFrame.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Landscape View", Toast.LENGTH_SHORT).show();
+            showCustomToast("Landscape View");
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);
             textFrame.setVisibility(View.VISIBLE);
@@ -416,7 +415,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 else{
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
+                    showCustomToast("Not found, Click Retry");
                 }
             }
 
@@ -425,6 +424,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
+                showCustomToast("Not found, Click Retry");
             }
         });
 
@@ -434,7 +434,8 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "Now Playing Episode: " +episode_num, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "Now Playing Episode: " +episode_num, Toast.LENGTH_SHORT).show();
+        showCustomToast("Now Playing Episode: " +episode_num);
         Uri hlsUri = Uri.parse(link);
 //        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
 //                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -648,5 +649,18 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 playerMode.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
             }
         }
+    }
+
+    private void showCustomToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout,
+                (ViewGroup) findViewById(R.id.toast_layout_container));
+        TextView toastTextView = layout.findViewById(R.id.toast_message);
+
+        //change text view
+        toastTextView.setText(message);
+        Toast toast = new Toast(getApplicationContext());
+        toast.setView(layout);
+        toast.show();
     }
 }

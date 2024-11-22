@@ -59,7 +59,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
     private TextView animeTitleView, summaryTextView, videoHead, qualityButton, saveButton,
-            lockButton, playbackSpeedButton;
+            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText;
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
@@ -75,12 +75,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private final String[] videoDownloadLink = new String[4];
 
     private Long resumeTime =0L;
-
-    private Dialog settingDialog;
     private GestureDetector gestureDetector;
 
     private View bottomSheet, qualityView, dlView, bottomSetting, playbackSetting;
     private BottomSheetBehavior<View> bottomSheetBehavior;
+    private String currentSetQuality;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -130,11 +129,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
 
+//      for quality setting
+        qualityText = findViewById(R.id.current_quality_text);
+        high = findViewById(R.id.high);
+        medium = findViewById(R.id.medium);
+        avg = findViewById(R.id.avg);
+        low = findViewById(R.id.low);
+
+
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 //        height = displayMetrics.heightPixels;
         
-        // Set up GestureDetector
+//      Set up GestureDetector
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
@@ -178,29 +185,49 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSetting.setVisibility(View.GONE);
-                dlView.setVisibility(View.VISIBLE);
-            }
+        high.setOnClickListener(v -> {
+            onQualitySelected(3);
+            currentSetQuality="1080p";
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            qualityView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+        });
+        medium.setOnClickListener(v -> {
+            onQualitySelected(2);
+            currentSetQuality="720p";
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            qualityView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+        });
+        avg.setOnClickListener(v -> {
+            onQualitySelected(1);
+            currentSetQuality="480p";
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            qualityView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+        });
+        low.setOnClickListener(v -> {
+            onQualitySelected(0);
+            currentSetQuality="360p";
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            qualityView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
         });
 
-        lockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isFullScreen = checkOrientation();
-                changeOrientation(isFullScreen);
-            }
+
+        saveButton.setOnClickListener(v -> {
+            bottomSetting.setVisibility(View.GONE);
+            dlView.setVisibility(View.VISIBLE);
         });
 
-        playbackSpeedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSetting.setVisibility(View.GONE);
-                playbackSetting.setVisibility(View.VISIBLE);
-            }
+        lockButton.setOnClickListener(v -> {
+            isFullScreen = checkOrientation();
+            changeOrientation(isFullScreen);
+        });
+
+        playbackSpeedButton.setOnClickListener(v -> {
+            bottomSetting.setVisibility(View.GONE);
+            playbackSetting.setVisibility(View.VISIBLE);
         });
 
 //        for ad
@@ -273,30 +300,30 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
 //        Setting Button Click Listener
-        settingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        settingButton.setOnClickListener(v -> {
 //                settingDialog.show();
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                    // Expand the Bottom Sheet
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                    // Collapse the Bottom Sheet
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                // Expand the Bottom Sheet
+//                    Set the quality text
+
+                qualityText.setText(String.format("%s %s", getString(R.string.current_quality),
+                        currentSetQuality));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                // Collapse the Bottom Sheet
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
 
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                    // Expand the Bottom Sheet
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                    // Collapse the Bottom Sheet
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+        downloadButton.setOnClickListener(v -> {
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                // Expand the Bottom Sheet
+                qualityText.setText(String.format("%s %s", getString(R.string.current_quality),
+                        currentSetQuality));
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                // Collapse the Bottom Sheet
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
 
@@ -375,12 +402,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 }
                 if (videoLink[3] != null && !videoLink[3].equals("")) {
                     playerInit(videoLink[3]);
+                    currentSetQuality="1080p";
                 }else if (videoLink[2] != null && !videoLink[2].equals("")) {
                     playerInit(videoLink[2]);
+                    currentSetQuality="720p";
                 }else if (videoLink[1] != null && !videoLink[1].equals("")) {
                     playerInit(videoLink[1]);
+                    currentSetQuality="480p";
                 }else if (videoLink[0] != null && !videoLink[0].equals("")) {
                     playerInit(videoLink[0]);
+                    currentSetQuality="360p";
                 }
                 else{
                     videoLoading.setVisibility(View.GONE);
@@ -403,7 +434,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        Toast.makeText(getApplicationContext(), "Playing, Ep: " +episode_num, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Now Playing Episode: " +episode_num, Toast.LENGTH_SHORT).show();
         Uri hlsUri = Uri.parse(link);
 //        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
 //                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -569,34 +600,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
     }
 
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.qualityOne:
-                if (checked)
-                    onQualitySelected(0);
-                settingDialog.cancel();
-                    break;
-            case R.id.qualityTwo:
-                if (checked)
-                    onQualitySelected(1);
-                settingDialog.cancel();
-                break;
-            case R.id.qualityThree:
-                if (checked)
-                    onQualitySelected(2);
-                settingDialog.cancel();
-                break;
-            case R.id.qualityFour:
-                if (checked)
-                    onQualitySelected(3);
-                settingDialog.cancel();
-                break;
-        }
-    }
 
 
 

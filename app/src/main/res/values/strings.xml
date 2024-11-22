@@ -92,4 +92,6 @@
     <string name="_720">720p</string>
     <string name="_480">480p</string>
     <string name="_360">360p</string>
+    <string name="decrease">decrease</string>
+    <string name="increase">increase</string>
 </resources>

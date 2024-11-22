@@ -16,6 +16,7 @@
         android:clickable="true"
         android:focusable="true"
         android:drawablePadding="10dp"
+        android:background="@drawable/click_effect_round"
         />
     <TextView
         android:id="@+id/save_video"
@@ -29,6 +30,7 @@
         android:clickable="true"
         android:focusable="true"
         android:drawablePadding="10dp"
+        android:background="@drawable/click_effect_round"
         />
     <TextView
         android:id="@+id/lock_screen"
@@ -41,6 +43,7 @@
         android:clickable="true"
         android:focusable="true"
         android:drawablePadding="10dp"
+        android:background="@drawable/click_effect_round"
         />
     <TextView
         android:id="@+id/playback_speed"
@@ -54,6 +57,7 @@
         android:clickable="true"
         android:focusable="true"
         android:drawablePadding="10dp"
+        android:background="@drawable/click_effect_round"
         />
 
 </LinearLayout>

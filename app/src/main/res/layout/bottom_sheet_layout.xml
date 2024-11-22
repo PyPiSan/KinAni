@@ -32,5 +32,12 @@
         layout="@layout/save_video_view"
         android:visibility="gone"
         />
+    <include
+        android:id="@+id/speed_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/playback_setting"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

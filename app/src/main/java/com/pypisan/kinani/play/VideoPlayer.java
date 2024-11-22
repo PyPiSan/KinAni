@@ -79,7 +79,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private Dialog settingDialog;
     private GestureDetector gestureDetector;
 
-    private View bottomSheet;
+    private View bottomSheet, qualityView, dlView, bottomSetting, playbackSetting;
     private BottomSheetBehavior<View> bottomSheetBehavior;
 
     @SuppressLint("MissingInflatedId")
@@ -123,9 +123,10 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         lockButton = findViewById(R.id.lock_screen);
         playbackSpeedButton = findViewById(R.id.playback_speed);
 
-        View qualityView = findViewById(R.id.quality_view);
-        View dlView = findViewById(R.id.dl_video_view);
-        View bottomSetting = findViewById(R.id.bottom_setting);
+        qualityView = findViewById(R.id.quality_view);
+        dlView = findViewById(R.id.dl_video_view);
+        bottomSetting = findViewById(R.id.bottom_setting);
+        playbackSetting = findViewById(R.id.speed_view);
 
         playerView.setShowBuffering(SHOW_BUFFERING_ALWAYS);
 
@@ -153,7 +154,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-        // Initialize BottomSheetBehavior
+//      Initialize BottomSheetBehavior
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         // Set initial state (optional)
@@ -186,6 +187,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
+        lockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFullScreen = checkOrientation();
+                changeOrientation(isFullScreen);
+            }
+        });
+
+        playbackSpeedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSetting.setVisibility(View.GONE);
+                playbackSetting.setVisibility(View.VISIBLE);
+            }
+        });
 
 //        for ad
         MobileAds.initialize(getApplicationContext());
@@ -210,7 +226,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             @Override
             public void onClick(View v) {
                 isFullScreen = checkOrientation();
-                changeOrientation(isFullScreen);
+                if (isFullScreen){changeOrientation(true);}
             }
         });
         animeTitleView.setText(title);
@@ -454,6 +470,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 bottomSheet.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//                  Reset the View
+                    bottomSetting.setVisibility(View.VISIBLE);
+                    playbackSetting.setVisibility(View.GONE);
+                    dlView.setVisibility(View.GONE);
+                    qualityView.setVisibility(View.GONE);
                 }
             }
         }

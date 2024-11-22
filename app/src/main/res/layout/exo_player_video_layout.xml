@@ -90,10 +90,10 @@
             android:padding="2dp"
             android:src="@drawable/exo_styled_controls_previous"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="10dp"
             />
 
-        <ImageButton android:id="@id/exo_play_pause"
+        <ImageButton
+            android:id="@id/exo_play_pause"
             style="@style/ExoStyledControls.Button.Center.PlayPause"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"/>
@@ -105,7 +105,6 @@
             android:padding="2dp"
             android:src="@drawable/exo_styled_controls_next"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:layout_marginEnd="10dp"
             />
 <!--        <ImageButton-->
 <!--            android:id="@+id/skipForward"-->

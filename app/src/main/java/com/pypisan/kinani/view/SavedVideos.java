@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SavedVideosAdapter;
 import com.pypisan.kinani.model.SavedVideosModel;
@@ -45,6 +47,12 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ImageButton backButton = view.findViewById(R.id.video_back_button);
+        ImageButton refreshButton = view.findViewById(R.id.video_refresh_button);
+
+
+        backButton.setOnClickListener(v -> openUserPage());
+
         File downloadsDir = getContext().getExternalFilesDir(Constant.storageLocation);
         if (downloadsDir != null && downloadsDir.exists()) {
             File[] files = downloadsDir.listFiles();
@@ -98,6 +106,14 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     public void onStop() {
         super.onStop();
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+    }
+
+    private void openUserPage(){
+        Fragment fragment = new UserPageView();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentView, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

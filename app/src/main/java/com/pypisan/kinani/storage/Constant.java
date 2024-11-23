@@ -50,13 +50,6 @@ public class Constant {
         // Split the string by "_"
         String[] parts = withoutExtension.split("_");
         if (parts.length == 3) {
-            String name = parts[0];
-            String episode = parts[1];
-            String type = parts[2];
-
-            System.out.println("Name: " + name);
-            System.out.println("Episode: " + episode);
-            System.out.println("Type: " + type);
             return parts;
         }
         return new String[] {""};

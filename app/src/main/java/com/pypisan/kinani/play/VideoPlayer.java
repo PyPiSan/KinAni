@@ -191,11 +191,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-        qualityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        qualityButton.setOnClickListener(v -> {
+            if (Constant.loggedInStatus){
                 bottomSetting.setVisibility(View.GONE);
                 qualityView.setVisibility(View.VISIBLE);
+            } else{
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Log in to change the quality..");
             }
         });
 
@@ -235,13 +237,18 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //      For Saving Videos
 
         saveButton.setOnClickListener(v -> {
+            if (Constant.loggedInStatus){
             boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
             if (isFile){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 showCustomToast("Content is already available..");
-            }else{
-                bottomSetting.setVisibility(View.GONE);
-                dlView.setVisibility(View.VISIBLE);
+                }   else{
+                    bottomSetting.setVisibility(View.GONE);
+                    dlView.setVisibility(View.VISIBLE);
+                }
+            } else{
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Log in to save the video..");
             }
         });
 
@@ -371,11 +378,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
 //        Setting Button Click Listener
         settingButton.setOnClickListener(v -> {
-//                settingDialog.show();
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 // Expand the Bottom Sheet
 //                    Set the quality text
-
                 qualityText.setText(String.format("%s %s", getString(R.string.current_quality),
                         currentSetQuality));
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);

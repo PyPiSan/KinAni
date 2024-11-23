@@ -16,8 +16,9 @@
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:elevation="8dp">
+
     <ImageButton
-        android:id="@+id/back_button"
+        android:id="@+id/video_back_button"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/ic_arrow_back"
@@ -29,7 +30,7 @@
         android:theme="@android:style/ThemeOverlay.Material.Dark"
         android:contentDescription="@string/back" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/primaryTextColor"
             android:text="@string/saved_videos"
@@ -37,7 +38,20 @@
             android:padding="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="16dp"
+            android:layout_weight="0.5"
             />
+        <ImageButton
+            android:id="@+id/video_refresh_button"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/autorenew"
+            android:layout_gravity="end"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:theme="@android:style/ThemeOverlay.Material.Dark"
+            android:contentDescription="@string/reload" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -49,7 +63,5 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/top_bar"
         />
-
-
 
 </RelativeLayout>

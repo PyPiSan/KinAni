@@ -1,6 +1,5 @@
 package com.pypisan.kinani.view;
 
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -20,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/cardBackground">
+            android:background="@color/cardBackground"
+            android:layout_weight="0.3">
 
             <ImageView
                 android:id="@+id/animePhoto"
@@ -28,12 +30,14 @@
                 android:layout_height="160dp"
                 android:layout_weight="1"
                 android:tag="image_tag"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:contentDescription="@string/app_name" />
 
             <LinearLayout
                 android:layout_width="220dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="0.5">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

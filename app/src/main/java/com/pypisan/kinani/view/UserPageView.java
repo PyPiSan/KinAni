@@ -170,7 +170,11 @@ public class UserPageView extends Fragment {
         });
 
         savedVideosButton.setOnClickListener(v -> {
-//                add the logic
+            Fragment fragment = new SavedVideos();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentView, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         changeIcon.setOnClickListener(v -> {

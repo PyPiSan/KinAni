@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,19 +45,26 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("Files", "Path: " + Constant.storageLocation);
-        File directory = new File(Constant.storageLocation);
-        File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        SavedVideosModel savedVideosModel;
-        savedList = new ArrayList<>();
-        for (File file : files) {
-            Log.d("Files", "FileName:" + file.getName());
-            savedVideosModel = new SavedVideosModel("Hello World","10","anime");
-            savedList.add(savedVideosModel);
+        File downloadsDir = getContext().getExternalFilesDir(Constant.storageLocation);
+        if (downloadsDir != null && downloadsDir.exists()) {
+            File[] files = downloadsDir.listFiles();
+            SavedVideosModel savedVideosModel;
+            savedList = new ArrayList<>();
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                    Log.d("FileList", "File: " + file.getName() + ", Path: " + file.getAbsolutePath());
+                    String [] data = Constant.getName(file.getName());
+                    if (data.length==3){
+                        savedVideosModel = new SavedVideosModel(data[0],data[1],data[2]);
+                        savedList.add(savedVideosModel);
+                    }
+                }
+            } else {
+                Log.d("FileList", "No files found in the directory.");
+            }
+        } else {
+            Log.d("FileList", "Downloads directory does not exist.");
         }
-        adapterSavedVideos.notifyItemInserted(savedList.size());
-
 
 
 //      recycler view saved videos
@@ -66,6 +74,7 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
 
 //      Setting Data
         adapterSavedVideos = new SavedVideosAdapter(savedList, getContext(), this::onItemClicked);
+        adapterSavedVideos.notifyItemInserted(savedList.size());
 
         recyclerView_saved_video.setItemAnimator(new DefaultItemAnimator());
         recyclerView_saved_video.setAdapter(adapterSavedVideos);
@@ -78,6 +87,17 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     @Override
     public void onItemClicked(String title, String Episode, String type) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
     }
 
 }

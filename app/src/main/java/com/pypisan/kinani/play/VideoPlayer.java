@@ -5,7 +5,6 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
@@ -16,7 +15,6 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -56,10 +54,7 @@ import com.pypisan.kinani.api.WatchRequest;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
-
 import java.io.File;
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -240,24 +235,30 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //      For Saving Videos
 
         saveButton.setOnClickListener(v -> {
-            bottomSetting.setVisibility(View.GONE);
-            dlView.setVisibility(View.VISIBLE);
+            boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
+            if (isFile){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Content is already available..");
+            }else{
+                bottomSetting.setVisibility(View.GONE);
+                dlView.setVisibility(View.VISIBLE);
+            }
         });
 
         highDl.setOnClickListener(v -> {
-            Boolean success = saveVideoMethod(3);
+            boolean success = saveVideoMethod(3);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
                 showCustomToast("Downloading.....");
-            }else{
+            } else{
                 showCustomToast("Content not available to download..");
-            }
+                }
         });
 
         mediumDl.setOnClickListener(v -> {
-            Boolean success = saveVideoMethod(2);
+            boolean success = saveVideoMethod(2);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
@@ -270,7 +271,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
         avgDl.setOnClickListener(v -> {
-            Boolean success = saveVideoMethod(1);
+            boolean success = saveVideoMethod(1);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
@@ -283,7 +284,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
         lowDl.setOnClickListener(v -> {
-            Boolean success = saveVideoMethod(0);
+            boolean success = saveVideoMethod(0);
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
@@ -748,12 +749,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
             Uri uri = Uri.parse(link);
             DownloadManager.Request request = new DownloadManager.Request(uri);
-            String name = String.format(title+"_"+episode_num+"_"+type);
+            String name = Constant.formatFileName(title, episode_num, type);
             request.setTitle(name);
             request.setDescription("Downloading");
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             request.setVisibleInDownloadsUi(true);
-            File file = new File(getExternalFilesDir(Constant.storageLocation), name+".mp4");
+            File file = new File(getExternalFilesDir(Constant.storageLocation), name);
             Uri fileUri = Uri.fromFile(file);
             request.setDestinationUri(fileUri);
             downloadmanager.enqueue(request);

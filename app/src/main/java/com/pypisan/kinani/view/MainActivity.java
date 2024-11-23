@@ -471,7 +471,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.fragmentView, selectedFragment, tag)
                     .addToBackStack(null)
                     .commit();
-//            Toast.makeText(getApplicationContext(),"View Selected is"+ Arrays.toString(movieView.getDrawableState()), Toast.LENGTH_LONG).show();
             return true;
         }
     };

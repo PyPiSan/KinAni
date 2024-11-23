@@ -386,26 +386,11 @@ public class HomeView extends Fragment implements HomeViewAdapter.SelectListener
 
 //      More click listener
 
-        trendingMore.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                onClickLoadMore("trending", animeTrendingList);
-            }
-        });
+        trendingMore.setOnClickListener(v -> onClickLoadMore("trending", animeTrendingList));
 
-        recommendationMore.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                onClickLoadMore("recommendation", animeRecommendList);
-            }
-        });
+        recommendationMore.setOnClickListener(v -> onClickLoadMore("recommendation", animeRecommendList));
 
-        watchListMore.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                onClickLoadMore("watchlist", animeWatchList);
-            }
-        });
+        watchListMore.setOnClickListener(v -> onClickLoadMore("watchlist", animeWatchList));
     }
 
     private void continueWatchList() {

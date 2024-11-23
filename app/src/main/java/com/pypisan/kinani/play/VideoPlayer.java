@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,6 +16,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -52,7 +54,7 @@ import com.pypisan.kinani.api.WatchRequest;
 import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
-
+import java.io.File;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +64,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
     private TextView animeTitleView, summaryTextView, videoHead, qualityButton, saveButton,
-            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText;
+            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText, highDl,
+            mediumDl, avgDl, lowDl;
+
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
@@ -139,6 +143,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         avg = findViewById(R.id.avg);
         low = findViewById(R.id.low);
 
+//      for Downloading Videos
+        highDl = findViewById(R.id.high_save);
+        mediumDl = findViewById(R.id.medium_save);
+        avgDl = findViewById(R.id.avg_save);
+        lowDl = findViewById(R.id.low_save);
+
 
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -181,11 +191,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
         });
 
-        qualityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        qualityButton.setOnClickListener(v -> {
+            if (Constant.loggedInStatus){
                 bottomSetting.setVisibility(View.GONE);
                 qualityView.setVisibility(View.VISIBLE);
+            } else{
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Log in to change the quality");
             }
         });
 
@@ -222,11 +234,75 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             showCustomToast(currentSetQuality + " will apply to current video");
         });
 
+//      For Saving Videos
 
         saveButton.setOnClickListener(v -> {
-            bottomSetting.setVisibility(View.GONE);
-            dlView.setVisibility(View.VISIBLE);
+            if (Constant.loggedInStatus){
+            boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
+            if (isFile){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Content is already available");
+                }   else{
+                    bottomSetting.setVisibility(View.GONE);
+                    dlView.setVisibility(View.VISIBLE);
+                }
+            } else{
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                showCustomToast("Log in to save the video");
+            }
         });
+
+        highDl.setOnClickListener(v -> {
+            boolean success = saveVideoMethod(3);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.......");
+            } else{
+                showCustomToast("Content not available to download");
+                }
+        });
+
+        mediumDl.setOnClickListener(v -> {
+            boolean success = saveVideoMethod(2);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading........");
+            }else{
+                showCustomToast("Content not available to download");
+            }
+
+        });
+
+        avgDl.setOnClickListener(v -> {
+            boolean success = saveVideoMethod(1);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.......");
+            }else{
+                showCustomToast("Content not available to download");
+            }
+
+        });
+
+        lowDl.setOnClickListener(v -> {
+            boolean success = saveVideoMethod(0);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.......");
+            }else{
+                showCustomToast("Content not available to download");
+            }
+
+        });
+
 
         lockButton.setOnClickListener(v -> {
             isFullScreen = checkOrientation();
@@ -302,11 +378,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
 //        Setting Button Click Listener
         settingButton.setOnClickListener(v -> {
-//                settingDialog.show();
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 // Expand the Bottom Sheet
 //                    Set the quality text
-
                 qualityText.setText(String.format("%s %s", getString(R.string.current_quality),
                         currentSetQuality));
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -422,7 +496,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
                 showCustomToast("Not found, Click Retry");
             }
         });
@@ -659,6 +732,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         toastTextView.setText(message);
         Toast toast = new Toast(getApplicationContext());
         toast.setView(layout);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -672,5 +746,25 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         // Hide the TextView after the animation ends
         new Handler().postDelayed(() -> forwardImage.setVisibility(View.GONE), 600);
+    }
+
+    private Boolean saveVideoMethod(int index){
+        String link = videoDownloadLink[index];
+        if (link != null && !link.equals("")){
+            DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(link);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            String name = Constant.formatFileName(title, episode_num, type);
+            request.setTitle(name);
+            request.setDescription("Downloading");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setVisibleInDownloadsUi(true);
+            File file = new File(getExternalFilesDir(Constant.storageLocation), name);
+            Uri fileUri = Uri.fromFile(file);
+            request.setDestinationUri(fileUri);
+            downloadmanager.enqueue(request);
+            return true;
+        }
+        return false;
     }
 }

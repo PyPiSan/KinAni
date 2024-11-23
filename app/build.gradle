@@ -4,7 +4,7 @@ plugins {
 
 def versionMajor = 4
 def versionMinor = 11
-def versionPatch = 3
+def versionPatch = 4
 def buildType="stable"
 
 android {

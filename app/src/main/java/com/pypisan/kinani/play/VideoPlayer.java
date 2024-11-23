@@ -5,8 +5,10 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.FileProvider;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -14,7 +16,9 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -53,6 +57,9 @@ import com.pypisan.kinani.model.EpisodeVideoModel;
 import com.pypisan.kinani.storage.AnimeManager;
 import com.pypisan.kinani.storage.Constant;
 
+import java.io.File;
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +69,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
     private TextView animeTitleView, summaryTextView, videoHead, qualityButton, saveButton,
-            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText;
+            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText, highDl,
+            mediumDl, avgDl, lowDl;
+
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
@@ -138,6 +147,12 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         medium = findViewById(R.id.medium);
         avg = findViewById(R.id.avg);
         low = findViewById(R.id.low);
+
+//      for Downloading Videos
+        highDl = findViewById(R.id.high_save);
+        mediumDl = findViewById(R.id.medium_save);
+        avgDl = findViewById(R.id.avg_save);
+        lowDl = findViewById(R.id.low_save);
 
 
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -222,11 +237,64 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             showCustomToast(currentSetQuality + " will apply to current video");
         });
 
+//      For Saving Videos
 
         saveButton.setOnClickListener(v -> {
             bottomSetting.setVisibility(View.GONE);
             dlView.setVisibility(View.VISIBLE);
         });
+
+        highDl.setOnClickListener(v -> {
+            Boolean success = saveVideoMethod(3);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.....");
+            }else{
+                showCustomToast("Content not available to download..");
+            }
+        });
+
+        mediumDl.setOnClickListener(v -> {
+            Boolean success = saveVideoMethod(2);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.....");
+            }else{
+                showCustomToast("Content not available to download..");
+            }
+
+        });
+
+        avgDl.setOnClickListener(v -> {
+            Boolean success = saveVideoMethod(1);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.....");
+            }else{
+                showCustomToast("Content not available to download..");
+            }
+
+        });
+
+        lowDl.setOnClickListener(v -> {
+            Boolean success = saveVideoMethod(0);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            dlView.setVisibility(View.GONE);
+            bottomSetting.setVisibility(View.VISIBLE);
+            if (success){
+                showCustomToast("Downloading.....");
+            }else{
+                showCustomToast("Content not available to download..");
+            }
+
+        });
+
 
         lockButton.setOnClickListener(v -> {
             isFullScreen = checkOrientation();
@@ -672,5 +740,25 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
         // Hide the TextView after the animation ends
         new Handler().postDelayed(() -> forwardImage.setVisibility(View.GONE), 600);
+    }
+
+    private Boolean saveVideoMethod(int index){
+        String link = videoDownloadLink[index];
+        if (link != null && !link.equals("")){
+            DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            Uri uri = Uri.parse(link);
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            String name = String.format(title+"_"+episode_num+"_"+type);
+            request.setTitle(name);
+            request.setDescription("Downloading");
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setVisibleInDownloadsUi(true);
+            File file = new File(getExternalFilesDir(Constant.storageLocation), name+".mp4");
+            Uri fileUri = Uri.fromFile(file);
+            request.setDestinationUri(fileUri);
+            downloadmanager.enqueue(request);
+            return true;
+        }
+        return false;
     }
 }

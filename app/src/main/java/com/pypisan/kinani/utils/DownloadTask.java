@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.PowerManager;
 
-import java.io.FileOutputStream;
+import com.pypisan.kinani.storage.Constant;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,15 +15,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-// usually, subclasses of AsyncTask are declared inside the activity class.
-// that way, you can easily modify the UI thread from here
+
 public class DownloadTask extends AsyncTask<String, Integer, String> {
 
-    private Context context;
-    private PowerManager.WakeLock mWakeLock;
 
-    public DownloadTask(Context context) {
-        this.context = context;
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 
     @Override
@@ -48,7 +47,7 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
 
             // download the file
             input = connection.getInputStream();
-            output = Files.newOutputStream(Paths.get(Environment.getExternalStorageDirectory().getPath()));
+            output = Files.newOutputStream(Paths.get(Constant.storageLocation));
 
             byte[] data = new byte[4096];
             long total = 0;
@@ -80,5 +79,20 @@ public class DownloadTask extends AsyncTask<String, Integer, String> {
                 connection.disconnect();
         }
         return null;
+    }
+
+    /**
+     * Updating progress bar
+     * */
+    protected void onProgressUpdate(String... progress) {
+        // setting progress percentage
+    }
+
+    /**
+     * After completing background task Dismiss the progress dialog
+     * **/
+    @Override
+    protected void onPostExecute(String file_url) {
+        // dismiss the dialog after the file was downloaded
     }
 }

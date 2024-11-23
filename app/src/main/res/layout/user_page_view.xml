@@ -148,6 +148,24 @@
             />
         </androidx.cardview.widget.CardView>
         <TextView
+            android:id="@+id/downloads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/saved_videos"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/primaryTextColor"
+            app:drawableLeftCompat="@drawable/outline_download"
+            android:drawablePadding="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/round_layout_user"
+            android:foreground="@drawable/click_effect_round"
+            />
+        <TextView
             android:id="@+id/change_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

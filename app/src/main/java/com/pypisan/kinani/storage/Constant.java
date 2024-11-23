@@ -1,5 +1,7 @@
 package com.pypisan.kinani.storage;
 
+import android.os.Environment;
+
 import com.pypisan.kinani.R;
 
 public class Constant {
@@ -17,6 +19,8 @@ public class Constant {
     public static String versionName = "1.0.0";
     public static String about;
     public static String message;
+
+    public static String  storageLocation = Environment.DIRECTORY_DOWNLOADS;
 
     public static final Integer[] userIconImage = {R.drawable.user_icon1,R.drawable.user_icon2,
             R.drawable.user_icon3, R.drawable.user_icon4,R.drawable.user_icon5,R.drawable.user_icon6,

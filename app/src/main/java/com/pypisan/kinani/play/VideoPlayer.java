@@ -197,7 +197,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 qualityView.setVisibility(View.VISIBLE);
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Log in to change the quality..");
+                showCustomToast("Log in to change the quality");
             }
         });
 
@@ -241,14 +241,14 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
             if (isFile){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Content is already available..");
+                showCustomToast("Content is already available");
                 }   else{
                     bottomSetting.setVisibility(View.GONE);
                     dlView.setVisibility(View.VISIBLE);
                 }
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Log in to save the video..");
+                showCustomToast("Log in to save the video");
             }
         });
 
@@ -258,9 +258,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.....");
+                showCustomToast("Downloading.......");
             } else{
-                showCustomToast("Content not available to download..");
+                showCustomToast("Content not available to download");
                 }
         });
 
@@ -270,9 +270,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.....");
+                showCustomToast("Downloading........");
             }else{
-                showCustomToast("Content not available to download..");
+                showCustomToast("Content not available to download");
             }
 
         });
@@ -283,9 +283,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.....");
+                showCustomToast("Downloading.......");
             }else{
-                showCustomToast("Content not available to download..");
+                showCustomToast("Content not available to download");
             }
 
         });
@@ -296,9 +296,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.....");
+                showCustomToast("Downloading.......");
             }else{
-                showCustomToast("Content not available to download..");
+                showCustomToast("Content not available to download");
             }
 
         });
@@ -496,7 +496,6 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "Not found, Click Retry", Toast.LENGTH_LONG).show();
                 showCustomToast("Not found, Click Retry");
             }
         });
@@ -733,6 +732,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         toastTextView.setText(message);
         Toast toast = new Toast(getApplicationContext());
         toast.setView(layout);
+        toast.setDuration(Toast.LENGTH_LONG);
         toast.show();
     }
 

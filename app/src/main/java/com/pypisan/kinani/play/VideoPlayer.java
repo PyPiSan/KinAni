@@ -39,6 +39,8 @@ import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
@@ -537,6 +539,13 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             }
             player.play();
             playerState = true;
+    }
+
+    public void playerInitLocally(String location){
+        videoLoading.setVisibility(View.GONE);
+        playerView.setVisibility(View.VISIBLE);
+        showCustomToast("Now Playing Episode: " +episode_num);
+//        MediaSource.Factory localMediaSource = new HlsMediaSource.Factory(localDataSourceFactor);
     }
 
     @Override

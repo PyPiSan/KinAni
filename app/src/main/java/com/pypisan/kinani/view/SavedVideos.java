@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SavedVideosAdapter;
 import com.pypisan.kinani.model.SavedVideosModel;
+import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.Constant;
 import java.io.File;
 import java.util.ArrayList;
@@ -94,7 +95,18 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
 
 
     @Override
-    public void onItemClicked(String title, String Episode, String type) {
+    public void onItemClicked(String title, String Episode, String type, String location) {
+        Intent i = new Intent(getContext(), VideoPlayer.class);
+        i.putExtra("episode_num", Episode);
+        i.putExtra("title", title);
+        i.putExtra("summary", "");
+        i.putExtra("server_name", "server1");
+        i.putExtra("type", type);
+        i.putExtra("image", "");
+        i.putExtra("total_episode", "");
+        i.putExtra("location", location);
+        i.putExtra("location_type", "local");
+        startActivity(i);
 
     }
 

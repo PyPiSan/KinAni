@@ -41,9 +41,11 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceFactory;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
@@ -79,7 +81,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     private RelativeLayout textFrame;
     private ProgressBar videoLoading;
     private Boolean playerState = false;
-    private String episode_num, type,title,summary,image,totalEpisode;
+    private String episode_num, type, title, summary, image, totalEpisode, location, location_type;
     private final String[] videoLink = new String[4];
     private final String[] videoDownloadLink = new String[4];
 
@@ -99,15 +101,20 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         reloadButton = findViewById(R.id.reloadVideo);
         videoLoading = findViewById(R.id.videoLoader);
         textFrame = findViewById(R.id.textFrame);
+
 //      for getting video summary params
         Intent videoIntent = getIntent();
-
         title = videoIntent.getStringExtra("title");
-        summary = videoIntent.getStringExtra("summary");
         episode_num = videoIntent.getStringExtra("episode_num");
-        totalEpisode = videoIntent.getStringExtra("total_episode");
         type = videoIntent.getStringExtra("type");
-        image = videoIntent.getStringExtra("image");
+        location_type = videoIntent.getStringExtra("location_type");
+        if (location_type==null || location_type.equals("")){
+            summary = videoIntent.getStringExtra("summary");
+            totalEpisode = videoIntent.getStringExtra("total_episode");
+            image = videoIntent.getStringExtra("image");
+        } else{
+            location = videoIntent.getStringExtra("location");
+        }
         String timeValue = videoIntent.getStringExtra("time");
 
         if (timeValue!=null){
@@ -194,12 +201,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         });
 
         qualityButton.setOnClickListener(v -> {
-            if (Constant.loggedInStatus){
+            if (Constant.loggedInStatus && (location_type==null || location_type.equals(""))){
                 bottomSetting.setVisibility(View.GONE);
                 qualityView.setVisibility(View.VISIBLE);
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Log in to change the quality");
+                if ((location_type == null || location_type.equals(""))){
+                    showCustomToast("Log in to change the quality");
+                } else{
+                    showCustomToast("Playing saved videos");
+                }
             }
         });
 
@@ -239,7 +250,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //      For Saving Videos
 
         saveButton.setOnClickListener(v -> {
-            if (Constant.loggedInStatus){
+            if (Constant.loggedInStatus && (location_type==null || location_type.equals(""))){
             boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
             if (isFile){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -250,7 +261,11 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 }
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Log in to save the video");
+                if ((location_type == null || location_type.equals(""))){
+                    showCustomToast("Log in to save the video");
+                } else{
+                    showCustomToast("Content is already available");
+                }
             }
         });
 
@@ -336,16 +351,22 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         if(Constant.isFree) {
             videoAdView.loadAds(new AdRequest.Builder().build(), 3);
         }
+
         fullscreen.setOnClickListener(v -> {
             isFullScreen = checkOrientation();
             changeOrientation(isFullScreen);
         });
+
         animeTitleView.setText(title);
         animeTitleView.setSelected(true);
-        summaryTextView.setText(summary);
         videoHead.setText(String.format("Episode %s", episode_num));
         videoHead.setSelected(true);
-        getEpisodeLink(title, episode_num, type);
+        if (location_type==null || location_type.equals("")){
+            summaryTextView.setText(summary);
+            getEpisodeLink(title, episode_num, type);
+        } else{
+            playerInitLocally(location);
+        }
 
 //      Reload Click Handler
         reloadButton.setOnClickListener(v -> {
@@ -514,7 +535,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
 //            DefaultHlsExtractorFactory extractorFactory = new DefaultHlsExtractorFactory(flags, true);
 
-//        New Implementation
+//          New Implementation
             DefaultHttpDataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
             dataSourceFactory.setAllowCrossProtocolRedirects(true);
             dataSourceFactory.setUserAgent("curl/7.85.0");
@@ -545,7 +566,19 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
         showCustomToast("Now Playing Episode: " +episode_num);
-//        MediaSource.Factory localMediaSource = new HlsMediaSource.Factory(localDataSourceFactor);
+        Uri videoUri = Uri.fromFile(new File(location));
+        MediaItem mediaItem = MediaItem.fromUri(videoUri);
+//      Create a player instance.
+        player = new ExoPlayer.Builder(this)
+                .build();
+        playerView.setPlayer(player);
+        player.setMediaItem(mediaItem);
+        player.prepare();
+        if (resumeTime>0){
+            player.seekTo(resumeTime);
+        }
+        player.play();
+        playerState = true;
     }
 
     @Override

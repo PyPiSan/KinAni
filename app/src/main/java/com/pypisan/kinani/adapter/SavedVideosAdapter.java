@@ -1,6 +1,9 @@
 package com.pypisan.kinani.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.model.SavedVideosModel;
 
@@ -43,18 +44,15 @@ public class SavedVideosAdapter extends RecyclerView.Adapter<SavedVideosAdapter.
         TextView videoName = holder.videoName;
         TextView episode = holder.episode;
 
-//        String image = savedVideos.get(position).getImage();
         String name = savedVideos.get(position).getTitle();
         String episodeNum = savedVideos.get(position).getEpisode();
         String showType = savedVideos.get(position).getShowType();
-
-        Glide.with(context)
-                .load("https://gogocdn.net/cover/fairy-tail-100-years-quest.png")
-                .into(picture);
+        Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(savedVideos.get(position).getFilePath(), MediaStore.Video.Thumbnails.MICRO_KIND);
+        picture.setImageBitmap(bmThumbnail);
         videoName.setText(name);
         episode.setText(String.format("Episode: "+episodeNum));
         holder.cardView.setOnClickListener(view -> {
-            listener.onItemClicked(name, episodeNum,showType);
+            listener.onItemClicked(name, episodeNum,showType, savedVideos.get(position).getFilePath());
         });
 
     }
@@ -63,7 +61,7 @@ public class SavedVideosAdapter extends RecyclerView.Adapter<SavedVideosAdapter.
     public int getItemCount() {return savedVideos.size();}
 
     public interface SelectListener {
-        void onItemClicked(String title, String Episode, String showType);
+        void onItemClicked(String title, String Episode, String showType, String filePath);
     }
 
     public class SavedVideosViewHolder extends RecyclerView.ViewHolder{

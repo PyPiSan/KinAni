@@ -302,17 +302,13 @@ public class UserPageView extends Fragment {
                 if (response.code() == 200) {
                     statusFlag = resource.getUserStatus();
                 }
-                Log.d("hi","hi "+resource.getMessage());
+                loader.setVisibility(View.GONE);
+                myDialog.cancel();
+                reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                 if (statusFlag){
-                    loader.setVisibility(View.GONE);
-                    myDialog.cancel();
-                    reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                     Toast.makeText(getContext(),resource.getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }else {
-                    loader.setVisibility(View.GONE);
-                    myDialog.cancel();
-                    reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                     Toast.makeText(getContext(),"Error "+resource.getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }

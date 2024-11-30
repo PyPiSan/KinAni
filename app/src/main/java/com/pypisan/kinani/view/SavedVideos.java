@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.ImageButton;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.adapter.SavedVideosAdapter;
 import com.pypisan.kinani.model.SavedVideosModel;
+import com.pypisan.kinani.play.VideoPlayer;
 import com.pypisan.kinani.storage.Constant;
 import java.io.File;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
                     Log.d("FileList", "File: " + file.getName() + ", Path: " + file.getAbsolutePath());
                     String [] data = Constant.getName(file.getName());
                     if (data.length==3){
-                        savedVideosModel = new SavedVideosModel(data[0],data[1],data[2]);
+                        savedVideosModel = new SavedVideosModel(data[0],data[1],data[2], file.getAbsolutePath());
                         savedList.add(savedVideosModel);
                     }
                 }
@@ -93,7 +95,18 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
 
 
     @Override
-    public void onItemClicked(String title, String Episode, String type) {
+    public void onItemClicked(String title, String Episode, String type, String location) {
+        Intent i = new Intent(getContext(), VideoPlayer.class);
+        i.putExtra("episode_num", Episode);
+        i.putExtra("title", title);
+        i.putExtra("summary", "");
+        i.putExtra("server_name", "server1");
+        i.putExtra("type", type);
+        i.putExtra("image", "");
+        i.putExtra("total_episode", "");
+        i.putExtra("location", location);
+        i.putExtra("location_type", "local");
+        startActivity(i);
 
     }
 
@@ -109,11 +122,8 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     }
 
     private void openUserPage(){
-        Fragment fragment = new UserPageView();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentView, fragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 }

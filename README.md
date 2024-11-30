@@ -7,11 +7,11 @@ KinAni is an Android app where you can watch anime, Asian dramas and movies.
 
 ## Download
 App download Link
-<a href="https://github.com/PyPiSan/KinAni/releases/download/v4.11.4-stable/KinAni.apk" target="_blank"><b>Download</b></a>
+<a href="https://github.com/PyPiSan/KinAni/releases/download/v4.12.0-stable/KinAni.apk" target="_blank"><b>Download</b></a>
 
 You can also download the latest release version.\
 Release lower than 4.10.6 will not work.\
-Minimum Supported SDK is 26, tested on Android 13 and 14.
+Minimum Supported SDK is 26, tested on Android 13 and above.
 
 **Star the repository for the future updates.**
 

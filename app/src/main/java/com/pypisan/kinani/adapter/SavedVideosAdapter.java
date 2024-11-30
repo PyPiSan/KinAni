@@ -1,6 +1,9 @@
 package com.pypisan.kinani.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +50,9 @@ public class SavedVideosAdapter extends RecyclerView.Adapter<SavedVideosAdapter.
         String name = savedVideos.get(position).getTitle();
         String episodeNum = savedVideos.get(position).getEpisode();
         String showType = savedVideos.get(position).getShowType();
-
-        Glide.with(context)
-                .load("https://gogocdn.net/cover/fairy-tail-100-years-quest.png")
-                .into(picture);
+        Bitmap bmThumbnail;
+        bmThumbnail = ThumbnailUtils.createVideoThumbnail(savedVideos.get(position).getFilePath(), MediaStore.Video.Thumbnails.MICRO_KIND);
+        picture.setImageBitmap(bmThumbnail);
         videoName.setText(name);
         episode.setText(String.format("Episode: "+episodeNum));
         holder.cardView.setOnClickListener(view -> {

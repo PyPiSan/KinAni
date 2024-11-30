@@ -1,5 +1,6 @@
 package com.pypisan.kinani.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,7 +64,7 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
                     Log.d("FileList", "File: " + file.getName() + ", Path: " + file.getAbsolutePath());
                     String [] data = Constant.getName(file.getName());
                     if (data.length==3){
-                        savedVideosModel = new SavedVideosModel(data[0],data[1],data[2]);
+                        savedVideosModel = new SavedVideosModel(data[0],data[1],data[2], file.getAbsolutePath());
                         savedList.add(savedVideosModel);
                     }
                 }
@@ -109,11 +110,8 @@ public class SavedVideos extends Fragment implements SavedVideosAdapter.SelectLi
     }
 
     private void openUserPage(){
-        Fragment fragment = new UserPageView();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentView, fragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 }

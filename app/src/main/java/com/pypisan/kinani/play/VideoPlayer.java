@@ -211,9 +211,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if ((location_type == null || location_type.equals(""))){
-                    showCustomToast("Log in to change the quality");
+                    showCustomSnackBar("Log in to change the quality");
                 } else{
-                    showCustomToast("Playing saved videos");
+                    showCustomSnackBar("Playing saved videos");
                 }
             }
         });
@@ -224,7 +224,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         medium.setOnClickListener(v -> {
             onQualitySelected(2);
@@ -232,7 +232,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         avg.setOnClickListener(v -> {
             onQualitySelected(1);
@@ -240,7 +240,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         low.setOnClickListener(v -> {
             onQualitySelected(0);
@@ -248,7 +248,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
 
 //      For Saving Videos
@@ -258,7 +258,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
             if (isFile){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Content is already available");
+                showCustomSnackBar("Content is already available");
                 }   else{
                     bottomSetting.setVisibility(View.GONE);
                     dlView.setVisibility(View.VISIBLE);
@@ -266,9 +266,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if ((location_type == null || location_type.equals(""))){
-                    showCustomToast("Log in to save the video");
+                    showCustomSnackBar("Log in to save the video");
                 } else{
-                    showCustomToast("Content is already available");
+                    showCustomSnackBar("Content is already available");
                 }
             }
         });
@@ -279,9 +279,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             } else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
                 }
         });
 
@@ -291,9 +291,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading........");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -304,9 +304,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -317,9 +317,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -385,7 +385,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 resumeTime =0L;
                 onNextClick(title);
             }else{
-                showCustomToast("No next episode");
+                showCustomSnackBar("No next episode");
             }
         });
 
@@ -398,7 +398,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     onPreviousClick(title);
                 }else{
 //                    Toast.makeText(getApplicationContext(), "No previous episode", Toast.LENGTH_SHORT).show();
-                    showCustomToast("No previous episode");
+                    showCustomSnackBar("No previous episode");
                 }
             }
         });
@@ -457,7 +457,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fullscreen.setImageResource(R.drawable.fullscreen_close);
             textFrame.setVisibility(View.GONE);
-            showCustomToast("Landscape View");
+//            showCustomSnackBar("Landscape View");
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);
             textFrame.setVisibility(View.VISIBLE);
@@ -515,7 +515,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 else{
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
-                    showCustomToast("Not found, Click Retry");
+                    showCustomSnackBar("Not found, Click Retry");
                 }
             }
 
@@ -523,7 +523,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
-                showCustomToast("Not found, Click Retry");
+                showCustomSnackBar("Not found, Click Retry");
             }
         });
 
@@ -533,7 +533,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        showCustomToast("Now Playing Episode: " +episode_num);
+        showCustomSnackBar("Now Playing Episode: " +episode_num);
         Uri hlsUri = Uri.parse(link);
 //        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
 //                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -569,7 +569,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void playerInitLocally(String location){
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        showCustomToast("Now Playing Episode: " +episode_num);
+        showCustomSnackBar("Now Playing Episode: " +episode_num);
         Uri videoUri = Uri.fromFile(new File(location));
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
 //      Create a player instance.
@@ -768,7 +768,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
     }
 
-    private void showCustomToast(String message) {
+//    private void showCustomToast(String message) {
 //        LayoutInflater inflater = getLayoutInflater();
 //        View layout = inflater.inflate(R.layout.toast_layout,
 //                (ViewGroup) findViewById(R.id.toast_layout_container));
@@ -780,15 +780,18 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        toast.setView(layout);
 //        toast.setDuration(Toast.LENGTH_LONG);
 //        toast.show();
+//    }
+
+    private void showCustomSnackBar(String message){
 //      For custom Snack bar
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
-        sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryColor));
+        sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryToastColor));
         TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
-        textView.setTextColor(getResources().getColor(R.color.primaryTextColor));
+        textView.setTextColor(getResources().getColor(R.color.primaryToastTextColor));
+        textView.setTextSize(14);
         snackbar.show();
-
     }
 
     private void simulateDoubleTapForward(ImageView forwardImage) {

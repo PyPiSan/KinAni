@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,16 +18,19 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.ForgotPassword;
 import com.pypisan.kinani.api.RequestModule;
@@ -54,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> tagList = new ArrayList<>();
     private BottomNavigationItemView newRelease,homeIcon,dramaIcon,movieIcon;
     private ImageView imageUser;
+    private CoordinatorLayout mainCoordinator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.Theme_KinAni);
         setContentView(R.layout.activity_main);
-//
+        mainCoordinator = findViewById(R.id.main_coordinator);
         BottomNavigationView bottomNav = findViewById(R.id.bottomAppBar);
         bottomNav.setOnItemSelectedListener(navListener);
         newRelease = bottomNav.findViewById(R.id.newRelease);
@@ -197,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 String user = String.valueOf(username.getText());
                 String pass = String.valueOf(password.getText());
                 if (user.equals("") || pass.equals("")){
-                    Toast.makeText(getApplicationContext(), "User and Password required", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("User and Password required");
                 }else{
                 loginBox.setVisibility(View.GONE);
                 loginLoader.setVisibility(View.VISIBLE);
@@ -226,10 +231,10 @@ public class MainActivity extends AppCompatActivity {
                             animeManager.insertUser(uid,"",true,true,Constant.logo);
                             animeManager.close();
                             imageUser.setImageResource(Constant.logo);
-                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                            showCustomSnackBar("Login Successful");
                             myDialog.cancel();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Login Failed, "+resource.getMessage(), Toast.LENGTH_SHORT).show();
+                            showCustomSnackBar("Login Failed, "+resource.getMessage());
                             loginLoader.setVisibility(View.GONE);
                             loginBox.setVisibility(View.VISIBLE);
                         }
@@ -237,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<UserModel> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Try Again", Toast.LENGTH_SHORT).show();
+                        showCustomSnackBar("Try Again");
                         loginLoader.setVisibility(View.GONE);
                         loginBox.setVisibility(View.VISIBLE);
                     }
@@ -285,17 +290,13 @@ public class MainActivity extends AppCompatActivity {
                 String ageValue = String.valueOf(age.getText());
                 String gender = "Other";
                 if (userValue.equals("") || userValue.length()<8){
-                    Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Alias must be greater than 8 chars");
                 }else if (passValue.equals("") || passValue.length()<8){
-                    Toast.makeText(getApplicationContext(), "Password must be greater than 8 chars",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Password must be greater than 8 chars");
                 } else if (repeatPass.equals("")|| !passValue.equals(repeatPass)){
-                    Toast.makeText(getApplicationContext(), "Password is not matching",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Password is not matching");
                 }else if (ageValue.equals("")){
-                    Toast.makeText(getApplicationContext(), "Age must be a value",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Age must be a value");
                 }
                 else{
                     // get selected radio button from radioGroup
@@ -331,8 +332,7 @@ public class MainActivity extends AppCompatActivity {
                             if (response.code() == 200) {
                                 flag = resource.getStatus();
                             }
-                            Toast.makeText(getApplicationContext(), resource.getMessage(),
-                                    Toast.LENGTH_LONG).show();
+                            showCustomSnackBar(resource.getMessage());
                             if (flag) {
                                 Constant.loggedInStatus = true;
                                 Constant.userName =userValue;
@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<SignUpModel> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_LONG).show();
+                            showCustomSnackBar("Try Again");
                             loginLoader.setVisibility(View.GONE);
                             signUpBox.setVisibility(View.VISIBLE);
                         }
@@ -378,8 +378,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String userEnteredName = String.valueOf(forgotAlias.getText());
                 if (userEnteredName.equals("") || userEnteredName.length()<8){
-                    Toast.makeText(getApplicationContext(), "Alias must be greater than 8 chars",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Alias must be greater than 8 chars");
                 }else
                 {
                     forgotBox.setVisibility(View.GONE);
@@ -399,8 +398,7 @@ public class MainActivity extends AppCompatActivity {
                                 flag = resource.getStatus();
                             }
                             if (flag) {
-                                Toast.makeText(getApplicationContext(), "Secure your password",
-                                        Toast.LENGTH_LONG).show();
+                                showCustomSnackBar("Secure your password");
                                 loginLoader.setVisibility(View.GONE);
                                 forgotBox.setVisibility(View.VISIBLE);
                                 getPassword.setVisibility(View.GONE);
@@ -411,14 +409,13 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 loginLoader.setVisibility(View.GONE);
                                 forgotBox.setVisibility(View.VISIBLE);
-                                Toast.makeText(getApplicationContext(), "Incorrect Username ",
-                                        Toast.LENGTH_LONG).show();
+                                showCustomSnackBar("Incorrect Username");
                             }
                         }
 
                         @Override
                         public void onFailure(Call<CommonModel> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Try Again ", Toast.LENGTH_LONG).show();
+                            showCustomSnackBar("Try Again");
                             loginLoader.setVisibility(View.GONE);
                             forgotBox.setVisibility(View.VISIBLE);
                         }
@@ -504,7 +501,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void disableIcon(@NonNull String fragmentTag){
-//        Toast.makeText(getApplicationContext(),fragmentTag, Toast.LENGTH_SHORT).show();
         switch (fragmentTag){
             case "recent_fragment":
                 newRelease.setIcon(getDrawable(R.drawable.ic_outline_new_releases));
@@ -544,6 +540,19 @@ public class MainActivity extends AppCompatActivity {
                         getDrawable(R.drawable.ic_home));
                 break;
         }
+    }
+
+
+    private void showCustomSnackBar(String message){
+//      For custom Snack bar
+        Snackbar snackbar = Snackbar
+                .make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryToastColor));
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.primaryToastTextColor));
+        textView.setTextSize(14);
+        snackbar.show();
     }
 
 

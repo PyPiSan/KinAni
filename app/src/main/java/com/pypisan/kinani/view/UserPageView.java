@@ -53,7 +53,6 @@ public class UserPageView extends Fragment {
     private Dialog myDialog;
     private TextView changeIcon,logOutButton,deleteButton,reportIssue;
     private ProgressBar loader;
-    private View userPageScrollView;
 
     public UserPageView() {
         // Required empty public constructor
@@ -78,7 +77,6 @@ public class UserPageView extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userPageScrollView = (View) view.findViewById(android.R.id.content);
         userIcon = view.findViewById(R.id.user_icon);
         TextView userName = view.findViewById(R.id.user_name);
         TextView appName = view.findViewById(R.id.appAbout);
@@ -438,7 +436,7 @@ public class UserPageView extends Fragment {
     private void showCustomSnackBar(String message){
 //      For custom Snack bar
         Snackbar snackbar = Snackbar
-                .make(userPageScrollView, message, Snackbar.LENGTH_LONG);
+                .make(requireView(), message, Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
         sbView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.primaryToastColor));
         TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);

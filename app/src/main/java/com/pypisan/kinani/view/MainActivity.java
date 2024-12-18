@@ -554,6 +554,4 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextSize(14);
         snackbar.show();
     }
-
-
 }

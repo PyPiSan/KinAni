@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.ReportIssue;
 import com.pypisan.kinani.api.RequestModule;
@@ -244,45 +245,45 @@ public class UserPageView extends Fragment {
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     returnToHome();
-                    Toast.makeText(getContext(),"Log Out Successful ", Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Log Out Successful");
                 } else if (statusFlag && flag.equals("icon")) {
                     userIcon.setImageResource(Constant.logo);
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
-                    Toast.makeText(getContext(),"Icon Changed Successful ", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Icon Changed Successful");
                 }else if (statusFlag && flag.equals("delete")) {
                     Constant.loggedInStatus = false;
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     returnToHome();
-                    Toast.makeText(getContext(),"Account Deleted Successful ", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Account Deleted Successful");
                 }else if (!statusFlag && flag.equals("logout")){
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     logOutButton.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
-                    Toast.makeText(getContext(),"Log Out Failed", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Log Out Failed");
                 }else if (!statusFlag && flag.equals("icon")){
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     changeIcon.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
-                    Toast.makeText(getContext(),"Icon Change Failed", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Icon Change Failed");
                 }else if (!statusFlag && flag.equals("delete")){
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
                     deleteButton.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
-                    Toast.makeText(getContext(),"Account Delete Failed", Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Account Delete Failed");
                 }else {
                     loader.setVisibility(View.GONE);
                     myDialog.cancel();
-                    Toast.makeText(getContext(),"Update Failed", Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Update Failed");
                 }
             }
             @Override
             public void onFailure(Call<UserModel> call, Throwable t) {
                 loader.setVisibility(View.GONE);
                 myDialog.cancel();
-                Toast.makeText(getContext(),"Try Again", Toast.LENGTH_LONG).show();
+                showCustomSnackBar("Try Again");
             }
         });
     }
@@ -306,11 +307,9 @@ public class UserPageView extends Fragment {
                 myDialog.cancel();
                 reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
                 if (statusFlag){
-                    Toast.makeText(getContext(),resource.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar(resource.getMessage());
                 }else {
-                    Toast.makeText(getContext(),"Error "+resource.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    showCustomSnackBar("Error");
                 }
             }
             @Override
@@ -318,8 +317,7 @@ public class UserPageView extends Fragment {
                 loader.setVisibility(View.GONE);
                 myDialog.cancel();
                 reportIssue.setBackground(getResources().getDrawable(R.drawable.round_layout_user));
-                Toast.makeText(getContext(),"Try Again", Toast.LENGTH_SHORT).show();
-
+                showCustomSnackBar("Try Again");
             }
         });
 
@@ -378,11 +376,9 @@ public class UserPageView extends Fragment {
                 String titleValue = String.valueOf(title.getText());
                 String messageValue = String.valueOf(message.getText());
                 if (subjectValue.equals("")|| subjectValue.length()<10){
-                    Toast.makeText(getContext(),"Subject should not less than 10 char",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Subject should not less than 10 char");
                 } else if (messageValue.equals("")||messageValue.length()<15) {
-                    Toast.makeText(getContext(),"Message should not less than 15 char",
-                            Toast.LENGTH_LONG).show();
+                    showCustomSnackBar("Message should not less than 15 char");
                 }else {
                     loader.setVisibility(View.VISIBLE);
                     issueBox.setVisibility(View.GONE);
@@ -434,5 +430,18 @@ public class UserPageView extends Fragment {
         public ImageAdapter(Context c){
             mContext = c;
         }
+    }
+
+
+    private void showCustomSnackBar(String message){
+//      For custom Snack bar
+        Snackbar snackbar = Snackbar
+                .make(requireView(), message, Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.primaryToastColor));
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.primaryToastTextColor));
+        textView.setTextSize(14);
+        snackbar.show();
     }
 }

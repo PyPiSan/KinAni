@@ -5,6 +5,7 @@ import static com.google.android.exoplayer2.ui.StyledPlayerView.SHOW_BUFFERING_A
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
@@ -12,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +54,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 import com.pypisan.kinani.R;
 import com.pypisan.kinani.api.RequestModule;
 import com.pypisan.kinani.api.WatchRequest;
@@ -67,16 +70,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoPlayer extends AppCompatActivity implements SessionAvailabilityListener {
 
-    private TextView animeTitleView, summaryTextView, videoHead, qualityButton, saveButton,
-            lockButton, playbackSpeedButton, high, medium, avg, low, qualityText, highDl,
-            mediumDl, avgDl, lowDl;
+    private TextView videoHead;
+    private TextView qualityText;
 
     private StyledPlayerView playerView;
     private boolean isFullScreen = false;
     private ExoPlayer player;
 
-    private ImageButton fullscreen, nextButton, reloadButton, previousButton, settingButton,
-                        downloadButton, autoPlayButton;
+    private ImageButton fullscreen;
+    private ImageButton reloadButton;
     private FrameLayout loader;
     private RelativeLayout textFrame;
     private ProgressBar videoLoading;
@@ -87,6 +89,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
     private Long resumeTime =0L;
     private GestureDetector gestureDetector;
+    private CoordinatorLayout coordinatorLayout;
 
     private View bottomSheet, qualityView, dlView, bottomSetting, playbackSetting;
     private BottomSheetBehavior<View> bottomSheetBehavior;
@@ -97,6 +100,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.video_coordinator);
         loader = findViewById(R.id.loader);
         reloadButton = findViewById(R.id.reloadVideo);
         videoLoading = findViewById(R.id.videoLoader);
@@ -122,21 +126,21 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
 
 
-        animeTitleView = findViewById(R.id.animeTitleText);
-        summaryTextView = findViewById(R.id.summaryText);
+        TextView animeTitleView = findViewById(R.id.animeTitleText);
+        TextView summaryTextView = findViewById(R.id.summaryText);
         videoHead = findViewById(R.id.videoHead);
         playerView = findViewById(R.id.video_view);
         fullscreen = findViewById(R.id.fullScreen);
-        nextButton = findViewById(R.id.nextButton);
-        previousButton = findViewById(R.id.previousButton);
-        settingButton = findViewById(R.id.setting);
-        downloadButton = findViewById(R.id.download);
-        autoPlayButton = findViewById(R.id.autoplay);
+        ImageButton nextButton = findViewById(R.id.nextButton);
+        ImageButton previousButton = findViewById(R.id.previousButton);
+        ImageButton settingButton = findViewById(R.id.setting);
+        ImageButton downloadButton = findViewById(R.id.download);
+        ImageButton autoPlayButton = findViewById(R.id.autoplay);
         bottomSheet = findViewById(R.id.bottom_sheet_layout);
-        qualityButton = findViewById(R.id.quality);
-        saveButton = findViewById(R.id.save_video);
-        lockButton = findViewById(R.id.lock_screen);
-        playbackSpeedButton = findViewById(R.id.playback_speed);
+        TextView qualityButton = findViewById(R.id.quality);
+        TextView saveButton = findViewById(R.id.save_video);
+        TextView lockButton = findViewById(R.id.lock_screen);
+        TextView playbackSpeedButton = findViewById(R.id.playback_speed);
 
         qualityView = findViewById(R.id.quality_view);
         dlView = findViewById(R.id.dl_video_view);
@@ -147,16 +151,16 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 
 //      for quality setting
         qualityText = findViewById(R.id.current_quality_text);
-        high = findViewById(R.id.high);
-        medium = findViewById(R.id.medium);
-        avg = findViewById(R.id.avg);
-        low = findViewById(R.id.low);
+        TextView high = findViewById(R.id.high);
+        TextView medium = findViewById(R.id.medium);
+        TextView avg = findViewById(R.id.avg);
+        TextView low = findViewById(R.id.low);
 
 //      for Downloading Videos
-        highDl = findViewById(R.id.high_save);
-        mediumDl = findViewById(R.id.medium_save);
-        avgDl = findViewById(R.id.avg_save);
-        lowDl = findViewById(R.id.low_save);
+        TextView highDl = findViewById(R.id.high_save);
+        TextView mediumDl = findViewById(R.id.medium_save);
+        TextView avgDl = findViewById(R.id.avg_save);
+        TextView lowDl = findViewById(R.id.low_save);
 
 
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -207,9 +211,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if ((location_type == null || location_type.equals(""))){
-                    showCustomToast("Log in to change the quality");
+                    showCustomSnackBar("Log in to change the quality");
                 } else{
-                    showCustomToast("Playing saved videos");
+                    showCustomSnackBar("Playing saved videos");
                 }
             }
         });
@@ -220,7 +224,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         medium.setOnClickListener(v -> {
             onQualitySelected(2);
@@ -228,7 +232,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         avg.setOnClickListener(v -> {
             onQualitySelected(1);
@@ -236,7 +240,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
         low.setOnClickListener(v -> {
             onQualitySelected(0);
@@ -244,7 +248,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             qualityView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
-            showCustomToast(currentSetQuality + " will apply to current video");
+            showCustomSnackBar(currentSetQuality + " will apply to current video");
         });
 
 //      For Saving Videos
@@ -254,7 +258,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             boolean isFile= Constant.isFileExists(getApplicationContext(), Constant.formatFileName(title, episode_num, type));
             if (isFile){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                showCustomToast("Content is already available");
+                showCustomSnackBar("Content is already available");
                 }   else{
                     bottomSetting.setVisibility(View.GONE);
                     dlView.setVisibility(View.VISIBLE);
@@ -262,9 +266,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             } else{
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 if ((location_type == null || location_type.equals(""))){
-                    showCustomToast("Log in to save the video");
+                    showCustomSnackBar("Log in to save the video");
                 } else{
-                    showCustomToast("Content is already available");
+                    showCustomSnackBar("Content is already available");
                 }
             }
         });
@@ -275,9 +279,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             } else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
                 }
         });
 
@@ -287,9 +291,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading........");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -300,9 +304,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -313,9 +317,9 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             dlView.setVisibility(View.GONE);
             bottomSetting.setVisibility(View.VISIBLE);
             if (success){
-                showCustomToast("Downloading.......");
+                showCustomSnackBar("Downloading, Check your phone's downloading notification");
             }else{
-                showCustomToast("Content not available to download");
+                showCustomSnackBar("Content not available to download");
             }
 
         });
@@ -381,7 +385,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 resumeTime =0L;
                 onNextClick(title);
             }else{
-                showCustomToast("No next episode");
+                showCustomSnackBar("No next episode");
             }
         });
 
@@ -394,7 +398,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                     onPreviousClick(title);
                 }else{
 //                    Toast.makeText(getApplicationContext(), "No previous episode", Toast.LENGTH_SHORT).show();
-                    showCustomToast("No previous episode");
+                    showCustomSnackBar("No previous episode");
                 }
             }
         });
@@ -453,7 +457,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             fullscreen.setImageResource(R.drawable.fullscreen_close);
             textFrame.setVisibility(View.GONE);
-            showCustomToast("Landscape View");
+//            showCustomSnackBar("Landscape View");
         } else {
             fullscreen.setImageResource(R.drawable.ic_fullscreen);
             textFrame.setVisibility(View.VISIBLE);
@@ -511,7 +515,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
                 else{
                     videoLoading.setVisibility(View.GONE);
                     reloadButton.setVisibility(View.VISIBLE);
-                    showCustomToast("Not found, Click Retry");
+                    showCustomSnackBar("Not found, Click Retry");
                 }
             }
 
@@ -519,7 +523,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
             public void onFailure(Call<EpisodeVideoModel> call, Throwable t) {
                 videoLoading.setVisibility(View.GONE);
                 reloadButton.setVisibility(View.VISIBLE);
-                showCustomToast("Not found, Click Retry");
+                showCustomSnackBar("Not found, Click Retry");
             }
         });
 
@@ -529,7 +533,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
 //        loader.setVisibility(View.GONE);
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        showCustomToast("Now Playing Episode: " +episode_num);
+        showCustomSnackBar("Now Playing Episode: " +episode_num);
         Uri hlsUri = Uri.parse(link);
 //        int flags = DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES
 //                    | DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS;
@@ -565,7 +569,7 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
     public void playerInitLocally(String location){
         videoLoading.setVisibility(View.GONE);
         playerView.setVisibility(View.VISIBLE);
-        showCustomToast("Now Playing Episode: " +episode_num);
+        showCustomSnackBar("Now Playing Episode: " +episode_num);
         Uri videoUri = Uri.fromFile(new File(location));
         MediaItem mediaItem = MediaItem.fromUri(videoUri);
 //      Create a player instance.
@@ -764,18 +768,30 @@ public class VideoPlayer extends AppCompatActivity implements SessionAvailabilit
         }
     }
 
-    private void showCustomToast(String message) {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_layout,
-                (ViewGroup) findViewById(R.id.toast_layout_container));
-        TextView toastTextView = layout.findViewById(R.id.toast_message);
+//    private void showCustomToast(String message) {
+//        LayoutInflater inflater = getLayoutInflater();
+//        View layout = inflater.inflate(R.layout.toast_layout,
+//                (ViewGroup) findViewById(R.id.toast_layout_container));
+//        TextView toastTextView = layout.findViewById(R.id.toast_message);
+//
+//        //change text view
+//        toastTextView.setText(message);
+//        Toast toast = new Toast(getApplicationContext());
+//        toast.setView(layout);
+//        toast.setDuration(Toast.LENGTH_LONG);
+//        toast.show();
+//    }
 
-        //change text view
-        toastTextView.setText(message);
-        Toast toast = new Toast(getApplicationContext());
-        toast.setView(layout);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
+    private void showCustomSnackBar(String message){
+//      For custom Snack bar
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.primaryToastColor));
+        TextView textView = (TextView) sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.primaryToastTextColor));
+        textView.setTextSize(14);
+        snackbar.show();
     }
 
     private void simulateDoubleTapForward(ImageView forwardImage) {

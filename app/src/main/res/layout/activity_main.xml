@@ -33,7 +33,7 @@
                         android:paddingEnd="5dp"
                         android:paddingStart="5dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/ic_head_logo"
+                        android:src="@mipmap/ic_launcher_round"
                         android:id="@+id/mainLogo"
                         android:contentDescription="@string/app_title" />
 

@@ -17,5 +17,6 @@
     <color name="skeleton">#50000000</color>
     <color name="primaryToastColor">#80484848</color>
     <color name="primaryToastTextColor">#ffffff</color>
+    <color name="ic_launcher_background">#DDF1F3</color>
 
 </resources>

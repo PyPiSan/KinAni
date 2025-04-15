@@ -3,11 +3,11 @@
 3    package="com.google.android.ads.nativetemplates" >
 4
 5    <uses-sdk android:minSdkVersion="16" />
-5-->/Users/sanjeev/StudioProjects/KinAni/nativetemplates/src/main/AndroidManifest.xml
+5-->/Users/sanjeev/Documents/android/KinAni/nativetemplates/src/main/AndroidManifest.xml
 6
 7    <application android:supportsRtl="true" >
-7-->/Users/sanjeev/StudioProjects/KinAni/nativetemplates/src/main/AndroidManifest.xml:3:3-5:17
-7-->/Users/sanjeev/StudioProjects/KinAni/nativetemplates/src/main/AndroidManifest.xml:3:16-42
+7-->/Users/sanjeev/Documents/android/KinAni/nativetemplates/src/main/AndroidManifest.xml:3:3-5:17
+7-->/Users/sanjeev/Documents/android/KinAni/nativetemplates/src/main/AndroidManifest.xml:3:16-42
 8    </application>
 9
 10</manifest>
